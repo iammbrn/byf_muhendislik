@@ -231,14 +231,27 @@
 .firm-body {
     padding: 1.5rem;
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .firm-body {
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
 }
 
 .firm-info {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .firm-info {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .info-item {

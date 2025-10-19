@@ -28,7 +28,9 @@ class SiteSettings(models.Model):
     linkedin_url = models.URLField(blank=True, verbose_name='LinkedIn')
     instagram_url = models.URLField(blank=True, verbose_name='Instagram')
     whatsapp_number = models.CharField(max_length=20, blank=True, verbose_name='WhatsApp Numarası')
-    google_analytics_id = models.CharField(max_length=32, blank=True, verbose_name='Google Analytics ID')
+    google_analytics_id = models.CharField(max_length=32, blank=True, verbose_name='Google Analytics ID', help_text='G-XXXXXXXXXX formatında')
+    hotjar_id = models.CharField(max_length=20, blank=True, verbose_name='Hotjar Site ID', help_text='Kullanıcı davranış analizi için')
+    google_search_console = models.CharField(max_length=100, blank=True, verbose_name='Google Search Console Verification', help_text='Meta verification tag içeriği')
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:

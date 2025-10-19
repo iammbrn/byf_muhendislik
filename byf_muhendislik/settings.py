@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.gzip.GZipMiddleware',  # Compress responses
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.UserTypeMiddleware',
+    'core.middleware.CacheControlMiddleware',
+    'core.middleware.SecurityHeadersMiddleware',
 ]
 
 ROOT_URLCONF = 'byf_muhendislik.urls'
@@ -123,6 +126,10 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
+# WhiteNoise Configuration for better caching
+WHITENOISE_MAX_AGE = 31536000  # 1 year cache for static files
+WHITENOISE_IMMUTABLE_FILE_TEST = lambda path, url: True  # All static files are immutable
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -183,20 +190,41 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@byfmuhendislik.com
 # Misc
 SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000')
 
-# Redis cache/session (optional)
+# Caching Configuration
 REDIS_URL = os.getenv('REDIS_URL', '')
 if REDIS_URL:
+    # Use Redis for caching if available (production)
     CACHES = {
         'default': {
             'BACKEND': 'django_redis.cache.RedisCache',
             'LOCATION': REDIS_URL,
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            }
+                'PARSER_CLASS': 'redis.connection.HiredisParser',
+                'CONNECTION_POOL_CLASS_KWARGS': {
+                    'max_connections': 50,
+                    'retry_on_timeout': True,
+                },
+                'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+            },
+            'KEY_PREFIX': 'byf',
+            'TIMEOUT': 3600,  # 1 hour default
         }
     }
     SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
     SESSION_CACHE_ALIAS = 'default'
+else:
+    # Use local memory cache for development
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'byf-cache',
+            'OPTIONS': {
+                'MAX_ENTRIES': 1000,
+            },
+            'TIMEOUT': 3600,  # 1 hour default
+        }
+    }
 
 # S3/Storage (optional)
 USE_S3 = os.getenv('USE_S3', 'False') == 'True'

@@ -1,7 +1,47 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Blog - BYF Mühendislik{% endblock %}
+{% block title %}Blog - BYF Mühendislik | Mühendislik Haberleri ve İçerikler{% endblock %}
+
+{% block meta_description %}BYF Mühendislik blog sayfası. Elektrik mühendisliği, periyodik kontrol, trafo sistemleri ve mühendislik dünyasından en son haberler ve teknik bilgiler.{% endblock %}
+
+{% block meta_keywords %}mühendislik blog, elektrik mühendisliği, teknik yazılar, mühendislik haberleri, BYF blog{% endblock %}
+
+{% block og_title %}Blog - BYF Mühendislik{% endblock %}
+{% block og_description %}Mühendislik dünyasından en son haberler, teknik bilgiler ve uzman görüşleri.{% endblock %}
+
+{% block schema_org %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "BYF Mühendislik Blog",
+  "description": "Elektrik mühendisliği ve ilgili konularda blog yazıları",
+  "url": "{{ request.build_absolute_uri }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "BYF Mühendislik"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Ana Sayfa",
+    "item": "{{ request.scheme }}://{{ request.get_host }}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Blog"
+  }]
+}
+</script>
+{% endblock schema_org %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -15,14 +55,14 @@
 <!-- Blog Content -->
 <section class="section-padding">
     <div class="container">
-        <div class="blog-container">
+        <div class="blog-container blog-layout">
             <!-- Ana İçerik -->
             <div class="blog-posts">
                 {% for post in posts %}
                 <article class="blog-post-card">
                     {% if post.featured_image %}
                     <div class="post-image">
-                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }} - BYF Mühendislik Blog" loading="lazy" decoding="async" width="800" height="450">
                     </div>
                     {% endif %}
                     
@@ -115,7 +155,7 @@
                         <div class="popular-post">
                             {% if popular_post.featured_image %}
                             <div class="popular-post-image">
-                                <img src="{{ popular_post.featured_image.url }}" alt="{{ popular_post.title }}" loading="lazy">
+                                <img src="{{ popular_post.featured_image.url }}" alt="{{ popular_post.title }} - BYF Mühendislik" loading="lazy" decoding="async" width="150" height="100">
                             </div>
                             {% endif %}
                             <div class="popular-post-content">
@@ -152,11 +192,16 @@
 </section>
 
 <style>
+/* blog-container grid handled by responsive.css blog-layout class */
 .blog-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 3rem;
+    gap: 1.5rem;
     align-items: start;
+}
+
+@media (min-width: 768px) {
+    .blog-container {
+        gap: 3rem;
+    }
 }
 
 .blog-posts {

@@ -1,7 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}İletişim - BYF Mühendislik{% endblock %}
+{% block title %}İletişim - BYF Mühendislik | Bize Ulaşın{% endblock %}
+
+{% block meta_description %}BYF Mühendislik ile iletişime geçin. Elektrik mühendisliği hizmetleri için teklif alın. Telefon, e-posta ve adres bilgilerimiz. Hemen bizimle iletişime geçin.{% endblock %}
+
+{% block meta_keywords %}BYF Mühendislik iletişim, teklif al, elektrik mühendisliği, mühendislik firması, iletişim formu{% endblock %}
+
+{% block og_title %}İletişim - BYF Mühendislik{% endblock %}
+{% block og_description %}BYF Mühendislik ile iletişime geçin. Profesyonel mühendislik hizmetleri için hemen teklif alın.{% endblock %}
+
+{% block schema_org %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "İletişim - BYF Mühendislik",
+  "description": "BYF Mühendislik iletişim bilgileri ve iletişim formu",
+  "url": "{{ request.build_absolute_uri }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Ana Sayfa",
+    "item": "{{ request.scheme }}://{{ request.get_host }}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "İletişim"
+  }]
+}
+</script>
+{% endblock schema_org %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -251,10 +287,15 @@
 </section>
 
 <style>
+/* Grid layouts now handled by responsive.css */
 .contact-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 4rem;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .contact-container {
+        gap: 4rem;
+    }
 }
 
 .contact-form-section {
@@ -273,9 +314,8 @@
     margin-bottom: 2rem;
 }
 
+/* Form row grid handled by responsive.css */
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
 

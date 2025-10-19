@@ -1,7 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Hakkımızda - BYF Mühendislik{% endblock %}
+{% block title %}Hakkımızda - BYF Mühendislik | Uzman Mühendislik Ekibi{% endblock %}
+
+{% block meta_description %}BYF Mühendislik hakkında bilgi edinin. Deneyimli ekibimiz, misyonumuz ve vizyonumuz. Elektrik mühendisliği alanında güvenilir ve profesyonel hizmet sunuyoruz.{% endblock %}
+
+{% block meta_keywords %}BYF Mühendislik hakkında, mühendislik ekibi, elektrik mühendisleri, profesyonel mühendislik, Türkiye{% endblock %}
+
+{% block og_title %}Hakkımızda - BYF Mühendislik{% endblock %}
+{% block og_description %}Deneyimli ekibimiz ve profesyonel mühendislik hizmetlerimiz hakkında bilgi edinin.{% endblock %}
+
+{% block schema_org %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "Hakkımızda - BYF Mühendislik",
+  "description": "BYF Mühendislik ekibi ve hizmetleri hakkında bilgi",
+  "url": "{{ request.build_absolute_uri }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Ana Sayfa",
+    "item": "{{ request.scheme }}://{{ request.get_host }}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Hakkımızda"
+  }]
+}
+</script>
+{% endblock schema_org %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -54,9 +90,9 @@
 
             <div class="about-image">
                 {% if site_settings.about_image %}
-                <img src="{{ site_settings.about_image.url }}" alt="BYF Mühendislik Ekibi" loading="lazy">
+                <img src="{{ site_settings.about_image.url }}" alt="BYF Mühendislik - Uzman Elektrik Mühendisliği Ekibi" loading="lazy" decoding="async" width="600" height="450">
                 {% else %}
-                <img src="{% static 'images/about-team.jpg' %}" alt="BYF Mühendislik Ekibi" loading="lazy">
+                <img src="{% static 'images/about-team.jpg' %}" alt="BYF Mühendislik - Uzman Elektrik Mühendisliği Ekibi" loading="lazy" decoding="async" width="600" height="450">
                 {% endif %}
             </div>
         </div>
@@ -117,7 +153,7 @@
             <div class="team-card">
                 <div class="team-image">
                     {% if member.image %}
-                    <img src="{{ member.image.url }}" alt="{{ member.name }}" loading="lazy">
+                    <img src="{{ member.image.url }}" alt="{{ member.name }} - {{ member.title }}" loading="lazy" decoding="async" width="400" height="400">
                     {% else %}
                     <div class="team-image-placeholder">
                         <i class="fas fa-user"></i>
@@ -173,11 +209,16 @@
     margin-bottom: 1rem;
 }
 
+/* about-grid grid handled by responsive.css */
 .about-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 4rem;
+    gap: 2rem;
     align-items: center;
+}
+
+@media (min-width: 768px) {
+    .about-grid {
+        gap: 4rem;
+    }
 }
 
 .about-content h2 {
@@ -191,11 +232,17 @@
     color: var(--gray-text);
 }
 
+/* values-grid grid handled by responsive.css */
 .values-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 3rem;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .values-grid {
+        gap: 2rem;
+        margin-top: 3rem;
+    }
 }
 
 .value-card {

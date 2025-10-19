@@ -28,10 +28,15 @@
     font-size: 0.95rem;
 }
 
+/* detail-grid handled by responsive.css service-request-layout class */
 .detail-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .detail-grid {
+        gap: 2rem;
+    }
 }
 
 .detail-card {
@@ -234,7 +239,7 @@
         </div>
     </div>
 
-    <div class="detail-grid">
+    <div class="detail-grid service-request-layout">
         <!-- Ana İçerik -->
         <div>
             <!-- Talep Bilgileri -->

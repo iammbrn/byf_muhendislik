@@ -16,7 +16,21 @@ from . import admin as custom_admin  # Load custom admin configuration
 admin.site.unregister(Group)
 
 
+class StaticPagesSitemap(Sitemap):
+    """Static pages sitemap"""
+    changefreq = 'monthly'
+    priority = 0.8
+
+    def items(self):
+        return ['home', 'about', 'services_list', 'contact', 'blog_list']
+    
+    def location(self, item):
+        from django.urls import reverse
+        return reverse(item)
+
+
 class PostSitemap(Sitemap):
+    """Blog posts sitemap"""
     changefreq = 'weekly'
     priority = 0.6
 
@@ -25,6 +39,17 @@ class PostSitemap(Sitemap):
 
     def lastmod(self, obj):
         return obj.updated_at
+    
+    def location(self, obj):
+        from django.urls import reverse
+        return reverse('blog_detail', args=[obj.slug])
+
+
+# Sitemap dictionary
+sitemaps = {
+    'static': StaticPagesSitemap,
+    'posts': PostSitemap,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,7 +63,7 @@ urlpatterns = [
     path('hizmetler/', include('services.urls')),
     path('dokumanlar/', include('documents.urls')),
     path('captcha/', include(captcha_urls)),
-    path('sitemap.xml', sitemap, {'sitemaps': {'posts': PostSitemap}}, name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 # robots.txt (basic)

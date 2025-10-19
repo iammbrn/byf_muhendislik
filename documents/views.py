@@ -22,6 +22,9 @@ def document_list(request):
     if request.user.user_type == 'admin':
         documents = Document.objects.select_related('firm', 'service').all().order_by('-upload_date')
     else:
+        if not hasattr(request.user, 'firm'):
+            messages.error(request, 'Firma bilgileriniz bulunamadı.')
+            return redirect('custom_logout')
         documents = request.user.firm.documents.select_related('service').filter(is_visible_to_firm=True).order_by('-upload_date')
     
     # Filter by service if provided
@@ -77,7 +80,14 @@ def delete_document(request, document_id):
     document = get_object_or_404(Document, id=document_id)
     
     # Erişim kontrolü - admin veya firma sahibi silebilir
-    if request.user.user_type == 'admin' or (request.user.user_type == 'firma' and document.firm == request.user.firm):
+    can_delete = False
+    if request.user.user_type == 'admin':
+        can_delete = True
+    elif request.user.user_type == 'firma':
+        if hasattr(request.user, 'firm') and document.firm == request.user.firm:
+            can_delete = True
+    
+    if can_delete:
         service_id = document.service_id if document.service else None
         document.delete()
         messages.success(request, 'Doküman başarıyla silindi.')

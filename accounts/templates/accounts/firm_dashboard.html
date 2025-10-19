@@ -3,6 +3,7 @@
 {% load humanize %}
 
 {% block title %}Firma Paneli - BYF Mühendislik{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
 
 {% block extra_js %}
 <script>
@@ -137,10 +138,15 @@ function getCookie(name) {
     font-size: 0.9rem;
 }
 
+/* dashboard-content grid handled by responsive.css */
 .dashboard-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .dashboard-content {
+        gap: 2rem;
+    }
 }
 
 .section-card {

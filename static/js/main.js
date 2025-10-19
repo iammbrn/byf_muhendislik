@@ -1,12 +1,31 @@
 // BYF Mühendislik - Ana JavaScript Dosyası
+// Optimized for performance
+
+// Polyfill for requestIdleCallback (Safari support)
+window.requestIdleCallback = window.requestIdleCallback || function(cb) {
+    const start = Date.now();
+    return setTimeout(function() {
+        cb({
+            didTimeout: false,
+            timeRemaining: function() {
+                return Math.max(0, 50 - (Date.now() - start));
+            }
+        });
+    }, 1);
+};
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize critical features immediately
     initNavbar();
-    initFormValidations();
-    initStatsCounter();
     initToastMessages();
-    initBackToTop();
-});
+    
+    // Defer non-critical features to idle time
+    requestIdleCallback(() => {
+        initFormValidations();
+        initStatsCounter();
+        initBackToTop();
+    });
+}, { passive: true });
 
 // Navbar Toggle Function
 function initNavbar() {
@@ -41,39 +60,52 @@ function initFormValidations() {
     });
 }
 
-// Stats Counter Animation
+// Stats Counter Animation - Optimized with IntersectionObserver
 function initStatsCounter() {
     const counters = document.querySelectorAll('.stat-number[data-count]');
     
-    if (counters.length > 0) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        counters.forEach(counter => observer.observe(counter));
-    }
+    if (counters.length === 0) return;
+    
+    // Use passive IntersectionObserver for better performance
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { 
+        threshold: 0.5,
+        rootMargin: '50px'  // Start animation slightly before visible
+    });
+    
+    counters.forEach(counter => observer.observe(counter));
 }
 
 function animateCounter(element) {
     const target = parseInt(element.getAttribute('data-count'));
     const duration = 2000; // 2 seconds
-    const step = target / (duration / 16); // 60fps
-    let current = 0;
+    const startTime = performance.now();
     
-    const timer = setInterval(() => {
-        current += step;
-        if (current >= target) {
-            element.textContent = target.toLocaleString();
-            clearInterval(timer);
+    // Use requestAnimationFrame for smoother, more performant animation
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease-out animation for smoother finish
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(easeOut * target);
+        
+        element.textContent = current.toLocaleString('tr-TR');
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
         } else {
-            element.textContent = Math.floor(current).toLocaleString();
+            element.textContent = target.toLocaleString('tr-TR');
         }
-    }, 16);
+    }
+    
+    requestAnimationFrame(update);
 }
 
 // Toast Messages
@@ -135,13 +167,20 @@ function initBackToTop() {
     
     document.body.appendChild(backToTop);
     
+    // Throttled scroll handler for better performance
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            backToTop.style.display = 'block';
-        } else {
-            backToTop.style.display = 'none';
-        }
-    });
+        if (scrollTimeout) return;
+        
+        scrollTimeout = setTimeout(() => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+            scrollTimeout = null;
+        }, 100);
+    }, { passive: true });  // Passive listener for better scroll performance
 }
 
 // Utility Functions

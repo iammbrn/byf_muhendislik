@@ -44,7 +44,12 @@ def firm_profile(request):
         messages.error(request, 'Bu sayfaya erişim yetkiniz yok.')
         return redirect('admin_dashboard')
 
-    firm = request.user.firm
+    try:
+        firm = request.user.firm
+    except Firm.DoesNotExist:
+        messages.error(request, 'Firma bilgileriniz bulunamadı.')
+        return redirect('custom_logout')
+        
     if request.method == 'POST':
         form = FirmProfileForm(request.POST, instance=firm)
         if form.is_valid():

@@ -3,8 +3,15 @@ from django.db.models import F
 from .models import BlogPost
 
 def blog_list(request):
-    posts = BlogPost.objects.filter(status='published').select_related('author').order_by('-published_at')
-    popular_posts = BlogPost.objects.filter(status='published').order_by('-views')[:5]
+    # Optimized queries - only fetch needed fields
+    posts = BlogPost.objects.filter(status='published').select_related('author').only(
+        'title', 'slug', 'excerpt', 'content', 'published_at', 'views', 'featured_image',
+        'category', 'author__username', 'author__first_name', 'author__last_name'
+    ).order_by('-published_at')
+    
+    popular_posts = BlogPost.objects.filter(status='published').only(
+        'title', 'slug', 'views', 'featured_image', 'published_at'
+    ).order_by('-views')[:5]
     
     return render(request, 'blog/blog_list.html', {
         'posts': posts,

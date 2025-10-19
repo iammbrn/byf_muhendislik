@@ -4,47 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}BYF Mühendislik{% endblock %}</title>
-    <meta name="description" content="BYF Mühendislik - Elektriksel Periyodik Kontrol, Trafo Müşavirlik ve Elektrik Proje Çizimi Hizmetleri">
+    <meta name="description" content="{% block meta_description %}BYF Mühendislik - Elektriksel Periyodik Kontrol, Trafo Müşavirlik ve Elektrik Proje Çizimi Hizmetleri{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}elektrik mühendisliği, periyodik kontrol, trafo müşavirlik, elektrik projesi, BYF Mühendislik{% endblock %}">
+    <meta name="author" content="BYF Mühendislik">
+    <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
     <meta name="theme-color" content="#0056b3">
-    <!-- Open Graph -->
-    <meta property="og:site_name" content="{{ site_settings.site_name|default:'BYF Mühendislik' }}">
-    <meta property="og:title" content="{% block og_title %}{{ site_settings.site_name|default:'BYF Mühendislik' }}{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}{{ site_settings.site_description|default:'Profesyonel mühendislik çözümleri' }}{% endblock %}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request.build_absolute_uri|default:'' }}">
-    {% if site_settings.logo %}
-    <meta property="og:image" content="{{ site_settings.logo.url }}">
+    {% if site_settings and site_settings.google_search_console %}
+    <meta name="google-site-verification" content="{{ site_settings.google_search_console }}">
     {% endif %}
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content="{{ site_settings.site_name|default:'BYF Mühendislik' }}">
+    <meta property="og:title" content="{% block og_title %}{% block title_plain %}BYF Mühendislik{% endblock %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}BYF Mühendislik - Elektriksel Periyodik Kontrol, Trafo Müşavirlik ve Elektrik Proje Çizimi Hizmetleri{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% block og_image %}{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% endif %}{% endblock %}">
+    <meta property="og:locale" content="tr_TR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{% block title_plain2 %}BYF Mühendislik{% endblock %}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}BYF Mühendislik - Elektriksel Periyodik Kontrol, Trafo Müşavirlik ve Elektrik Proje Çizimi Hizmetleri{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% endif %}{% endblock %}">
     <!-- Schema.org JSON-LD -->
+    {% block schema_org %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "{{ site_settings.site_name|default:'BYF Mühendislik' }}",
       "url": "{{ request.scheme }}://{{ request.get_host }}",
-      "logo": "{% if site_settings.logo %}{{ site_settings.logo.url }}{% endif %}",
+      "logo": "{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% endif %}",
+      "description": "{{ site_settings.site_description|default:'Elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi hizmetleri' }}",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "TR",
+        "addressLocality": "Türkiye"
+      },
       "contactPoint": [{
         "@type": "ContactPoint",
         "telephone": "{{ site_settings.contact_phone|default:'' }}",
         "contactType": "customer service",
         "areaServed": "TR",
-        "availableLanguage": ["Turkish"]
-      }]
+        "availableLanguage": ["Turkish", "tr"]
+      }],
+      "sameAs": [
+        {% if site_settings.facebook_url %}"{{ site_settings.facebook_url }}",{% endif %}
+        {% if site_settings.twitter_url %}"{{ site_settings.twitter_url }}",{% endif %}
+        {% if site_settings.linkedin_url %}"{{ site_settings.linkedin_url }}",{% endif %}
+        {% if site_settings.instagram_url %}"{{ site_settings.instagram_url }}"{% endif %}
+      ]
     }
     </script>
+    {% endblock schema_org %}
     
     {% load static %}
-    <!-- CSS Dosyaları -->
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://code.jquery.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    
+    <!-- CSS Dosyaları - Preload critical CSS -->
+    <link rel="preload" href="{% static 'css/style.css' %}" as="style">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     <link rel="stylesheet" href="{% static 'css/dark-mode-fixes.css' %}">
     
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Font Awesome CDN - Async load -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
     
     <!-- Favicon - Cache-busting with version -->
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}?v=2">
+    <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}">
     
     {% block extra_css %}{% endblock %}
 </head>
@@ -73,20 +108,41 @@
 
     {% include 'includes/footer.html' %}
 
-    <!-- JavaScript Dosyaları -->
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/dashboard.js' %}"></script>
-    <script src="{% static 'js/forms.js' %}"></script>
+    <!-- JavaScript Dosyaları - Defer for better performance -->
+    <script defer src="{% static 'js/main.js' %}"></script>
+    <script defer src="{% static 'js/dashboard.js' %}"></script>
+    <script defer src="{% static 'js/forms.js' %}"></script>
     
-    <!-- jQuery CDN (gerekirse) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery CDN - Defer loading -->
+    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     {% block extra_js %}{% endblock %}
+    
+    <!-- Google Analytics 4 -->
     {% if site_settings and site_settings.google_analytics_id %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_settings.google_analytics_id }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '{{ site_settings.google_analytics_id }}');
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ site_settings.google_analytics_id }}', {
+        'anonymize_ip': true,
+        'cookie_flags': 'SameSite=None;Secure'
+      });
+    </script>
+    {% endif %}
+    
+    <!-- Hotjar Tracking Code (if configured) -->
+    {% if site_settings and site_settings.hotjar_id %}
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:{{ site_settings.hotjar_id }},hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
     {% endif %}
 </body>

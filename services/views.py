@@ -34,6 +34,9 @@ def service_list(request):
     if request.user.user_type == 'admin':
         qs = Service.objects.all()
     else:
+        if not hasattr(request.user, 'firm'):
+            messages.error(request, 'Firma bilgileriniz bulunamadı.')
+            return redirect('custom_logout')
         qs = request.user.firm.services.all()
 
     # Sadece "Devam Ediyor" (in_progress) durumundaki hizmetleri göster
@@ -143,6 +146,10 @@ def create_service_request(request):
     if not is_firm(request.user):
         messages.error(request, 'Sadece firmalar hizmet talebi oluşturabilir.')
         return redirect('firm_dashboard')
+    
+    if not hasattr(request.user, 'firm'):
+        messages.error(request, 'Firma bilgileriniz bulunamadı.')
+        return redirect('custom_logout')
     
     if request.method == 'POST':
         form = ServiceRequestForm(request.POST)

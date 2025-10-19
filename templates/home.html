@@ -1,7 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Ana Sayfa - BYF Mühendislik{% endblock %}
+{% block title %}Ana Sayfa - BYF Mühendislik | Elektrik Mühendisliği Hizmetleri{% endblock %}
+
+{% block meta_description %}BYF Mühendislik - Elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi alanlarında profesyonel mühendislik hizmetleri. Kalite, güvenlik ve müşteri memnuniyeti önceliğimizdir.{% endblock %}
+
+{% block meta_keywords %}elektrik mühendisliği, periyodik kontrol, elektriksel kontrol, trafo müşavirlik, elektrik projesi, elektrik proje çizimi, BYF Mühendislik, Türkiye{% endblock %}
+
+{% block og_title %}BYF Mühendislik - Profesyonel Elektrik Mühendisliği Hizmetleri{% endblock %}
+{% block og_description %}Elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi alanlarında uzman çözümler. Güvenilir ve profesyonel hizmet.{% endblock %}
+
+{% block schema_org %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "BYF Mühendislik",
+  "description": "Elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi hizmetleri",
+  "url": "{{ request.scheme }}://{{ request.get_host }}",
+  "priceRange": "$$",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Türkiye"
+  },
+  "serviceType": ["Elektriksel Periyodik Kontrol", "Trafo Müşavirlik", "Elektrik Proje Çizimi"]
+}
+</script>
+{% endblock schema_org %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -26,9 +52,9 @@
         </div>
         <div class="hero-image">
             {% if site_settings.hero_image %}
-            <img src="{{ site_settings.hero_image.url }}" alt="Mühendislik Çözümleri" loading="lazy">
+            <img src="{{ site_settings.hero_image.url }}" alt="BYF Mühendislik - Profesyonel Elektrik Mühendisliği Hizmetleri" loading="lazy" decoding="async" width="800" height="600">
             {% else %}
-            <img src="{% static 'images/hero-engineering.jpg' %}" alt="Mühendislik Çözümleri" loading="lazy">
+            <img src="{% static 'images/hero-engineering.jpg' %}" alt="BYF Mühendislik - Profesyonel Elektrik Mühendisliği Hizmetleri" loading="lazy" decoding="async" width="800" height="600">
             {% endif %}
         </div>
     </div>

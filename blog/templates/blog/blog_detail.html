@@ -3,6 +3,70 @@
 
 {% block title %}{{ post.title }} - BYF Mühendislik Blog{% endblock %}
 
+{% block meta_description %}{{ post.excerpt|default:post.content|striptags|truncatewords:30 }}{% endblock %}
+{% block meta_keywords %}{{ post.category }}, elektrik mühendisliği, {{ post.title }}, BYF Mühendislik blog{% endblock %}
+
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_description %}{{ post.excerpt|default:post.content|striptags|truncatewords:30 }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{% if post.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}{% endif %}{% endblock %}
+
+{% block twitter_title %}{{ post.title }}{% endblock %}
+{% block twitter_description %}{{ post.excerpt|default:post.content|striptags|truncatewords:30 }}{% endblock %}
+{% block twitter_image %}{% if post.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}{% endif %}{% endblock %}
+
+{% block schema_org %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ post.title }}",
+  "description": "{{ post.excerpt|default:post.content|striptags|truncatewords:30 }}",
+  "image": "{% if post.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}{% endif %}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ post.author.get_full_name|default:post.author.username }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BYF Mühendislik",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}"
+    }
+  },
+  "datePublished": "{{ post.published_at|date:'c' }}",
+  "dateModified": "{{ post.updated_at|date:'c' }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Ana Sayfa",
+    "item": "{{ request.scheme }}://{{ request.get_host }}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Blog",
+    "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog_list' %}"
+  },{
+    "@type": "ListItem",
+    "position": 3,
+    "name": "{{ post.title }}"
+  }]
+}
+</script>
+{% endblock schema_org %}
+
 {% block content %}
 <!-- Blog Detay -->
 <article class="blog-detail">
@@ -37,12 +101,12 @@
 
             {% if post.featured_image %}
             <div class="blog-featured-image">
-                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }} - BYF Mühendislik" loading="lazy" decoding="async" width="1200" height="630">
             </div>
             {% endif %}
         </div>
 
-        <div class="blog-detail-content">
+        <div class="blog-detail-content blog-layout">
             <div class="blog-main-content">
                 <div class="blog-content">
                     {{ post.content|safe }}
@@ -81,7 +145,7 @@
                 <div class="author-card">
                     <div class="author-avatar">
                         {% if post.author.profile.avatar %}
-                        <img src="{{ post.author.profile.avatar.url }}" alt="{{ post.author.get_full_name }}">
+                        <img src="{{ post.author.profile.avatar.url }}" alt="{{ post.author.get_full_name }}" loading="lazy" decoding="async">
                         {% else %}
                         <i class="fas fa-user-circle"></i>
                         {% endif %}
@@ -128,7 +192,7 @@
             <article class="similar-post-card">
                 {% if similar_post.featured_image %}
                 <div class="similar-post-image">
-                    <img src="{{ similar_post.featured_image.url }}" alt="{{ similar_post.title }}" loading="lazy">
+                    <img src="{{ similar_post.featured_image.url }}" alt="{{ similar_post.title }} - BYF Mühendislik Blog" loading="lazy" decoding="async" width="400" height="225">
                 </div>
                 {% endif %}
                 <div class="similar-post-content">
@@ -213,11 +277,16 @@
     display: block;
 }
 
+/* blog-detail-content grid handled by responsive.css blog-layout class */
 .blog-detail-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 3rem;
+    gap: 1.5rem;
     align-items: start;
+}
+
+@media (min-width: 768px) {
+    .blog-detail-content {
+        gap: 3rem;
+    }
 }
 
 .blog-content {

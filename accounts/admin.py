@@ -4,14 +4,21 @@ from .models import CustomUser, UserProfile
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    """Emergency-only direct user access - Use AdminUserProxy for admin management"""
+    """User management - Add users (admins use AdminUserProxy section)"""
     list_display = ('username', 'email', 'user_type', 'is_active', 'date_joined')
     list_filter = ('user_type', 'is_active', 'is_staff')
     search_fields = ('username', 'email', 'first_name', 'last_name')
-    readonly_fields = ('username', 'date_joined', 'last_login')
+    readonly_fields = ('date_joined', 'last_login')
     fieldsets = UserAdmin.fieldsets + (
         ('Ek Bilgiler', {
             'fields': ('user_type', 'phone', 'email_verified')
+        }),
+    )
+    
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2', 'user_type', 'first_name', 'last_name'),
         }),
     )
     
@@ -19,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
         return request.user.is_superuser
     
     def has_add_permission(self, request):
-        return False  # Use AdminUserProxy for adding admins
+        return request.user.is_superuser  # Allow superusers to add users
     
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser

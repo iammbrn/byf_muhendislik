@@ -8,8 +8,14 @@ from blog.models import BlogPost
 from core.models import ContactMessage, ServiceCategory, TeamMember
 
 def home(request):
-    recent_posts = BlogPost.objects.filter(status='published').select_related('author')[:3]
-    service_categories = ServiceCategory.objects.filter(is_active=True).order_by('order', 'title')
+    # Optimized queries with only() to fetch only needed fields
+    recent_posts = BlogPost.objects.filter(status='published').select_related('author').only(
+        'title', 'slug', 'excerpt', 'published_at', 'featured_image', 'author__username', 'author__first_name', 'author__last_name'
+    )[:3]
+    
+    service_categories = ServiceCategory.objects.filter(is_active=True).only(
+        'title', 'slug', 'icon', 'subtitle'
+    ).order_by('order', 'title')
     
     return render(request, 'home.html', {
         'recent_posts': recent_posts,
@@ -21,8 +27,17 @@ def about(request):
     return render(request, 'about.html', {'team_members': team_members})
 
 def services_list(request):
-    """Hizmetlerimiz sayfası - dinamik"""
-    service_categories = ServiceCategory.objects.filter(is_active=True).order_by('order', 'title')
+    """Hizmetlerimiz sayfası - dinamik - Optimized with caching"""
+    from django.core.cache import cache
+    
+    # Cache service categories as they don't change frequently
+    service_categories = cache.get('services_page_categories')
+    if service_categories is None:
+        service_categories = list(
+            ServiceCategory.objects.filter(is_active=True).order_by('order', 'title')
+        )
+        cache.set('services_page_categories', service_categories, 3600)  # 1 hour
+    
     return render(request, 'services.html', {'service_categories': service_categories})
 
 @ratelimit(key='ip', rate='5/m', method='POST', block=True)

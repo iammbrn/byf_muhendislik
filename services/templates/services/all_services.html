@@ -232,11 +232,17 @@
 
 .service-actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 0.5rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
     margin-top: auto;
+}
+
+@media (min-width: 480px) {
+    .service-actions {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .status-badge {

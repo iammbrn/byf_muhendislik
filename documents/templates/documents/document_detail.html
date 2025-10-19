@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ document.name }} - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.page-header p {
+    margin: 0;
+    color: white;
+    font-weight: 500;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Doküman Detayı</h1>
+        <p>{{ document.name }}</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="document-detail-card">
+        <div class="document-header">
+            <div class="document-icon">
+                {% if document.file_type == 'pdf' %}
+                <i class="fas fa-file-pdf" style="color: var(--danger-color);"></i>
+                {% elif document.file_type == 'doc' or document.file_type == 'docx' %}
+                <i class="fas fa-file-word" style="color: var(--primary-color);"></i>
+                {% elif document.file_type == 'xls' or document.file_type == 'xlsx' %}
+                <i class="fas fa-file-excel" style="color: var(--success-color);"></i>
+                {% elif document.file_type == 'jpg' or document.file_type == 'png' %}
+                <i class="fas fa-file-image" style="color: var(--warning-color);"></i>
+                {% else %}
+                <i class="fas fa-file" style="color: var(--gray-text);"></i>
+                {% endif %}
+            </div>
+            <div class="document-title">
+                <h2>{{ document.name }}</h2>
+                <p class="document-meta">
+                    Yüklenme Tarihi: {{ document.upload_date|date:"d M Y H:i" }}
+                </p>
+            </div>
+        </div>
+
+        <div class="document-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-building"></i>
+                    <div>
+                        <strong>Firma</strong>
+                        <p>{{ document.firm.name }}</p>
+                    </div>
+                </div>
+
+                {% if document.service %}
+                <div class="info-item">
+                    <i class="fas fa-cogs"></i>
+                    <div>
+                        <strong>İlgili Hizmet</strong>
+                        <p>
+                            <a href="{% url 'service_detail' document.service.id %}">
+                                {{ document.service.name }}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="info-item">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                        <strong>Dosya Türü</strong>
+                        <p>{{ document.file_type|upper }}</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-download"></i>
+                    <div>
+                        <strong>İndirme Sayısı</strong>
+                        <p>{{ document.download_count }}</p>
+                    </div>
+                </div>
+
+                {% if document.version %}
+                <div class="info-item">
+                    <i class="fas fa-code-branch"></i>
+                    <div>
+                        <strong>Versiyon</strong>
+                        <p>{{ document.version }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if document.description %}
+            <div class="document-description">
+                <h3>Açıklama</h3>
+                <p>{{ document.description }}</p>
+            </div>
+            {% endif %}
+
+            <!-- PDF Önizleme -->
+            {% if document.file_type == 'pdf' %}
+            <div class="document-preview">
+                <h3>Doküman Önizleme</h3>
+                <iframe src="{{ document.file.url }}" width="100%" height="600px" style="border: 1px solid var(--border-color); border-radius: var(--border-radius);"></iframe>
+            </div>
+            {% elif document.file_type == 'jpg' or document.file_type == 'jpeg' or document.file_type == 'png' %}
+            <div class="document-preview">
+                <h3>Resim Önizleme</h3>
+                <img src="{{ document.file.url }}" alt="{{ document.name }}" style="max-width: 100%; height: auto; border-radius: var(--border-radius);">
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="document-actions">
+            <a href="{% url 'download_document' document.id %}" class="btn btn-primary">
+                <i class="fas fa-download"></i>
+                İndir
+            </a>
+            <a href="{% url 'document_list' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i>
+                Geri Dön
+            </a>
+            {% if user.user_type == 'admin' %}
+            <a href="/admin/documents/document/{{ document.id }}/change/" class="btn btn-secondary">
+                <i class="fas fa-edit"></i>
+                Düzenle
+            </a>
+            {% endif %}
+            {% if user.user_type == 'firma' and document.firm == user.firm %}
+            <a href="{% url 'delete_document' document.id %}" 
+               class="btn btn-danger" 
+               onclick="return confirm('Bu dokümanı silmek istediğinizden emin misiniz?');">
+                <i class="fas fa-trash"></i>
+                Sil
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.document-detail-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.document-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.document-icon {
+    font-size: 4rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-lg);
+}
+
+.document-icon i {
+    color: white !important;
+}
+
+.document-title h2 {
+    margin: 0 0 0.5rem 0;
+    color: white;
+    font-size: 1.75rem;
+}
+
+.document-meta {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.document-body {
+    padding: 2rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--light-bg);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--primary-color);
+}
+
+.info-item i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-top: 0.25rem;
+}
+
+.info-item strong {
+    display: block;
+    color: var(--gray-text);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.info-item p {
+    margin: 0;
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+.info-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.info-item a:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+}
+
+.document-description {
+    padding: 1.5rem;
+    background: var(--light-bg);
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.document-description h3 {
+    margin: 0 0 1rem 0;
+    color: var(--dark-text);
+}
+
+.document-preview {
+    margin-top: 2rem;
+}
+
+.document-preview h3 {
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+}
+
+.document-actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .document-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .document-actions {
+        flex-direction: column;
+    }
+    
+    .document-actions .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+

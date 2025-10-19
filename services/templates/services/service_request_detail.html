@@ -1,0 +1,393 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Hizmet Talebi Detayı - {{ service_request.tracking_code }}{% endblock %}
+
+{% block extra_css %}
+<style>
+.detail-container {
+    padding: 2rem 0;
+}
+
+.detail-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 2rem;
+}
+
+.detail-header h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.75rem;
+}
+
+.detail-header .meta {
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.detail-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+}
+
+.detail-card h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 0.5rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--gray-text);
+}
+
+.info-value {
+    color: var(--dark-text);
+    text-align: right;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-pending { 
+    background: #fff3cd; 
+    color: #856404; 
+}
+
+.status-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-in_progress { 
+    background: #cce7ff; 
+    color: #004085; 
+}
+
+.status-completed { 
+    background: #d4edda; 
+    color: #155724; 
+}
+
+[data-theme="dark"] .status-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+[data-theme="dark"] .status-approved {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+[data-theme="dark"] .status-rejected {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+[data-theme="dark"] .status-in_progress {
+    background: rgba(6, 182, 212, 0.2);
+    color: #22d3ee;
+}
+
+[data-theme="dark"] .status-completed {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.admin-response {
+    background: var(--light-bg);
+    border-left: 4px solid var(--info-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.admin-response p {
+    color: var(--dark-text);
+}
+
+.admin-response small {
+    color: var(--gray-text);
+}
+
+[data-theme="dark"] .admin-response {
+    background: rgba(6, 182, 212, 0.1);
+}
+
+[data-theme="dark"] .admin-response p {
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .admin-response small {
+    color: var(--gray-text);
+}
+
+.document-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.document-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.document-item:hover {
+    background: var(--light-bg);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .document-item:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.document-info {
+    flex: 1;
+}
+
+.document-name {
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 0.25rem;
+}
+
+.document-meta {
+    font-size: 0.875rem;
+    color: var(--gray-text);
+}
+
+.document-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--gray-text);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+@media (max-width: 968px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container detail-container">
+    <div class="detail-header">
+        <h1>{{ service_request.title }}</h1>
+        <div class="meta">
+            <i class="fas fa-hashtag"></i> Takip Kodu: {{ service_request.tracking_code }}
+            &nbsp;•&nbsp;
+            <i class="fas fa-calendar"></i> {{ service_request.request_date|date:"d M Y" }}
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <!-- Ana İçerik -->
+        <div>
+            <!-- Talep Bilgileri -->
+            <div class="detail-card">
+                <h3><i class="fas fa-info-circle"></i> Talep Bilgileri</h3>
+                
+                <div class="info-row">
+                    <span class="info-label">Durum:</span>
+                    <span class="info-value">
+                        {% if related_service %}
+                        <span class="status-badge status-{{ related_service.status }}">
+                            {{ related_service.get_status_display }}
+                        </span>
+                        {% else %}
+                        <span class="status-badge status-{{ service_request.status }}">
+                            {{ service_request.get_status_display }}
+                        </span>
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Hizmet Türü:</span>
+                    <span class="info-value">{{ service_request.get_service_type_display }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Öncelik:</span>
+                    <span class="info-value">{{ service_request.get_priority_display }}</span>
+                </div>
+                
+                {% if service_request.requested_completion_date %}
+                <div class="info-row">
+                    <span class="info-label">İstenen Tamamlanma Tarihi:</span>
+                    <span class="info-value">{{ service_request.requested_completion_date|date:"d M Y" }}</span>
+                </div>
+                {% endif %}
+                
+                <div class="info-row">
+                    <span class="info-label">Talep Tarihi:</span>
+                    <span class="info-value">{{ service_request.request_date|date:"d M Y H:i" }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">Son Güncelleme:</span>
+                    <span class="info-value">{{ service_request.updated_at|date:"d M Y H:i" }}</span>
+                </div>
+            </div>
+
+            <!-- Talep Açıklaması -->
+            <div class="detail-card">
+                <h3><i class="fas fa-file-alt"></i> Talep Açıklaması</h3>
+                <p style="white-space: pre-wrap; line-height: 1.6;">{{ service_request.description }}</p>
+            </div>
+
+            <!-- Yönetici Yanıtı -->
+            {% if service_request.admin_response %}
+            <div class="detail-card">
+                <h3><i class="fas fa-comment-dots"></i> Yönetici Yanıtı</h3>
+                <div class="admin-response">
+                    <p style="white-space: pre-wrap; line-height: 1.6; margin: 0;">{{ service_request.admin_response }}</p>
+                    {% if service_request.responded_by %}
+                    <small style="display: block; margin-top: 0.5rem; opacity: 0.8;">
+                        - {{ service_request.responded_by.get_full_name|default:service_request.responded_by.username }}
+                    </small>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Dokümanlar -->
+            {% if related_service %}
+            <div class="detail-card">
+                <h3><i class="fas fa-folder-open"></i> Hizmet Dokümanları</h3>
+                
+                {% if documents %}
+                <ul class="document-list">
+                    {% for doc in documents %}
+                    <li class="document-item">
+                        <div class="document-info">
+                            <div class="document-name">
+                                <i class="fas fa-file-pdf" style="color: #dc3545;"></i>
+                                {{ doc.name }}
+                            </div>
+                            <div class="document-meta">
+                                {{ doc.file_size|filesizeformat }} • {{ doc.upload_date|date:"d M Y H:i" }}
+                                {% if doc.description %}
+                                <br>{{ doc.description }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="document-actions">
+                            <a href="{% url 'download_document' doc.id %}" class="btn btn-primary btn-sm" title="İndir">
+                                <i class="fas fa-download"></i>
+                                İndir
+                            </a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <p>Henüz doküman eklenmemiş.</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Yan Panel -->
+        <div>
+            <!-- Hızlı İşlemler -->
+            <div class="detail-card">
+                <h3><i class="fas fa-bolt"></i> İşlemler</h3>
+                <a href="{% url 'firm_dashboard' %}" class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;">
+                    <i class="fas fa-arrow-left"></i>
+                    Panele Dön
+                </a>
+                {% if related_service %}
+                <a href="{% url 'service_detail' related_service.id %}" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-eye"></i>
+                    Hizmet Detayı
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- İlgili Hizmet Bilgisi -->
+            {% if related_service %}
+            <div class="detail-card">
+                <h3><i class="fas fa-cogs"></i> İlgili Hizmet</h3>
+                <div class="info-row">
+                    <span class="info-label">Hizmet Adı:</span>
+                    <span class="info-value">{{ related_service.name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Durum:</span>
+                    <span class="info-value">
+                        <span class="status-badge status-{{ related_service.status }}">
+                            {{ related_service.get_status_display }}
+                        </span>
+                    </span>
+                </div>
+                {% if related_service.assigned_admin %}
+                <div class="info-row">
+                    <span class="info-label">Sorumlu:</span>
+                    <span class="info-value">{{ related_service.assigned_admin.get_full_name|default:related_service.assigned_admin.username }}</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

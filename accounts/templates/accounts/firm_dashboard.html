@@ -1,0 +1,513 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Firma Paneli - BYF Mühendislik{% endblock %}
+
+{% block extra_js %}
+<script>
+function cancelRequest(requestId, requestTitle) {
+    if (confirm('Bu talebi iptal etmek istediğinizden emin misiniz?\n\nTalep: ' + requestTitle)) {
+        fetch('/hizmetler/talep/' + requestId + '/iptal/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Hata: ' + (data.error || 'Bilinmeyen hata'));
+            }
+        })
+        .catch(error => {
+            alert('İşlem sırasında bir hata oluştu.');
+            console.error('Error:', error);
+        });
+    }
+}
+
+function deleteRequest(requestId, requestTitle) {
+    if (confirm('Bu talebi kalıcı olarak silmek istediğinizden emin misiniz?\n\nTalep: ' + requestTitle + '\n\nBu işlem geri alınamaz!')) {
+        fetch('/hizmetler/talep/' + requestId + '/sil/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Hata: ' + (data.error || 'Bilinmeyen hata'));
+            }
+        })
+        .catch(error => {
+            alert('İşlem sırasında bir hata oluştu.');
+            console.error('Error:', error);
+        });
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.dashboard-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card-link {
+    text-decoration: none;
+    display: block;
+    transition: var(--transition);
+}
+
+.stat-card-link:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--info-color);
+    transition: var(--transition);
+    text-align: center;
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-card.success { border-left-color: var(--success-color); }
+.stat-card.warning { border-left-color: var(--warning-color); }
+.stat-card.info { border-left-color: var(--info-color); }
+.stat-card.danger { border-left-color: var(--danger-color); }
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card.info .stat-icon { color: var(--info-color); }
+.stat-card.success .stat-icon { color: var(--success-color); }
+.stat-card.warning .stat-icon { color: var(--warning-color); }
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    color: var(--gray-text);
+    font-size: 0.9rem;
+}
+
+.dashboard-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.section-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--light-bg);
+}
+
+.section-header h3 {
+    color: var(--dark-text);
+    margin: 0;
+}
+
+.section-body {
+    padding: 1.25rem 1.5rem;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.item-row:last-child { border-bottom: none; }
+
+.item-row-link {
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+    padding: 0.75rem;
+    margin: 0 -0.75rem;
+    border-radius: 8px;
+}
+
+.item-row-link:hover {
+    background: var(--light-bg);
+}
+
+[data-theme="dark"] .item-row-link:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.item-row-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+    padding: 0.75rem;
+    margin: 0 -0.75rem;
+    border-radius: 8px;
+}
+
+.item-row-content:hover {
+    background: var(--light-bg);
+}
+
+[data-theme="dark"] .item-row-content:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.item-action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.item-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.service-info-wrapper {
+    flex: 1;
+}
+
+.empty-state-inline {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--gray-text);
+}
+
+.empty-state-inline .btn {
+    margin-top: 1rem;
+}
+
+.status-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-pending { 
+    background: #fff3cd; 
+    color: #856404; 
+}
+
+.status-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-in_progress { 
+    background: #cce7ff; 
+    color: #004085; 
+}
+
+.status-completed { 
+    background: #d4edda; 
+    color: #155724; 
+}
+
+[data-theme="dark"] .status-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+[data-theme="dark"] .status-approved {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+[data-theme="dark"] .status-rejected {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+[data-theme="dark"] .status-in_progress {
+    background: rgba(6, 182, 212, 0.2);
+    color: #22d3ee;
+}
+
+[data-theme="dark"] .status-completed {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+@media (max-width: 968px) {
+    .dashboard-content { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="container">
+        <h1>Firma Paneli</h1>
+        <p>Hoş geldiniz, {{ firm.contact_person }}</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="stats-grid">
+        <a href="{% url 'completed_services' %}" class="stat-card-link">
+            <div class="stat-card success">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-number">{{ completed_count }}</div>
+                <div class="stat-label">Tamamlanan Hizmetlerim</div>
+            </div>
+        </a>
+        <a href="{% url 'service_list' %}" class="stat-card-link">
+            <div class="stat-card info">
+                <div class="stat-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="stat-number">{{ in_progress_count }}</div>
+                <div class="stat-label">Devam Eden Hizmetlerim</div>
+            </div>
+        </a>
+        <a href="{% url 'service_request_list' %}" class="stat-card-link">
+            <div class="stat-card warning">
+                <div class="stat-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="stat-number">{{ requests_count }}</div>
+                <div class="stat-label">Hizmet Taleplerim</div>
+            </div>
+        </a>
+        <a href="{% url 'document_list' %}" class="stat-card-link">
+            <div class="stat-card danger">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-number">{{ documents_count }}</div>
+                <div class="stat-label">Dökümanlarım</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+        <div>
+            <!-- Devam Eden Hizmetler -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>Devam Eden Hizmetlerim</h3>
+                    <a href="{% url 'service_list' %}" class="btn btn-outline btn-sm">
+                        Tümünü Gör
+                    </a>
+                </div>
+                <div class="section-body">
+                    {% for service in recent_services %}
+                    <a href="{% url 'service_detail' service.id %}" class="item-row item-row-link">
+                        <div class="service-info-wrapper">
+                            <strong>{{ service.name }}</strong>
+                            <div class="text-muted">
+                                {{ service.get_service_type_display }} • {{ service.request_date|date:"d M Y" }}
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <span class="status-badge status-{{ service.status }}">{{ service.get_status_display }}</span>
+                            <i class="fas fa-chevron-right" style="color: var(--gray-text); margin-left: 0.5rem;"></i>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <div class="empty-state-inline">
+                        <p class="text-muted">Devam eden hizmet bulunmuyor.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Tamamlanan Hizmetlerim -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>Tamamlanan Hizmetlerim</h3>
+                    <a href="{% url 'completed_services' %}" class="btn btn-outline btn-sm">
+                        Tümünü Gör
+                    </a>
+                </div>
+                <div class="section-body">
+                    {% for service in completed_services %}
+                    <a href="{% url 'service_detail' service.id %}" class="item-row item-row-link">
+                        <div class="service-info-wrapper">
+                            <strong>{{ service.name }}</strong>
+                            <div class="text-muted">
+                                {{ service.get_service_type_display }} • Tamamlandı: {{ service.completion_date|date:"d M Y" }}
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <span class="status-badge status-{{ service.status }}">{{ service.get_status_display }}</span>
+                            <i class="fas fa-chevron-right" style="color: var(--gray-text); margin-left: 0.5rem;"></i>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <div class="empty-state-inline">
+                        <p class="text-muted">Henüz tamamlanmış hizmet bulunmuyor.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <!-- Hizmet Talepleri Bölümü -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>Hizmet Taleplerim</h3>
+                    <a href="{% url 'create_service_request' %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i>
+                        Yeni Talep
+                    </a>
+                </div>
+                <div class="section-body">
+                    {% for item in requests_with_services %}
+                    <div class="item-row">
+                        <a href="{% url 'service_request_detail' item.request.id %}" class="item-row-content">
+                            <div class="service-info-wrapper">
+                                <strong>{{ item.request.title }}</strong>
+                                <div class="text-muted">
+                                    {{ item.request.get_service_type_display }} • {{ item.request.request_date|date:"d M Y" }}
+                                    {% if item.request.tracking_code %}
+                                    <br><small style="color: var(--gray-text);">Takip Kodu: {{ item.request.tracking_code }}</small>
+                                    {% endif %}
+                                    {% if item.related_service %}
+                                    <br><small style="color: var(--success-color); font-weight: 600;"><i class="fas fa-check-circle"></i> Aktif Hizmet</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <span class="status-badge status-{{ item.display_status }}">{{ item.display_status_text }}</span>
+                                <i class="fas fa-chevron-right" style="color: var(--gray-text); margin-left: 0.5rem;"></i>
+                            </div>
+                        </a>
+                        {% if item.request.status in 'pending,approved' %}
+                        <div class="item-action-buttons">
+                            <button class="btn btn-danger btn-sm" onclick="cancelRequest({{ item.request.id }}, '{{ item.request.title }}')" title="İptal Et">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRequest({{ item.request.id }}, '{{ item.request.title }}')" title="Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="empty-state-inline">
+                        <p class="text-muted">Henüz talep bulunmuyor.</p>
+                        <a href="{% url 'create_service_request' %}" class="btn btn-outline">
+                            <i class="fas fa-plus"></i>
+                            İlk Talebinizi Oluşturun
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Son Dokümanlar -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>Son Dokümanlar</h3>
+                    <a href="{% url 'document_list' %}" class="btn btn-outline btn-sm">
+                        Tümünü Gör
+                    </a>
+                </div>
+                <div class="section-body">
+                    {% for d in recent_documents %}
+                    <div class="item-row">
+                        <div>
+                            <strong>{{ d.name }}</strong>
+                            <div class="text-muted">{{ d.upload_date|date:"d M Y H:i" }}</div>
+                        </div>
+                        <a href="{% url 'download_document' d.id %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">Henüz doküman bulunmuyor.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

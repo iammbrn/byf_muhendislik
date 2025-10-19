@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Dokümanlarım - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: var(--white); /* White text like hero section */
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: var(--white); /* White text like hero section */
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--white); /* White text like hero section */
+    opacity: 0.9;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Dokümanlarım</h1>
+        <p>Tüm dokümanlarınızı buradan görüntüleyebilir ve indirebilirsiniz</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Filtreleme -->
+    <div class="filters-card">
+        <div class="filters-header">
+            <h3>Filtrele</h3>
+        </div>
+        <div class="filters-body">
+            <form method="get" class="filter-form">
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label>Ara</label>
+                        <input type="text" name="search" class="form-control" placeholder="Doküman adı...">
+                    </div>
+                    <div class="form-group">
+                        <label>Doküman Türü</label>
+                        <select name="document_type" class="form-control">
+                            <option value="">Tümü</option>
+                            <option value="service_report">Hizmet Raporu</option>
+                            <option value="certificate">Sertifika</option>
+                            <option value="invoice">Fatura</option>
+                            <option value="contract">Sözleşme</option>
+                            <option value="technical_drawing">Teknik Çizim</option>
+                            <option value="other">Diğer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tarih</label>
+                        <input type="date" name="upload_date" class="form-control">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i>
+                        Filtrele
+                    </button>
+                    <a href="{% url 'document_list' %}" class="btn btn-outline">
+                        <i class="fas fa-redo"></i>
+                        Sıfırla
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Doküman Listesi -->
+    <div class="documents-container">
+        {% for document in documents %}
+        <div class="document-card">
+            <div class="document-header">
+                <div class="document-icon">
+                    {% if document.file_extension == '.pdf' %}
+                    <i class="fas fa-file-pdf"></i>
+                    {% elif document.file_extension == '.doc' or document.file_extension == '.docx' %}
+                    <i class="fas fa-file-word"></i>
+                    {% elif document.file_extension == '.xls' or document.file_extension == '.xlsx' %}
+                    <i class="fas fa-file-excel"></i>
+                    {% elif document.file_extension == '.jpg' or document.file_extension == '.jpeg' or document.file_extension == '.png' %}
+                    <i class="fas fa-file-image"></i>
+                    {% else %}
+                    <i class="fas fa-file"></i>
+                    {% endif %}
+                </div>
+                <div class="document-info">
+                    <h3>{{ document.name }}</h3>
+                    <div class="document-meta">
+                        <span class="document-type">{{ document.get_document_type_display }}</span>
+                        <span class="document-size">{{ document.file.size|filesizeformat }}</span>
+                        <span class="document-date">{{ document.upload_date|date:"d M Y H:i" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="document-body">
+                {% if document.description %}
+                <p class="document-description">{{ document.description }}</p>
+                {% endif %}
+
+                <div class="document-details">
+                    <div class="detail-item">
+                        <strong>Yükleyen:</strong>
+                        <span>{{ document.uploaded_by.get_full_name|default:document.uploaded_by.username }}</span>
+                    </div>
+                    {% if document.service %}
+                    <div class="detail-item">
+                        <strong>İlişkili Hizmet:</strong>
+                        <span>{{ document.service.name }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="document-footer">
+                <div class="document-actions">
+                    <a href="{% url 'download_document' document.id %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-download"></i>
+                        İndir
+                    </a>
+                    <a href="{% url 'document_detail' document.id %}" class="btn btn-outline btn-sm">
+                        <i class="fas fa-info-circle"></i>
+                        Detay
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <h3>Henüz doküman bulunmuyor</h3>
+            <p>Size ait henüz bir doküman bulunmamaktadır.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+.filters-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.filters-header {
+    padding: 1rem 1.5rem;
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filters-header h3 {
+    margin: 0;
+    color: var(--dark-text);
+}
+
+.filters-body {
+    padding: 1.5rem;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.documents-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.document-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.document-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.document-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--light-bg);
+}
+
+.document-icon {
+    font-size: 2rem;
+    color: var(--danger-color);
+    flex-shrink: 0;
+}
+
+.document-icon .fa-file-pdf { color: #e74c3c; }
+.document-icon .fa-file-word { color: #2b579a; }
+.document-icon .fa-file-excel { color: #217346; }
+.document-icon .fa-file-image { color: #e67e22; }
+.document-icon .fa-file { color: var(--gray-text); }
+
+.document-info h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--dark-text);
+    word-break: break-word;
+}
+
+.document-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--gray-text);
+}
+
+.document-type {
+    background: var(--primary-light);
+    color: var(--white);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.document-body {
+    padding: 1.5rem;
+}
+
+.document-description {
+    margin-bottom: 1rem;
+    color: var(--gray-text);
+    line-height: 1.5;
+}
+
+.document-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    color: var(--gray-text);
+}
+
+.detail-item strong {
+    color: var(--dark-text);
+}
+
+.document-footer {
+    padding: 1rem 1.5rem;
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.document-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray-text);
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--gray-text);
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    color: var(--dark-text);
+}
+
+@media (max-width: 768px) {
+    .documents-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .document-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .document-meta {
+        justify-content: center;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        gap: 0.25rem;
+        text-align: center;
+    }
+}
+</style>
+
+{% endblock %}

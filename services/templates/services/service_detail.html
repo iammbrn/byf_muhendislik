@@ -1,0 +1,846 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ service.name }} - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: var(--white); /* White text like hero section */
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: var(--white); /* White text like hero section */
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--white); /* White text like hero section */
+    opacity: 0.95;
+    font-weight: 500;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Hizmet Detayı</h1>
+        <p>{{ service.name }}</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="service-detail-card">
+        <!-- Service Header -->
+        <div class="service-detail-header">
+            <div class="service-icon">
+                {% if service.service_type == 'electrical_control' %}
+                <i class="fas fa-plug"></i>
+                {% elif service.service_type == 'transformer_consultancy' %}
+                <i class="fas fa-bolt"></i>
+                {% elif service.service_type == 'electrical_design' %}
+                <i class="fas fa-drafting-compass"></i>
+                {% else %}
+                <i class="fas fa-cogs"></i>
+                {% endif %}
+            </div>
+            <div class="service-title-section">
+                <h2>{{ service.name }}</h2>
+                <p class="service-type-label">{{ service.get_service_type_display }}</p>
+                <span class="status-badge status-{{ service.status }}">{{ service.get_status_display }}</span>
+            </div>
+        </div>
+
+        <!-- Service Info Grid -->
+        <div class="service-info-grid">
+            <div class="info-card">
+                <i class="fas fa-building"></i>
+                <div>
+                    <strong>Firma</strong>
+                    <p>{{ service.firm.name }}</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <i class="fas fa-calendar"></i>
+                <div>
+                    <strong>Talep Tarihi</strong>
+                    <p>{{ service.request_date|date:"d M Y" }}</p>
+                </div>
+            </div>
+
+            {% if service.start_date %}
+            <div class="info-card">
+                <i class="fas fa-play-circle"></i>
+                <div>
+                    <strong>Başlangıç Tarihi</strong>
+                    <p>{{ service.start_date|date:"d M Y" }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if service.completion_date %}
+            <div class="info-card">
+                <i class="fas fa-flag-checkered"></i>
+                <div>
+                    <strong>Tamamlanma Tarihi</strong>
+                    <p>{{ service.completion_date|date:"d M Y" }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if service.assigned_admin %}
+            <div class="info-card">
+                <i class="fas fa-user-tie"></i>
+                <div>
+                    <strong>Sorumlu Yönetici</strong>
+                    <p>{{ service.assigned_admin.get_full_name|default:service.assigned_admin.username }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Service Description -->
+        <div class="service-description">
+            <h3><i class="fas fa-info-circle"></i> Hizmet Açıklaması</h3>
+            <p>{{ service.description }}</p>
+        </div>
+
+        {% if service.notes %}
+        <div class="service-notes">
+            <h3><i class="fas fa-sticky-note"></i> Notlar</h3>
+            <p>{{ service.notes }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Documents Section -->
+        <div class="documents-section">
+            <div class="documents-header">
+                <h3><i class="fas fa-file-alt"></i> Hizmete Ait Dokümanlar</h3>
+                {% if user.user_type == 'admin' %}
+                <a href="/admin/documents/document/add/?firm={{ service.firm.id }}&service={{ service.id }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-upload"></i>
+                    Doküman Yükle
+                </a>
+                {% endif %}
+            </div>
+
+            {% if documents %}
+            <div class="documents-grid">
+                {% for doc in documents %}
+                <div class="document-card">
+                    <div class="doc-icon">
+                        {% if '.pdf' in doc.file.name|lower %}
+                        <i class="fas fa-file-pdf" style="color: #ef4444;"></i>
+                        {% elif '.doc' in doc.file.name|lower %}
+                        <i class="fas fa-file-word" style="color: #1e3a8a;"></i>
+                        {% elif '.xls' in doc.file.name|lower %}
+                        <i class="fas fa-file-excel" style="color: #10b981;"></i>
+                        {% elif '.jpg' in doc.file.name|lower or '.jpeg' in doc.file.name|lower or '.png' in doc.file.name|lower %}
+                        <i class="fas fa-file-image" style="color: #f59e0b;"></i>
+                        {% else %}
+                        <i class="fas fa-file" style="color: #6c757d;"></i>
+                        {% endif %}
+                    </div>
+                    <div class="doc-info">
+                        <h4>{{ doc.name }}</h4>
+                        <p class="doc-meta">
+                            <i class="fas fa-calendar"></i>
+                            {{ doc.upload_date|date:"d M Y" }}
+                            <span class="separator">•</span>
+                            <i class="fas fa-download"></i>
+                            {{ doc.download_count }} indirme
+                        </p>
+                    </div>
+                    <div class="doc-actions">
+                        <a href="{% url 'document_detail' doc.id %}" class="btn btn-outline btn-sm" title="Görüntüle">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{% url 'download_document' doc.id %}" class="btn btn-primary btn-sm" title="İndir">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        {% if user.user_type == 'admin' %}
+                        <a href="{% url 'delete_document' doc.id %}?from=service" 
+                           class="btn btn-danger btn-sm" 
+                           title="Sil"
+                           onclick="return confirm('Bu dokümanı silmek istediğinizden emin misiniz?');">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        {% elif user.user_type == 'firma' and doc.firm == user.firm %}
+                        <a href="{% url 'delete_document' doc.id %}?from=service" 
+                           class="btn btn-danger btn-sm" 
+                           title="Sil"
+                           onclick="return confirm('Bu dokümanı silmek istediğinizden emin misiniz?');">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-folder-open"></i>
+                <p>Bu hizmete ait henüz doküman bulunmuyor.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Actions -->
+        <div class="service-actions">
+            <a href="{% url 'service_list' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i>
+                Hizmet Listesine Dön
+            </a>
+            {% if user.user_type == 'admin' %}
+            <button type="button" class="btn btn-secondary" onclick="openEditModal()">
+                <i class="fas fa-edit"></i>
+                Hizmeti Düzenle
+            </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Edit Service Modal -->
+{% if user.user_type == 'admin' %}
+<div id="editServiceModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Hizmeti Düzenle</h3>
+            <span class="modal-close" onclick="closeEditModal()">&times;</span>
+        </div>
+        <form id="editServiceForm" onsubmit="submitEditForm(event)">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit_name">Hizmet Adı</label>
+                    <input type="text" id="edit_name" name="name" class="form-control" value="{{ service.name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_service_type">Hizmet Türü</label>
+                    <select id="edit_service_type" name="service_type" class="form-control" required>
+                        <option value="electrical_control" {% if service.service_type == 'electrical_control' %}selected{% endif %}>Elektriksel Periyodik Kontrol</option>
+                        <option value="transformer_consultancy" {% if service.service_type == 'transformer_consultancy' %}selected{% endif %}>Trafo Müşavirlik</option>
+                        <option value="electrical_design" {% if service.service_type == 'electrical_design' %}selected{% endif %}>Elektrik Proje Çizimi</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_status">Durum</label>
+                    <select id="edit_status" name="status" class="form-control" required>
+                        <option value="pending" {% if service.status == 'pending' %}selected{% endif %}>Bekliyor</option>
+                        <option value="in_progress" {% if service.status == 'in_progress' %}selected{% endif %}>Devam Ediyor</option>
+                        <option value="completed" {% if service.status == 'completed' %}selected{% endif %}>Tamamlandı</option>
+                        <option value="cancelled" {% if service.status == 'cancelled' %}selected{% endif %}>İptal Edildi</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit_start_date">Başlangıç Tarihi</label>
+                        <input type="date" id="edit_start_date" name="start_date" class="form-control" value="{{ service.start_date|date:'Y-m-d' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_completion_date">Tamamlanma Tarihi</label>
+                        <input type="date" id="edit_completion_date" name="completion_date" class="form-control" value="{{ service.completion_date|date:'Y-m-d' }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_description">Açıklama</label>
+                    <textarea id="edit_description" name="description" class="form-control" rows="4" required>{{ service.description }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_notes">Notlar</label>
+                    <textarea id="edit_notes" name="notes" class="form-control" rows="3">{{ service.notes }}</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeEditModal()">İptal</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<style>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.service-detail-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.service-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2.5rem;
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.service-icon {
+    font-size: 4rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-lg);
+}
+
+.service-icon i {
+    color: white;
+}
+
+.service-title-section h2 {
+    margin: 0 0 0.5rem 0;
+    color: white;
+    font-size: 2rem;
+}
+
+.service-type-label {
+    margin: 0 0 0.75rem 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+}
+
+.service-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    background: var(--light-bg);
+}
+
+.info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.info-card i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-top: 0.25rem;
+}
+
+.info-card strong {
+    display: block;
+    color: var(--gray-text);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.info-card p {
+    margin: 0;
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+.info-card a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.info-card a:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+}
+
+.service-description,
+.service-notes {
+    padding: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.service-description h3,
+.service-notes h3 {
+    margin: 0 0 1rem 0;
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.service-description h3 i,
+.service-notes h3 i {
+    color: var(--primary-color);
+}
+
+.service-description p,
+.service-notes p {
+    color: var(--gray-text);
+    line-height: 1.8;
+}
+
+.service-notes {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid var(--warning-color);
+}
+
+.service-notes p {
+    color: var(--dark-text);
+}
+
+.documents-section {
+    padding: 2rem;
+}
+
+.documents-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.documents-header h3 {
+    margin: 0;
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.documents-header h3 i {
+    color: var(--secondary-color);
+}
+
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.document-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--light-bg);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.document-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.doc-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: var(--border-radius);
+}
+
+.doc-info {
+    flex: 1;
+}
+
+.doc-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--dark-text);
+    font-size: 1rem;
+}
+
+.doc-meta {
+    margin: 0;
+    color: var(--gray-text);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.doc-meta i {
+    font-size: 0.75rem;
+}
+
+.doc-meta .separator {
+    color: var(--border-color);
+}
+
+.doc-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--gray-text);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--border-color);
+}
+
+.service-actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.status-pending { 
+    background: #fff3cd;
+    color: #856404; 
+    border: 1px solid var(--warning-color);
+}
+.status-in_progress { 
+    background: #cce7ff;
+    color: #004085; 
+    border: 1px solid var(--info-color);
+}
+.status-completed { 
+    background: #d4edda;
+    color: #155724; 
+    border: 1px solid var(--success-color);
+}
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid var(--danger-color);
+}
+
+[data-theme="dark"] .status-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+[data-theme="dark"] .status-in_progress {
+    background: rgba(6, 182, 212, 0.2);
+    color: #22d3ee;
+}
+
+[data-theme="dark"] .status-completed {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+[data-theme="dark"] .status-cancelled {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+.status-badge {
+    padding: 0.375rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .service-detail-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .service-info-grid {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
+    
+    .documents-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .documents-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .service-actions {
+        flex-direction: column;
+    }
+    
+    .service-actions .btn {
+        width: 100%;
+    }
+    
+    .doc-actions {
+        flex-direction: row;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 3% auto;
+    border-radius: var(--border-radius-lg);
+    width: 90%;
+    max-width: 700px;
+    box-shadow: var(--shadow-xl);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.modal-close {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+    line-height: 1;
+}
+
+.modal-close:hover {
+    opacity: 0.7;
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    background: var(--light-bg);
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--white);
+    color: var(--dark-text);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        flex-direction: column-reverse;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function openEditModal() {
+    document.getElementById('editServiceModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEditModal() {
+    document.getElementById('editServiceModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('editServiceModal');
+    if (event.target == modal) {
+        closeEditModal();
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeEditModal();
+    }
+});
+
+function submitEditForm(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('editServiceForm');
+    const formData = new FormData(form);
+    
+    // Show loading state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
+    
+    fetch('{% url "update_service" service.id %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            alert('Hizmet başarıyla güncellendi!');
+            // Force hard reload with cache busting to ensure fresh data
+            window.location.href = window.location.pathname + '?updated=' + Date.now();
+        } else {
+            alert('Hata: ' + (data.error || 'Bilinmeyen hata'));
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('İşlem sırasında bir hata oluştu.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    });
+}
+</script>
+{% endblock %}
+

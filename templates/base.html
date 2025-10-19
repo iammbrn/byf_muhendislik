@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BYF Mühendislik{% endblock %}</title>
+    <meta name="description" content="BYF Mühendislik - Elektriksel Periyodik Kontrol, Trafo Müşavirlik ve Elektrik Proje Çizimi Hizmetleri">
+    <meta name="theme-color" content="#0056b3">
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="{{ site_settings.site_name|default:'BYF Mühendislik' }}">
+    <meta property="og:title" content="{% block og_title %}{{ site_settings.site_name|default:'BYF Mühendislik' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ site_settings.site_description|default:'Profesyonel mühendislik çözümleri' }}{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri|default:'' }}">
+    {% if site_settings.logo %}
+    <meta property="og:image" content="{{ site_settings.logo.url }}">
+    {% endif %}
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "{{ site_settings.site_name|default:'BYF Mühendislik' }}",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      "logo": "{% if site_settings.logo %}{{ site_settings.logo.url }}{% endif %}",
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "telephone": "{{ site_settings.contact_phone|default:'' }}",
+        "contactType": "customer service",
+        "areaServed": "TR",
+        "availableLanguage": ["Turkish"]
+      }]
+    }
+    </script>
+    
+    {% load static %}
+    <!-- CSS Dosyaları -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dark-mode-fixes.css' %}">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Favicon - Cache-busting with version -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}?v=2">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% include 'includes/header.html' %}
+
+    <main class="main-content">
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-auto-close">
+                <i class="fas 
+                {% if message.tags == 'success' %}fa-check-circle
+                {% elif message.tags == 'error' %}fa-exclamation-circle
+                {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                {% else %}fa-info-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% include 'includes/footer.html' %}
+
+    <!-- JavaScript Dosyaları -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    <script src="{% static 'js/forms.js' %}"></script>
+    
+    <!-- jQuery CDN (gerekirse) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+    {% if site_settings and site_settings.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_settings.google_analytics_id }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '{{ site_settings.google_analytics_id }}');
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ page_title }} - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.page-header p {
+    margin: 0;
+    color: white;
+    font-weight: 500;
+}
+
+.services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.service-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.service-card-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--light-bg);
+}
+
+.service-card-body {
+    padding: 1.5rem;
+}
+
+.service-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin: 0;
+}
+
+.service-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.service-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-text);
+    font-size: 0.9rem;
+}
+
+.service-meta-item i {
+    color: var(--primary-color);
+}
+
+.service-description {
+    margin-top: 1rem;
+    color: var(--gray-text);
+    line-height: 1.6;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid var(--success-color);
+}
+
+[data-theme="dark"] .status-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--gray-text);
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--gray-text);
+}
+
+.service-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+/* Filters Card */
+.filters-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.filters-header {
+    padding: 1rem 1.5rem;
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filters-header h3 {
+    margin: 0;
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filters-body {
+    padding: 1.5rem;
+}
+
+.filter-form {
+    width: 100%;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--white);
+    color: var(--dark-text);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .service-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .service-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+    }
+
+    .filter-actions .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ page_title }}</h1>
+        <p>Tamamlanmış hizmetlerinizin listesi</p>
+    </div>
+</div>
+
+<div class="container services-container">
+    <!-- Filtreleme -->
+    <div class="filters-card">
+        <div class="filters-header">
+            <h3><i class="fas fa-filter"></i> Filtrele</h3>
+        </div>
+        <div class="filters-body">
+            <form method="get" class="filter-form">
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label for="search">Ara</label>
+                        <input type="text" 
+                               id="search" 
+                               name="search" 
+                               class="form-control" 
+                               placeholder="Hizmet adı..." 
+                               value="{{ filters.search }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="service_type">Hizmet Türü</label>
+                        <select name="service_type" id="service_type" class="form-control">
+                            <option value="">Tümü</option>
+                            <option value="electrical_control" {% if filters.service_type == 'electrical_control' %}selected{% endif %}>Elektriksel Periyodik Kontrol</option>
+                            <option value="transformer_consultancy" {% if filters.service_type == 'transformer_consultancy' %}selected{% endif %}>Trafo Müşavirlik</option>
+                            <option value="electrical_design" {% if filters.service_type == 'electrical_design' %}selected{% endif %}>Elektrik Proje Çizimi</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Başlangıç Tarihi</label>
+                        <input type="date" 
+                               id="start_date" 
+                               name="start_date" 
+                               class="form-control" 
+                               value="{{ filters.start_date }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">Bitiş Tarihi</label>
+                        <input type="date" 
+                               id="end_date" 
+                               name="end_date" 
+                               class="form-control" 
+                               value="{{ filters.end_date }}">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i>
+                        Filtrele
+                    </button>
+                    <a href="{% url 'completed_services' %}" class="btn btn-outline">
+                        <i class="fas fa-redo"></i>
+                        Sıfırla
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hizmetler Listesi -->
+    {% if services %}
+        {% for service in services %}
+        <div class="service-card">
+            <div class="service-card-header">
+                <div>
+                    <h3 class="service-title">{{ service.name }}</h3>
+                    <div class="service-meta">
+                        <div class="service-meta-item">
+                            <i class="fas fa-cogs"></i>
+                            <span>{{ service.get_service_type_display }}</span>
+                        </div>
+                        {% if request.user.user_type == 'admin' %}
+                        <div class="service-meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>{{ service.firm.name }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="service-meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Talep: {{ service.request_date|date:"d M Y" }}</span>
+                        </div>
+                        <div class="service-meta-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Tamamlandı: {{ service.completion_date|date:"d M Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="status-badge">{{ service.get_status_display }}</span>
+            </div>
+            <div class="service-card-body">
+                <div class="service-description">
+                    {{ service.description|truncatewords:30 }}
+                </div>
+                <div class="service-actions">
+                    <a href="{% url 'service_detail' service.id %}" class="btn btn-primary">
+                        <i class="fas fa-eye"></i>
+                        Detayları Gör
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-clipboard-check"></i>
+            <h3>Tamamlanmış Hizmet Bulunmuyor</h3>
+            <p>Henüz tamamlanmış bir hizmetiniz bulunmamaktadır.</p>
+            {% if request.user.user_type == 'firma' %}
+            <a href="{% url 'firm_dashboard' %}" class="btn btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-arrow-left"></i>
+                Panele Dön
+            </a>
+            {% else %}
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-arrow-left"></i>
+                Panele Dön
+            </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

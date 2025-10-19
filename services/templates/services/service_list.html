@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hizmet Listesi - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: var(--white); /* White text like hero section */
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: var(--white); /* White text like hero section */
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--white); /* White text like hero section */
+    opacity: 0.9;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Devam Eden Hizmetler</h1>
+        <p>Aktif olarak devam eden hizmetlerin listesi</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Hizmet Listesi -->
+    <div class="services-container">
+        {% for service in services %}
+        <div class="service-card">
+            <div class="service-header">
+                <div class="service-title">
+                    <h3>{{ service.name }}</h3>
+                    <span class="service-type">{{ service.get_service_type_display }}</span>
+                </div>
+                <div class="service-status">
+                    <span class="status-badge status-{{ service.status }}">
+                        {{ service.get_status_display }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="service-body">
+                <div class="service-description">
+                    <p>{{ service.description|truncatewords:30 }}</p>
+                </div>
+
+                <div class="service-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-building"></i>
+                        <span>{{ service.firm.name }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Talep: {{ service.request_date|date:"d M Y" }}</span>
+                    </div>
+                    {% if service.start_date %}
+                    <div class="meta-item">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Başlangıç: {{ service.start_date|date:"d M Y" }}</span>
+                    </div>
+                    {% endif %}
+                    {% if service.completion_date %}
+                    <div class="meta-item">
+                        <i class="fas fa-flag-checkered"></i>
+                        <span>Tamamlanma: {{ service.completion_date|date:"d M Y" }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if service.notes %}
+                <div class="service-notes">
+                    <strong>Notlar:</strong>
+                    <p>{{ service.notes }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="service-footer">
+                <div class="service-actions">
+                    <a href="{% url 'service_detail' service.id %}" class="btn btn-outline btn-sm">
+                        <i class="fas fa-eye"></i>
+                        Detayları Gör
+                    </a>
+                    <a href="{% url 'document_list' %}?service={{ service.id }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-file"></i>
+                        Dokümanlar {% if service.documents.exists %}({{ service.documents.count }}){% else %}(0){% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-cogs"></i>
+            <h3>Henüz hizmet bulunmuyor</h3>
+            <p>Size ait henüz bir hizmet kaydı bulunmamaktadır.</p>
+            {% if user.user_type == 'firma' %}
+            <a href="{% url 'create_service_request' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                İlk Hizmet Talebini Oluştur
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.services-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.service-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.service-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: var(--light-bg);
+}
+
+.service-title h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--dark-text);
+}
+
+.service-type {
+    background: var(--primary-light);
+    color: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.service-body {
+    padding: 1.5rem;
+}
+
+.service-description {
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
+}
+
+.service-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-text);
+}
+
+.meta-item i {
+    color: var(--primary-light);
+    width: 16px;
+}
+
+.service-notes {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid var(--warning-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.service-notes strong {
+    color: var(--warning-color);
+}
+
+.service-notes p {
+    color: var(--dark-text);
+    margin: 0.5rem 0 0 0;
+}
+
+.service-footer {
+    padding: 1rem 1.5rem;
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.service-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray-text);
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--gray-text);
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    color: var(--dark-text);
+}
+
+@media (max-width: 768px) {
+    .service-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .service-meta {
+        grid-template-columns: 1fr;
+    }
+    
+    .service-actions {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

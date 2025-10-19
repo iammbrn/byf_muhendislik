@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Firma Listesi - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.page-header p {
+    margin: 0;
+    opacity: 0.9;
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Firma Listesi</h1>
+        <p>Sistemde kayıtlı tüm firmalar</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Filtreleme -->
+    <div class="filters-card">
+        <div class="filters-header">
+            <h3>Filtrele</h3>
+        </div>
+        <div class="filters-body">
+            <form method="get" class="filter-form">
+                <div class="filter-grid">
+                    <div class="form-group">
+                        <label>Ara</label>
+                        <input type="text" name="search" class="form-control" placeholder="Firma adı veya yetkili kişi...">
+                    </div>
+                    <div class="form-group">
+                        <label>Durum</label>
+                        <select name="status" class="form-control">
+                            <option value="">Tümü</option>
+                            <option value="active">Aktif</option>
+                            <option value="inactive">Pasif</option>
+                            <option value="suspended">Askıda</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Şehir</label>
+                        <input type="text" name="city" class="form-control" placeholder="Şehir...">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i>
+                        Filtrele
+                    </button>
+                    <a href="{% url 'firm_list' %}" class="btn btn-outline">
+                        <i class="fas fa-redo"></i>
+                        Sıfırla
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firma Listesi -->
+    <div class="firms-list">
+        {% for firm in firms %}
+        <div class="firm-card">
+            <div class="firm-header">
+                <div class="firm-title">
+                    <h3>{{ firm.name }}</h3>
+                    <span class="status-badge status-{{ firm.status }}">
+                        {{ firm.get_status_display }}
+                    </span>
+                </div>
+                <div class="firm-actions">
+                    <a href="{% url 'firm_detail' firm.id %}" class="btn btn-outline btn-sm">
+                        <i class="fas fa-eye"></i>
+                        Detay
+                    </a>
+                </div>
+            </div>
+            
+            <div class="firm-body">
+                <div class="firm-info">
+                    <div class="info-item">
+                        <i class="fas fa-user"></i>
+                        <strong>Yetkili:</strong>
+                        <span>{{ firm.contact_person }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <strong>Telefon:</strong>
+                        <span>{{ firm.phone }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <strong>E-posta:</strong>
+                        <span>{{ firm.email }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <strong>Şehir:</strong>
+                        <span>{{ firm.city }}</span>
+                    </div>
+                </div>
+                
+                <div class="firm-stats">
+                    <div class="stat">
+                        <div class="stat-number">{{ firm.services.count }}</div>
+                        <div class="stat-label">Hizmet</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">{{ firm.service_requests.count }}</div>
+                        <div class="stat-label">Talep</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="firm-footer">
+                <div class="registration-date">
+                    <i class="fas fa-calendar"></i>
+                    Kayıt: {{ firm.registration_date|date:"d M Y" }}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fas fa-building"></i>
+            <h3>Henüz firma bulunmuyor</h3>
+            <p>Sistemde kayıtlı firma bulunamadı.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.filters-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+}
+
+.filters-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--light-bg);
+}
+
+.filters-header h3 {
+    color: var(--dark-text);
+    margin: 0;
+}
+
+.filters-body {
+    padding: 1.5rem;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.firms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.firm-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.firm-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.firm-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--light-bg);
+}
+
+.firm-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.firm-title h3 {
+    color: var(--dark-text);
+    margin: 0;
+}
+
+.firm-body {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.firm-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--dark-text);
+}
+
+.info-item i {
+    color: var(--primary-light);
+    width: 16px;
+}
+
+.firm-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-left: 2px solid var(--border-color);
+    padding-left: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--dark-text);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--gray-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.firm-footer {
+    padding: 1rem 1.5rem;
+    background: var(--light-bg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.registration-date {
+    color: var(--gray-text);
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray-text);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--border-color);
+}
+
+.empty-state h3 {
+    color: var(--dark-text);
+}
+
+@media (max-width: 768px) {
+    .firm-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .firm-stats {
+        border-left: none;
+        border-top: 2px solid #e9ecef;
+        padding-left: 0;
+        padding-top: 1rem;
+    }
+    
+    .firm-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

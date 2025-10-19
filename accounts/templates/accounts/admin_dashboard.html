@@ -1,0 +1,508 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Yönetici Paneli - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.dashboard-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(6, 182, 212, 0.2) 100%);
+    pointer-events: none;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 100%;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 1.75rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--info-color);
+    transition: var(--transition);
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.stat-card.success { border-left-color: var(--success-color); }
+.stat-card.warning { border-left-color: var(--warning-color); }
+.stat-card.danger { border-left-color: var(--danger-color); }
+.stat-card.info { border-left-color: var(--info-color); }
+.stat-card.primary { border-left-color: var(--primary-color); }
+.stat-card.secondary { border-left-color: var(--secondary-color); }
+.stat-card.dark { border-left-color: #6c757d; }
+
+/* Tıklanabilir Stat Card */
+.stat-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+}
+
+.stat-card-link:hover {
+    color: inherit;
+}
+
+.stat-card-link .stat-arrow {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.25rem;
+    color: var(--gray-text);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.stat-card-link:hover .stat-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: var(--gray-text);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 0;
+}
+
+.section-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-card .section-body {
+    flex: 1;
+}
+
+.section-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--light-bg);
+}
+
+.section-header h3 {
+    color: var(--dark-text);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-header h3 i {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.section-body {
+    padding: 1.5rem;
+}
+
+.service-item, .firm-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.service-item:last-child, .firm-item:last-child {
+    border-bottom: none;
+}
+
+.service-item-link {
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+    padding: 1rem;
+    margin: 0 -1rem;
+    border-radius: 8px;
+}
+
+.service-item-link:hover {
+    background: var(--light-bg);
+}
+
+[data-theme="dark"] .service-item-link:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.service-item-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.service-info h4, .firm-info h4 {
+    margin-bottom: 0.25rem;
+    color: var(--dark-text);
+}
+
+.service-meta, .firm-meta {
+    color: var(--gray-text);
+    font-size: 0.9rem;
+}
+
+.status-badge {
+    padding: 0.375rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending { 
+    background: #fff3cd;
+    color: #856404; 
+    border: 1px solid var(--warning-color);
+}
+.status-in_progress { 
+    background: #cce7ff;
+    color: #004085; 
+    border: 1px solid var(--info-color);
+}
+.status-completed { 
+    background: #d4edda;
+    color: #155724; 
+    border: 1px solid var(--success-color);
+}
+
+[data-theme="dark"] .status-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+[data-theme="dark"] .status-in_progress {
+    background: rgba(6, 182, 212, 0.2);
+    color: #22d3ee;
+}
+
+[data-theme="dark"] .status-completed {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    color: white;
+    transition: var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.action-btn:hover {
+    background: var(--gradient-secondary);
+    color: white;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.action-btn i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.action-btn:hover i {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.action-btn span {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: white;
+}
+
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-content {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-content {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="container">
+        <h1>Yönetici Paneli</h1>
+        <p>Hoş geldiniz, {{ user.get_full_name|default:user.username }}</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- İstatistik Kartları - 4 Adet -->
+    <div class="stats-grid">
+        <a href="{% url 'firm_list' %}" class="stat-card stat-card-link info">
+            <div class="stat-number">{{ total_firms }}</div>
+            <div class="stat-label">Toplam Firma</div>
+            <i class="fas fa-arrow-right stat-arrow"></i>
+        </a>
+        <a href="{% url 'all_services' %}" class="stat-card stat-card-link success">
+            <div class="stat-number">{{ total_services }}</div>
+            <div class="stat-label">Hizmetler</div>
+            <i class="fas fa-arrow-right stat-arrow"></i>
+        </a>
+        <a href="{% url 'admin:services_servicerequest_changelist' %}?status__exact=pending" class="stat-card stat-card-link warning">
+            <div class="stat-number">{{ pending_requests }}</div>
+            <div class="stat-label">Bekleyen Talepler</div>
+            <i class="fas fa-arrow-right stat-arrow"></i>
+        </a>
+        <a href="{% url 'admin:core_contactmessage_changelist' %}?status__exact=new" class="stat-card stat-card-link danger">
+            <div class="stat-number">{{ pending_messages }}</div>
+            <div class="stat-label">Bekleyen Mesajlar</div>
+            <i class="fas fa-arrow-right stat-arrow"></i>
+        </a>
+    </div>
+
+    <!-- Dashboard Content - 2x2 Grid Layout -->
+    <div class="dashboard-content">
+        <!-- Sol Üst - Son Hizmetler -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3><i class="fas fa-cogs"></i> Son Hizmetler</h3>
+                <a href="{% url 'all_services' %}" class="btn btn-outline btn-sm">Tümünü Gör</a>
+            </div>
+            <div class="section-body">
+                {% for service in recent_services %}
+                <a href="{% url 'service_detail' service.id %}" class="service-item service-item-link">
+                    <div class="service-info">
+                        <h4>{{ service.name }}</h4>
+                        <div class="service-meta">
+                            {{ service.firm.name }} • {{ service.request_date|date:"d M Y" }}
+                        </div>
+                    </div>
+                    <div class="service-item-right">
+                        <span class="status-badge status-{{ service.status }}">
+                            {{ service.get_status_display }}
+                        </span>
+                        <i class="fas fa-chevron-right" style="color: var(--gray-text); margin-left: 0.75rem;"></i>
+                    </div>
+                </a>
+                {% empty %}
+                <p class="text-muted">Henüz hizmet bulunmuyor.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Sağ Üst - Sistem Durumu -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3><i class="fas fa-server"></i> Sistem Durumu</h3>
+            </div>
+            <div class="section-body">
+                <div class="system-status">
+                    <div class="status-item">
+                        <i class="fas fa-database text-success"></i>
+                        <span>Veritabanı: Aktif</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-server text-success"></i>
+                        <span>Sunucu: Normal</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-shield-alt text-success"></i>
+                        <span>Güvenlik: Aktif</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-backup text-success"></i>
+                        <span>Yedekleme: Tamamlandı</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sol Alt - Son Eklenen Firmalar -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3><i class="fas fa-building"></i> Son Eklenen Firmalar</h3>
+                <a href="{% url 'firm_list' %}" class="btn btn-outline btn-sm">Tümünü Gör</a>
+            </div>
+            <div class="section-body">
+                {% for firm in recent_firms %}
+                <div class="firm-item">
+                    <div class="firm-info">
+                        <h4>{{ firm.name }}</h4>
+                        <div class="firm-meta">
+                            {{ firm.contact_person }} • {{ firm.registration_date|date:"d M Y" }}
+                        </div>
+                    </div>
+                    <a href="{% url 'firm_detail' firm.id %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-muted">Henüz firma bulunmuyor.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Sağ Alt - Hızlı İşlemler -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3><i class="fas fa-bolt"></i> Hızlı İşlemler</h3>
+            </div>
+            <div class="section-body">
+                <div class="quick-actions">
+                    <a href="{% url 'admin:firms_firm_add' %}" class="action-btn">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Yeni Firma Ekle</span>
+                    </a>
+                    <a href="{% url 'admin:services_service_add' %}" class="action-btn">
+                        <i class="fas fa-cogs"></i>
+                        <span>Hizmet Oluştur</span>
+                    </a>
+                    <a href="{% url 'admin:documents_document_add' %}" class="action-btn">
+                        <i class="fas fa-file-upload"></i>
+                        <span>Dosya Yükle</span>
+                    </a>
+                    <a href="{% url 'admin:accounts_customuser_add' %}" class="action-btn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Kullanıcı Ekle</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.system-status .status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.system-status .status-item:last-child {
+    border-bottom: none;
+}
+
+.system-status .status-item span {
+    color: var(--dark-text);
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-content p {
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+}
+
+.activity-content small {
+    color: #7f8c8d;
+}
+</style>
+{% endblock %}

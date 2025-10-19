@@ -1,0 +1,365 @@
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-content">
+            <!-- Şirket Bilgileri -->
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <a href="{% url 'home' %}" class="footer-logo-link">
+                        {% load static %}
+                        <img src="{% static 'images/logo.png' %}?v=3" alt="BYF Mühendislik" class="footer-logo-img">
+                        <div class="footer-logo-text">
+                            <span class="footer-logo-name">BYF</span>
+                            <span class="footer-logo-tagline">Mühendislik</span>
+                        </div>
+                    </a>
+                </div>
+                <p class="footer-description">
+                    {{ site_settings.site_description|default:"Profesyonel mühendislik çözümleri ile yanınızdayız. Kaliteli hizmet ve müşteri memnuniyeti önceliğimizdir." }}
+                </p>
+                <div class="social-links">
+                    {% if site_settings.linkedin_url %}
+                    <a href="{{ site_settings.linkedin_url }}" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    {% endif %}
+                    {% if site_settings.instagram_url %}
+                    <a href="{{ site_settings.instagram_url }}" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
+                    {% if site_settings.whatsapp_number %}
+                    <a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank" class="social-link">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Hızlı Bağlantılar -->
+            <div class="footer-section">
+                <h3>Hızlı Bağlantılar</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'home' %}">Ana Sayfa</a></li>
+                    <li><a href="{% url 'about' %}">Hakkımızda</a></li>
+                    <li><a href="{% url 'services_list' %}">Hizmetlerimiz</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'contact' %}">İletişim</a></li>
+                </ul>
+            </div>
+
+            <!-- Hizmetler -->
+            <div class="footer-section">
+                <h3>Hizmetlerimiz</h3>
+                <ul class="footer-links">
+                    {% for service in footer_service_categories %}
+                    <li><a href="{% url 'services_list' %}#{{ service.slug }}">{{ service.title }}</a></li>
+                    {% empty %}
+                    <li><a href="{% url 'services_list' %}">Hizmetlerimizi Görün</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- İletişim -->
+            <div class="footer-section">
+                <h3>İletişim</h3>
+                <div class="contact-info">
+                    {% if site_settings.address %}
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ site_settings.address }}</span>
+                    </div>
+                    {% endif %}
+                    {% if site_settings.contact_phone %}
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:{{ site_settings.contact_phone }}">{{ site_settings.contact_phone }}</a>
+                    </div>
+                    {% endif %}
+                    {% if site_settings.contact_email %}
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>
+                    </div>
+                    {% endif %}
+                    {% if site_settings.whatsapp_number %}
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank">
+                            {{ site_settings.whatsapp_number }}
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Alt Bilgi -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="copyright">
+                    &copy; 2024 {{ site_settings.site_name|default:"BYF Mühendislik" }}. Tüm hakları saklıdır.
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Gizlilik Politikası</a>
+                    <a href="#">Kullanım Koşulları</a>
+                    <a href="#">KVKK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+.main-footer {
+    background: var(--gradient-dark);
+    color: white;
+    margin-top: auto;
+    position: relative;
+}
+
+.main-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-secondary);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+    padding: 3rem 0;
+}
+
+.footer-section h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.footer-logo {
+    margin-bottom: 1.5rem;
+}
+
+.footer-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-logo-link:hover {
+    transform: translateX(3px);
+}
+
+.footer-logo-img {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.footer-logo-text {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    line-height: 1;
+}
+
+.footer-logo-name {
+    font-size: 1.85rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1.5px;
+}
+
+.footer-logo-tagline {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--secondary-color);
+    letter-spacing: 0.5px;
+}
+
+.footer-description {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: #bdc3c7;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.social-link:hover {
+    background: var(--gradient-secondary);
+    transform: translateY(-3px);
+    border-color: var(--secondary-color);
+    box-shadow: var(--shadow-secondary);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--secondary-color);
+    padding-left: 0.5rem;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.contact-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.contact-item i {
+    color: var(--secondary-color);
+    margin-top: 0.2rem;
+    width: 18px;
+    font-size: 1.1rem;
+}
+
+.contact-item a, .contact-item span {
+    color: #e2e8f0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    flex: 1;
+}
+
+.contact-item a:hover {
+    color: var(--secondary-color);
+}
+
+.footer-bottom {
+    border-top: 1px solid #34495e;
+    padding: 1.5rem 0;
+}
+
+.footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copyright {
+    color: #bdc3c7;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-bottom-links a {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom-links a:hover {
+    color: #3498db;
+}
+
+@media (max-width: 968px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .footer-logo-img {
+        height: 48px;
+    }
+
+    .footer-logo-name {
+        font-size: 1.6rem;
+    }
+
+    .footer-logo-tagline {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-bottom-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .footer-bottom-links {
+        justify-content: center;
+    }
+
+    .footer-logo-link {
+        gap: 0.75rem;
+    }
+
+    .footer-logo-img {
+        height: 45px;
+    }
+
+    .footer-logo-name {
+        font-size: 1.4rem;
+    }
+
+    .footer-logo-tagline {
+        font-size: 1.4rem;
+    }
+}
+</style>

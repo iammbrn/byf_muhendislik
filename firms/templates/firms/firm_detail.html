@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ firm.name }} - BYF Mühendislik{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.page-header p {
+    margin: 0;
+    opacity: 0.9;
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ firm.name }}</h1>
+        <p>Firma Detayları ve Hizmet Geçmişi</p>
+    </div>
+</div>
+
+<div class="container" style="padding: 2rem 0;">
+
+    <!-- Firma Bilgileri -->
+    <div class="section-card">
+        <h3><i class="fas fa-building"></i> Firma Bilgileri</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-user"></i>
+                    Yetkili Kişi
+                </div>
+                <div class="info-value">{{ firm.contact_person }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-briefcase"></i>
+                    Unvan
+                </div>
+                <div class="info-value">{{ firm.contact_person_title|default:"Belirtilmemiş" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-phone"></i>
+                    Telefon
+                </div>
+                <div class="info-value">{{ firm.phone }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-envelope"></i>
+                    E-posta
+                </div>
+                <div class="info-value">{{ firm.email }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Şehir
+                </div>
+                <div class="info-value">{{ firm.city }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-calendar"></i>
+                    Kayıt Tarihi
+                </div>
+                <div class="info-value">{{ firm.registration_date|date:"d M Y" }}</div>
+            </div>
+            <div class="info-item full-width">
+                <div class="info-label">
+                    <i class="fas fa-home"></i>
+                    Adres
+                </div>
+                <div class="info-value">{{ firm.address }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-info-circle"></i>
+                    Durum
+                </div>
+                <div class="info-value">
+                    <span class="badge badge-{{ firm.status }}">{{ firm.get_status_display }}</span>
+                </div>
+            </div>
+            {% if firm.website %}
+            <div class="info-item">
+                <div class="info-label">
+                    <i class="fas fa-globe"></i>
+                    Website
+                </div>
+                <div class="info-value">
+                    <a href="{{ firm.website }}" target="_blank">{{ firm.website }}</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Kullanıcı Bilgileri (Yönetici için) -->
+        {% if user.user_type == 'admin' %}
+        <div class="login-credentials">
+            <h4><i class="fas fa-key"></i> Giriş Bilgileri</h4>
+            <div class="credentials-grid">
+                <div class="credential-item">
+                    <strong>Kullanıcı Adı:</strong> 
+                    <code>{{ firm.user.username }}</code>
+                </div>
+                <div class="credential-item">
+                    <strong>Şifre:</strong> 
+                    {% with firm.user.provisioned_credentials.first as cred %}
+                        {% if cred %}
+                            <code>{{ cred.password_plain }}</code>
+                        {% else %}
+                            <em>Şifre bilgisi bulunamadı</em>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- İşlemler -->
+    <div class="actions-section">
+        <a href="{% url 'firm_list' %}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i>
+            Firma Listesine Dön
+        </a>
+        {% if user.user_type == 'admin' %}
+        <a href="/admin/firms/firm/{{ firm.id }}/change/" class="btn btn-primary">
+            <i class="fas fa-edit"></i>
+            Firmayı Düzenle
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.section-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+}
+
+.section-card h3 {
+    color: var(--dark-text);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-light);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-card h3 i {
+    color: var(--primary-light);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.info-label {
+    color: var(--gray-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-label i {
+    color: var(--primary-light);
+    width: 16px;
+}
+
+.info-value {
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+.info-value a {
+    color: var(--primary-light);
+    text-decoration: none;
+}
+
+.info-value a:hover {
+    text-decoration: underline;
+}
+
+.login-credentials {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--light-bg);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--info-color);
+}
+
+.login-credentials h4 {
+    color: var(--dark-text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.login-credentials h4 i {
+    color: var(--info-color);
+}
+
+.credentials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.credential-item {
+    color: var(--dark-text);
+}
+
+.credential-item code {
+    background: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.actions-section {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.badge {
+    padding: 0.375rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-active { 
+    background: #d4edda; 
+    color: #155724; 
+}
+
+.badge-inactive { 
+    background: #f8d7da; 
+    color: #721c24; 
+}
+
+.badge-suspended {
+    background: #fff3cd;
+    color: #856404;
+}
+
+[data-theme="dark"] .badge-active {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+[data-theme="dark"] .badge-inactive {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+[data-theme="dark"] .badge-suspended {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+@media (max-width: 768px) {
+    .info-grid,
+    .credentials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-section {
+        flex-direction: column;
+    }
+    
+    .actions-section .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+

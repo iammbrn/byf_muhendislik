@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ana Sayfa - BYF Mühendislik{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Profesyonel <span class="highlight">Mühendislik</span> Çözümleri</h1>
+            <p class="hero-subtitle">
+                BYF Mühendislik olarak, elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi 
+                alanlarında uzman çözümler sunuyoruz. Kalite, güvenlik ve müşteri memnuniyeti önceliğimizdir.
+            </p>
+            <div class="hero-buttons">
+                <a href="{% url 'services_list' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-cogs"></i>
+                    Hizmetlerimizi Keşfedin
+                </a>
+                <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-phone"></i>
+                    Hemen Teklif Alın
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            {% if site_settings.hero_image %}
+            <img src="{{ site_settings.hero_image.url }}" alt="Mühendislik Çözümleri" loading="lazy">
+            {% else %}
+            <img src="{% static 'images/hero-engineering.jpg' %}" alt="Mühendislik Çözümleri" loading="lazy">
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Services Preview -->
+<section class="services-preview section-padding">
+    <div class="container">
+        <div class="section-header">
+            <h2>Hizmetlerimiz</h2>
+            <p>Profesyonel mühendislik hizmetlerimizle yanınızdayız</p>
+        </div>
+        <div class="services-grid">
+            {% for service in service_categories %}
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas {{ service.icon }}"></i>
+                </div>
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.subtitle }}</p>
+                <a href="{% url 'services_list' %}#{{ service.slug }}" class="btn btn-link">
+                    Detaylı Bilgi
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            {% empty %}
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Elektriksel Periyodik Kontrol</h3>
+                <p>Elektrik tesisatlarının periyodik kontrol ve ölçüm hizmetleri.</p>
+                <a href="{% url 'services_list' %}" class="btn btn-link">
+                    Detaylı Bilgi
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section section-padding bg-light">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" data-count="150">0</div>
+                <div class="stat-label">Tamamlanan Proje</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="50">0</div>
+                <div class="stat-label">Mutlu Müşteri</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="5">0</div>
+                <div class="stat-label">Yıllık Deneyim</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="7">0</div>
+                <div class="stat-label">Gün / 24 Saat Destek</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section section-padding">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Profesyonel Çözümler için Hemen İletişime Geçin</h2>
+            <p>Uzman ekibimiz sizin için en uygun çözümleri sunmaya hazır</p>
+            <div class="cta-buttons">
+                <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-envelope"></i>
+                    Teklif Alın
+                </a>
+                <a href="tel:+900000000000" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-phone"></i>
+                    Hemen Ara
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Stats counter animation
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200;
+
+    counters.forEach(counter => {
+        const updateCount = () => {
+            const target = +counter.getAttribute('data-count');
+            const count = +counter.innerText;
+            const increment = target / speed;
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(updateCount, 1);
+            } else {
+                counter.innerText = target;
+            }
+        };
+
+        updateCount();
+    });
+});
+</script>
+{% endblock %}

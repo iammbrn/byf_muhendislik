@@ -1,0 +1,750 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}İletişim - BYF Mühendislik{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="page-hero">
+    <div class="container">
+        <h1>İletişim</h1>
+        <p>Size nasıl yardımcı olabiliriz? Hemen iletişime geçin</p>
+    </div>
+</section>
+
+<!-- İletişim İçerik -->
+<section class="section-padding">
+    <div class="container">
+        <div class="contact-container">
+            <!-- İletişim Formu -->
+            <div class="contact-form-section">
+                <h2>Mesaj Gönderin</h2>
+                <p class="form-description">
+                    Aşağıdaki formu doldurarak bize ulaşabilirsiniz. 
+                    En kısa sürede sizinle iletişime geçeceğiz.
+                </p>
+
+                <form method="post" class="contact-form" id="contactForm">
+                    {% csrf_token %}
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_name" class="form-label">Adınız *</label>
+                            <input type="text" name="name" id="id_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_surname" class="form-label">Soyadınız *</label>
+                            <input type="text" name="surname" id="id_surname" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_phone" class="form-label">Telefon *</label>
+                            <input type="tel" name="phone" id="id_phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email" class="form-label">E-posta *</label>
+                            <input type="email" name="email" id="id_email" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_subject" class="form-label">Konu *</label>
+                        <select name="subject" id="id_subject" class="form-control" required>
+                            <option value="">Konu seçiniz</option>
+                            <option value="electrical_control">Elektriksel Periyodik Kontrol</option>
+                            <option value="transformer_consultancy">Trafo Müşavirlik</option>
+                            <option value="electrical_design">Elektrik Proje Çizimi</option>
+                            <option value="general">Genel Soru</option>
+                            <option value="complaint">Şikayet</option>
+                            <option value="other">Diğer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_message" class="form-label">Mesajınız *</label>
+                        <textarea name="message" id="id_message" class="form-control" rows="6" 
+                                  placeholder="Mesajınızı detaylı bir şekilde yazınız..." required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane"></i>
+                            Mesajı Gönder
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- İletişim Bilgileri -->
+            <div class="contact-info-section">
+                <h2>İletişim Bilgilerimiz</h2>
+
+                <div class="contact-info">
+                    {% if site_settings.address %}
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Adres</h4>
+                            <p>{{ site_settings.address }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if site_settings.contact_phone %}
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Telefon</h4>
+                            <a href="tel:{{ site_settings.contact_phone }}">{{ site_settings.contact_phone }}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if site_settings.contact_email %}
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>E-posta</h4>
+                            <a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if site_settings.whatsapp_number %}
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>WhatsApp</h4>
+                            <a href="https://wa.me/{{ site_settings.whatsapp_number }}" target="_blank">
+                                {{ site_settings.whatsapp_number }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Çalışma Saatleri -->
+                <div class="working-hours">
+                    <h3>Çalışma Saatleri</h3>
+                    <div class="hours-list">
+                        <div class="hour-item">
+                            <span>Pazartesi - Cuma</span>
+                            <span>09:00 - 18:00</span>
+                        </div>
+                        <div class="hour-item">
+                            <span>Cumartesi</span>
+                            <span>10:00 - 16:00</span>
+                        </div>
+                        <div class="hour-item">
+                            <span>Pazar</span>
+                            <span>Kapalı</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acil Durum -->
+                <div class="emergency-contact">
+                    <div class="emergency-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="emergency-content">
+                        <h4>Acil Durum</h4>
+                        <p>7/24 acil durum hizmeti</p>
+                        <a href="tel:{{ site_settings.contact_phone|default:'+900000000000' }}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-phone"></i>
+                            Acil Çağrı
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Harita -->
+<section class="map-section">
+    <div class="container">
+        <h2 class="section-title">Konumumuz</h2>
+        <div class="map-container">
+            {% if site_settings.address %}
+            <iframe
+                src="https://www.google.com/maps?q={{ site_settings.address|urlencode }}&output=embed"
+                width="100%"
+                height="400"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+            {% else %}
+            <div class="map-placeholder">
+                <i class="fas fa-map-marked-alt"></i>
+                <p>Harita konumu admin panelden adres girildikten sonra görünecektir</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- SSS -->
+<section class="faq-section section-padding bg-light">
+    <div class="container">
+        <div class="section-header">
+            <h2>Sık Sorulan Sorular</h2>
+            <p>En çok merak edilen konular hakkında bilgi alın</p>
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>Hizmet süreçleri ne kadar sürer?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>
+                        Hizmet süreleri projenin büyüklüğüne ve karmaşıklığına göre değişiklik gösterir. 
+                        Elektriksel periyodik kontroller genellikle 1-3 iş günü, trafo müşavirlik hizmetleri 
+                        1-2 hafta, elektrik proje çizimleri ise proje ölçeğine göre 1-4 hafta arasında 
+                        tamamlanmaktadır.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>Acil durumlarda ne yapmalıyım?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>
+                        Acil durumlarda hemen acil çağrı numaramızdan bize ulaşabilirsiniz. 
+                        7/24 acil müdahale ekibimiz en kısa sürede yerinizde olacaktır. 
+                        Acil durumlarda öncelikle güvenliğinizi sağlayın ve elektrik şalterlerini kapatın.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>Hizmet bedelleri nasıl belirleniyor?</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>
+                        Hizmet bedelleri projenin kapsamı, süresi, karmaşıklığı ve gereken ekipman 
+                        ihtiyaçlarına göre belirlenmektedir. Detaylı teklif için iletişim formunu 
+                        doldurmanız yeterlidir, sizin için özel fiyatlandırma yapalım.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.contact-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+}
+
+.contact-form-section {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.contact-form-section h2 {
+    color: var(--dark-text);
+}
+
+.form-description {
+    color: var(--gray-text);
+    margin-bottom: 2rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-text);
+}
+
+/* DARK MODE - FORM LABELS */
+body.dark-mode .form-label,
+body.dark-mode .contact-form-section h2,
+body.dark-mode .form-description,
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .contact-form-section h2,
+[data-theme="dark"] .form-description {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .contact-info-section h2,
+[data-theme="dark"] .contact-info-section h2 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--white);
+    color: var(--dark-text);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-actions {
+    margin-top: 2rem;
+}
+
+.contact-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.contact-details h4 {
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+}
+
+.contact-details p {
+    color: var(--gray-text);
+}
+
+.contact-details a {
+    color: var(--gray-text);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-details a:hover {
+    color: var(--primary-light);
+}
+
+/* DARK MODE - INLINE OVERRIDE */
+body.dark-mode .contact-details h4,
+[data-theme="dark"] .contact-details h4 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .contact-details p,
+[data-theme="dark"] .contact-details p {
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .contact-details a,
+[data-theme="dark"] .contact-details a {
+    color: #60a5fa !important;
+    font-weight: 600 !important;
+}
+
+body.dark-mode .contact-details a:hover,
+[data-theme="dark"] .contact-details a:hover {
+    color: #fbbf24 !important;
+}
+
+.working-hours {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.working-hours h3 {
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 0.5rem;
+}
+
+.hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.hour-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--dark-text);
+}
+
+.hour-item:last-child {
+    border-bottom: none;
+}
+
+/* DARK MODE - WORKING HOURS */
+body.dark-mode .working-hours h3,
+[data-theme="dark"] .working-hours h3 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .hour-item,
+body.dark-mode .hour-item span,
+[data-theme="dark"] .hour-item,
+[data-theme="dark"] .hour-item span {
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+}
+
+.emergency-contact {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.emergency-icon {
+    font-size: 2.5rem;
+}
+
+.emergency-content h4 {
+    margin-bottom: 0.5rem;
+}
+
+.emergency-content p {
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.map-section {
+    padding: 4rem 0;
+    background: var(--light-bg);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--dark-text);
+}
+
+/* DARK MODE - SECTION TITLE */
+body.dark-mode .section-title,
+[data-theme="dark"] .section-title {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+.map-container {
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.map-placeholder {
+    height: 400px;
+    background: var(--light-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-text);
+}
+
+.map-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--border-color);
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.faq-question:hover {
+    background: var(--light-bg);
+}
+
+.faq-question h4 {
+    margin: 0;
+    color: var(--dark-text);
+}
+
+.faq-question i {
+    color: var(--primary-light);
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding: 0 1.5rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-answer p {
+    color: var(--gray-text);
+}
+
+/* DARK MODE - FAQ */
+body.dark-mode .faq-question h4,
+[data-theme="dark"] .faq-question h4 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .faq-answer p,
+[data-theme="dark"] .faq-answer p {
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+}
+
+.faq-item.active .faq-answer {
+    padding: 0 1.5rem 1.5rem;
+    max-height: 500px;
+}
+
+@media (max-width: 968px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-form-section {
+        padding: 1.5rem;
+    }
+    
+    .emergency-contact {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .faq-question {
+        padding: 1rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ZORLA CONTACT DETAILS GÖRÜNÜRLÜĞÜ - DARK MODE
+    function applyContactDarkMode() {
+        const html = document.documentElement;
+        const theme = html.getAttribute('data-theme');
+        const isDark = theme === 'dark' || document.body.classList.contains('dark-mode');
+        
+        if (isDark) {
+            // Contact Details - Metinleri görünür yap
+            document.querySelectorAll('.contact-details h4').forEach(el => {
+                el.style.color = '#f1f5f9';
+                el.style.fontWeight = '700';
+            });
+            
+            document.querySelectorAll('.contact-details p').forEach(el => {
+                el.style.color = '#cbd5e1';
+                el.style.fontWeight = '500';
+            });
+            
+            document.querySelectorAll('.contact-details a').forEach(el => {
+                el.style.color = '#60a5fa';
+                el.style.fontWeight = '600';
+            });
+            
+            // Working Hours
+            document.querySelectorAll('.working-hours h3').forEach(el => {
+                el.style.color = '#f1f5f9';
+                el.style.fontWeight = '700';
+            });
+            
+            document.querySelectorAll('.hour-item, .hour-item span').forEach(el => {
+                el.style.color = '#cbd5e1';
+                el.style.fontWeight = '500';
+            });
+            
+            // Section Title
+            document.querySelectorAll('.section-title').forEach(el => {
+                el.style.color = '#f1f5f9';
+                el.style.fontWeight = '700';
+            });
+            
+            // FAQ
+            document.querySelectorAll('.faq-question h4').forEach(el => {
+                el.style.color = '#f1f5f9';
+                el.style.fontWeight = '700';
+            });
+            
+            document.querySelectorAll('.faq-answer p').forEach(el => {
+                el.style.color = '#cbd5e1';
+                el.style.fontWeight = '500';
+            });
+        }
+    }
+    
+    // İlk yükleme
+    applyContactDarkMode();
+    
+    // Theme değişikliklerini dinle
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === 'data-theme') {
+                applyContactDarkMode();
+            }
+        });
+    });
+    
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+    });
+    
+    // HER 500ms'DE BİR KONTROL ET VE DÜZELT
+    setInterval(function() {
+        const theme = document.documentElement.getAttribute('data-theme');
+        const isDark = theme === 'dark' || document.body.classList.contains('dark-mode');
+        
+        if (isDark) {
+            applyContactDarkMode();
+        }
+    }, 500);
+
+    // FAQ functionality
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            // Close other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
+
+    // Form validation (without preventing submission)
+    const contactForm = document.getElementById('contactForm');
+    
+    contactForm.addEventListener('submit', function(e) {
+        // Form validation
+        const requiredFields = contactForm.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.style.borderColor = 'var(--danger-color)';
+            } else {
+                field.style.borderColor = 'var(--success-color)';
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Lütfen tüm zorunlu alanları doldurun.');
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+        submitBtn.disabled = true;
+        
+        // Allow form to submit normally
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,729 @@
+<header class="main-header">
+    <div class="container">
+        <div class="header-content">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="{% url 'home' %}" class="logo-link">
+                    {% load static %}
+                    <img src="{% static 'images/logo.png' %}?v=3" alt="BYF Mühendislik" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-name">BYF</span>
+                        <span class="logo-tagline">Mühendislik</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Ana Navigasyon -->
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                            Ana Sayfa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'about' %}" class="nav-link {% if request.path == '/hakkimizda/' %}active{% endif %}">
+                            Hakkımızda
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'services_list' %}" class="nav-link {% if request.path == '/hizmetlerimiz/' %}active{% endif %}">
+                            Hizmetlerimiz
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'blog_list' %}" class="nav-link {% if request.path == '/blog/' %}active{% endif %}">
+                            Blog
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'contact' %}" class="nav-link {% if request.path == '/iletisim/' %}active{% endif %}">
+                            İletişim
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.user_type == 'admin' or user.is_staff or user.is_superuser %}
+                        <li class="nav-item">
+                            <a href="{% url 'admin_dashboard' %}" class="nav-link {% if 'dashboard' in request.path %}active{% endif %}">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Yönetici Paneli
+                            </a>
+                        </li>
+                        {% elif user.user_type == 'firma' %}
+                        <li class="nav-item">
+                            <a href="{% url 'firm_dashboard' %}" class="nav-link {% if 'firma-paneli' in request.path %}active{% endif %}">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Firma Paneli
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </nav>
+
+            <!-- Kullanıcı İşlemleri -->
+            <div class="header-actions">
+                {% if user.is_authenticated %}
+                <div class="user-menu">
+                    <button class="user-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ user.get_full_name|default:user.username }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown">
+                        {% if user.user_type == 'admin' or user.is_staff or user.is_superuser %}
+                        <a href="{% url 'admin_dashboard' %}" class="dropdown-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Yönetici Paneli
+                        </a>
+                        <a href="/admin/" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Site Yönetimi
+                        </a>
+                        {% elif user.user_type == 'firma' %}
+                        <a href="{% url 'firm_dashboard' %}" class="dropdown-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Firma Paneli
+                        </a>
+                        <a href="{% url 'firm_profile' %}" class="dropdown-item">
+                            <i class="fas fa-user-cog"></i>
+                            Profilim
+                        </a>
+                        <a href="{% url 'firm_settings' %}" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
+                        {% endif %}
+                        {% if user.user_type == 'admin' %}
+                        <a href="{% url 'admin_settings' %}" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'custom_logout' %}" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Çıkış Yap
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="auth-buttons">
+                    <a href="{% url 'custom_login' %}" class="btn btn-outline btn-sm">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Giriş Yap
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Dark Mode Toggle -->
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Tema Değiştir">
+                    <i class="fas fa-moon" id="darkModeIcon"></i>
+                </button>
+
+                <!-- Mobil Menü Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobil Navigasyon -->
+    <div class="mobile-nav" id="mobileNav">
+        <nav class="mobile-nav-content">
+            <a href="{% url 'home' %}" class="mobile-nav-link {% if request.path == '/' %}active{% endif %}">
+                <i class="fas fa-home"></i>
+                Ana Sayfa
+            </a>
+            <a href="{% url 'about' %}" class="mobile-nav-link {% if request.path == '/hakkimizda/' %}active{% endif %}">
+                <i class="fas fa-info-circle"></i>
+                Hakkımızda
+            </a>
+            <a href="{% url 'services_list' %}" class="mobile-nav-link {% if request.path == '/hizmetlerimiz/' %}active{% endif %}">
+                <i class="fas fa-cogs"></i>
+                Hizmetlerimiz
+            </a>
+            <a href="{% url 'blog_list' %}" class="mobile-nav-link {% if request.path == '/blog/' %}active{% endif %}">
+                <i class="fas fa-newspaper"></i>
+                Blog
+            </a>
+            <a href="{% url 'contact' %}" class="mobile-nav-link {% if request.path == '/iletisim/' %}active{% endif %}">
+                <i class="fas fa-envelope"></i>
+                İletişim
+            </a>
+            
+            {% if user.is_authenticated %}
+                {% if user.user_type == 'admin' or user.is_staff or user.is_superuser %}
+                <a href="{% url 'admin_dashboard' %}" class="mobile-nav-link {% if 'dashboard' in request.path %}active{% endif %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Yönetici Paneli
+                </a>
+                {% elif user.user_type == 'firma' %}
+                <a href="{% url 'firm_dashboard' %}" class="mobile-nav-link {% if 'firma-paneli' in request.path %}active{% endif %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Firma Paneli
+                </a>
+                {% endif %}
+            
+            <div class="mobile-user-section">
+                <div class="mobile-user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>{{ user.get_full_name|default:user.username }}</span>
+                </div>
+                {% if user.user_type == 'firma' %}
+                <a href="{% url 'firm_profile' %}" class="mobile-nav-link">
+                    <i class="fas fa-user-cog"></i>
+                    Profilim
+                </a>
+                <a href="{% url 'firm_settings' %}" class="mobile-nav-link">
+                    <i class="fas fa-cog"></i>
+                    Ayarlar
+                </a>
+                {% elif user.user_type == 'admin' %}
+                <a href="{% url 'admin_settings' %}" class="mobile-nav-link">
+                    <i class="fas fa-cog"></i>
+                    Ayarlar
+                </a>
+                {% endif %}
+                <a href="{% url 'custom_logout' %}" class="mobile-nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Çıkış Yap
+                </a>
+            </div>
+            {% else %}
+            <a href="{% url 'custom_login' %}" class="mobile-nav-link">
+                <i class="fas fa-sign-in-alt"></i>
+                Giriş Yap
+            </a>
+            {% endif %}
+            
+            <!-- Mobil Dark Mode Toggle -->
+            <div class="mobile-nav-link dark-mode-toggle-mobile">
+                <button class="dark-mode-toggle-mobile-btn" id="darkModeToggleMobile">
+                    <i class="fas fa-moon" id="darkModeIconMobile"></i>
+                    <span>Tema Değiştir</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<style>
+.main-header {
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
+
+.logo {
+    flex-shrink: 0;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.logo-link:hover {
+    transform: translateX(3px);
+}
+
+.logo-img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    line-height: 1.2;
+}
+
+.logo-name {
+    font-size: 1.75rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+}
+
+.logo-tagline {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+[data-theme="dark"] .logo-tagline {
+    color: var(--gray-text);
+}
+
+.main-nav .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--dark-text);
+    font-weight: 500;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-light);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-light);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-menu {
+    position: relative;
+}
+
+.user-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--dark-text);
+}
+
+.user-toggle:hover {
+    border-color: var(--primary-light);
+}
+
+.user-toggle i:first-child {
+    color: var(--primary-light);
+    font-size: 1.2rem;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    padding: 0.5rem 0;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.user-menu:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--dark-text);
+    transition: background 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background: var(--light-bg);
+}
+
+.dropdown-item i {
+    color: var(--primary-light);
+    width: 16px;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0.5rem 0;
+}
+
+/* DARK MODE - USER DROPDOWN */
+body.dark-mode .user-dropdown,
+[data-theme="dark"] .user-dropdown {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .dropdown-item,
+[data-theme="dark"] .dropdown-item {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:hover {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #60a5fa !important;
+}
+
+body.dark-mode .dropdown-item i,
+[data-theme="dark"] .dropdown-item i {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .dropdown-divider,
+[data-theme="dark"] .dropdown-divider {
+    background: #334155 !important;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: var(--dark-text);
+    transition: all 0.3s ease;
+}
+
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    background: var(--white);
+    z-index: 1001;
+    transition: left 0.3s ease;
+}
+
+/* DARK MODE - MOBILE NAV */
+body.dark-mode .mobile-nav,
+[data-theme="dark"] .mobile-nav {
+    background: #0f172a !important;
+}
+
+.mobile-nav.active {
+    left: 0;
+}
+
+.mobile-nav-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--dark-text);
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+    background: var(--light-bg);
+    color: var(--primary-light);
+}
+
+/* DARK MODE - MOBILE NAV LINK */
+body.dark-mode .mobile-nav-link,
+[data-theme="dark"] .mobile-nav-link {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .mobile-nav-link:hover,
+body.dark-mode .mobile-nav-link.active,
+[data-theme="dark"] .mobile-nav-link:hover,
+[data-theme="dark"] .mobile-nav-link.active {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #60a5fa !important;
+}
+
+.mobile-nav-link i {
+    width: 20px;
+    color: var(--primary-light);
+}
+
+.mobile-user-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.mobile-user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--light-bg);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* DARK MODE - MOBILE USER */
+body.dark-mode .mobile-user-section,
+[data-theme="dark"] .mobile-user-section {
+    border-top-color: #334155 !important;
+}
+
+body.dark-mode .mobile-user-info,
+[data-theme="dark"] .mobile-user-info {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+.mobile-user-info i {
+    font-size: 1.5rem;
+    color: var(--primary-light);
+}
+
+/* Dark Mode Toggle Styles */
+.dark-mode-toggle {
+    background: none;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--dark-text);
+}
+
+.dark-mode-toggle:hover {
+    border-color: var(--primary-light);
+    background: var(--light-bg);
+    transform: scale(1.1);
+}
+
+.dark-mode-toggle i {
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle.active i {
+    color: #f39c12;
+}
+
+.dark-mode-toggle-mobile-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    color: var(--dark-text);
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle-mobile-btn:hover {
+    background: var(--light-bg);
+    color: var(--primary-light);
+}
+
+.dark-mode-toggle-mobile-btn i {
+    width: 20px;
+    color: var(--primary-light);
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle-mobile-btn.active i {
+    color: #f39c12;
+}
+
+@media (max-width: 968px) {
+    .main-nav {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .user-toggle span {
+        display: none;
+    }
+}
+
+@media (max-width: 968px) {
+    .logo-img {
+        height: 50px;
+    }
+
+    .logo-name {
+        font-size: 1.4rem;
+    }
+
+    .logo-tagline {
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0.75rem 0;
+    }
+
+    .logo-link {
+        gap: 0.75rem;
+    }
+    
+    .logo-img {
+        height: 45px;
+    }
+
+    .logo-name {
+        font-size: 1.2rem;
+    }
+
+    .logo-tagline {
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const darkModeIconMobile = document.getElementById('darkModeIconMobile');
+    
+    // Dark mode functionality
+    function toggleDarkMode() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        
+        // Update icons
+        if (newTheme === 'dark') {
+            darkModeIcon.className = 'fas fa-sun';
+            darkModeIconMobile.className = 'fas fa-sun';
+            darkModeToggle.classList.add('active');
+            darkModeToggleMobile.classList.add('active');
+        } else {
+            darkModeIcon.className = 'fas fa-moon';
+            darkModeIconMobile.className = 'fas fa-moon';
+            darkModeToggle.classList.remove('active');
+            darkModeToggleMobile.classList.remove('active');
+        }
+        
+        // Save preference
+        localStorage.setItem('theme', newTheme);
+    }
+    
+    // Initialize dark mode
+    function initDarkMode() {
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+        html.setAttribute('data-theme', theme);
+        
+        if (theme === 'dark') {
+            darkModeIcon.className = 'fas fa-sun';
+            darkModeIconMobile.className = 'fas fa-sun';
+            darkModeToggle.classList.add('active');
+            darkModeToggleMobile.classList.add('active');
+        }
+    }
+    
+    // Event listeners
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+    
+    if (darkModeToggleMobile) {
+        darkModeToggleMobile.addEventListener('click', toggleDarkMode);
+    }
+    
+    // Initialize
+    initDarkMode();
+    
+    // Mobile menu functionality
+    mobileMenuToggle.addEventListener('click', function() {
+        mobileNav.classList.toggle('active');
+        document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    });
+    
+    // Mobil menüyü kapatma
+    mobileNav.addEventListener('click', function(e) {
+        if (e.target === mobileNav) {
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+});
+</script>

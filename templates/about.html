@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hakkımızda - BYF Mühendislik{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="page-hero">
+    <div class="container">
+        <h1>Hakkımızda</h1>
+        <p>BYF Mühendislik olarak hikayemiz ve değerlerimiz</p>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="section-padding">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-content">
+                <h2>Biz Kimiz?</h2>
+                <p>
+                    BYF Mühendislik, elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi 
+                    alanlarında uzmanlaşmış, sektörde güvenilir ve kaliteli hizmet sunan bir mühendislik firmasıdır.
+                </p>
+                <p>
+                    2020 yılında kurulan firmamız, müşteri memnuniyetini ön planda tutarak, en kaliteli hizmeti 
+                    sunmak için sürekli kendini geliştirmektedir. Uzman kadromuz ve son teknoloji ekipmanlarımızla 
+                    sektörün öncü firmaları arasında yer almaktayız.
+                </p>
+
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Misyonumuz</h3>
+                        <p>
+                            Müşterilerimize en kaliteli mühendislik hizmetlerini sunarak, 
+                            işletmelerinin güvenli ve verimli çalışmasını sağlamak.
+                        </p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Vizyonumuz</h3>
+                        <p>
+                            Sektörde lider, yenilikçi ve güvenilir bir mühendislik firması 
+                            olarak, ulusal ve uluslararası arenada tanınmak.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-image">
+                {% if site_settings.about_image %}
+                <img src="{{ site_settings.about_image.url }}" alt="BYF Mühendislik Ekibi" loading="lazy">
+                {% else %}
+                <img src="{% static 'images/about-team.jpg' %}" alt="BYF Mühendislik Ekibi" loading="lazy">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="section-header">
+            <h2>Neden Bizi Tercih Etmelisiniz?</h2>
+            <p>Kalite, güven ve deneyim bir arada</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>Kalite Sertifikaları</h3>
+                <p>Uluslararası kalite standartlarına uygun hizmet ve sertifikalar</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Uzman Ekip</h3>
+                <p>Alanında deneyimli mühendis ve teknisyen kadrosu</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>7/24 Hizmet</h3>
+                <p>Kesintisiz müşteri desteği ve acil durum hizmetleri</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Güvenlik</h3>
+                <p>En üst düzey güvenlik standartları ve prosedürler</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="section-header">
+            <h2>Ekibimiz</h2>
+            <p>Alanında uzman profesyonel kadromuz</p>
+        </div>
+
+        <div class="team-grid">
+            {% for member in team_members %}
+            <div class="team-card">
+                <div class="team-image">
+                    {% if member.image %}
+                    <img src="{{ member.image.url }}" alt="{{ member.name }}" loading="lazy">
+                    {% else %}
+                    <div class="team-image-placeholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="team-info">
+                    <h3>{{ member.name }}</h3>
+                    <p class="team-title">{{ member.title }}</p>
+                    <p class="team-bio">{{ member.bio }}</p>
+                    {% if member.linkedin_url %}
+                    <div class="team-social">
+                        <a href="{{ member.linkedin_url }}" target="_blank" class="social-btn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                <i class="fas fa-users" style="font-size: 3rem; color: var(--gray-text); margin-bottom: 1rem;"></i>
+                <h3>Henüz ekip üyesi eklenmemiş</h3>
+                <p style="color: var(--gray-text);">Admin panelden ekip üyeleri ekleyebilirsiniz.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.page-hero {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-secondary);
+}
+
+.page-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-content h2 {
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
+}
+
+.about-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: var(--gray-text);
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.value-card {
+    text-align: center;
+    padding: 2rem;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.value-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.value-card h3 {
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+}
+
+.value-card p {
+    color: var(--gray-text);
+}
+
+/* About image styles moved to style.css for consistency */
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+}
+
+.feature-card p {
+    color: var(--gray-text);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.team-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.4s ease;
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.team-image {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    background: var(--light-bg);
+}
+
+.team-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.team-card:hover .team-image::after {
+    opacity: 1;
+}
+
+.team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: all 0.5s ease;
+}
+
+.team-card:hover .team-image img {
+    transform: scale(1.08);
+}
+
+.team-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-color) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-image-placeholder i {
+    font-size: 6rem;
+    color: white;
+    opacity: 0.5;
+}
+
+.team-info {
+    padding: 2rem 1.75rem;
+    text-align: center;
+    background: var(--white);
+}
+
+.team-info h3 {
+    margin-bottom: 0.5rem;
+    color: var(--dark-text);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.team-title {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.team-bio {
+    color: var(--gray-text);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.team-social {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.social-btn:hover {
+    background: var(--gradient-secondary);
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .team-card {
+    background: var(--dark-bg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .team-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .team-info {
+    background: var(--dark-bg);
+}
+
+[data-theme="dark"] .team-social {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 1200px) {
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .team-image {
+        height: 320px;
+    }
+
+    .team-info {
+        padding: 1.5rem;
+    }
+
+    .team-info h3 {
+        font-size: 1.2rem;
+    }
+}
+</style>
+{% endblock %}

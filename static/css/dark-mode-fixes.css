@@ -1,0 +1,3506 @@
+/* Dark Mode Fixes & Enhancements */
+/* Modern, Uyumlu ve Kaliteli Tasarım */
+
+/* ===================================
+   DARK MODE BODY CLASS SUPPORT
+   =================================== */
+
+/* Dark mode body class and data-theme attribute support */
+body.dark-mode,
+body[data-theme="dark"],
+html[data-theme="dark"] body {
+    --primary-color: #0056b3;
+    --primary-light: #3b82f6;
+    --primary-dark: #1e3a8a;
+    --accent-color: #06b6d4;
+    --accent-light: #22d3ee;
+    --accent-dark: #0891b2;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #06b6d4;
+    --dark-text: #f1f5f9;
+    --gray-text: #cbd5e1;
+    --light-text: #94a3b8;
+    --white: #1e293b;
+    --light-bg: #334155;
+    --border-color: #475569;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --gradient-primary: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%);
+    --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+    background-color: #0f172a;
+    color: #f1f5f9;
+}
+
+body.dark-mode .main-header,
+[data-theme="dark"] .main-header {
+    background: #1e293b;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .nav-link,
+[data-theme="dark"] .nav-link {
+    color: #f1f5f9;
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .nav-link.active,
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+    color: #0056b3;
+}
+
+/* Dark Mode Text Visibility */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode p {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .section-header h2 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .section-header p {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .hero-title {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .hero-subtitle {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .stat-label {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .stat-number {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .service-card h3 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .service-card p {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .contact-details h4,
+[data-theme="dark"] .contact-details h4 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .contact-details p,
+[data-theme="dark"] .contact-details p {
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .contact-details a,
+[data-theme="dark"] .contact-details a {
+    color: #60a5fa !important;
+    font-weight: 600 !important;
+}
+
+body.dark-mode .contact-details a:hover,
+[data-theme="dark"] .contact-details a:hover {
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .working-hours h3 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .emergency-content h4,
+[data-theme="dark"] .emergency-content h4 {
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .emergency-content p,
+[data-theme="dark"] .emergency-content p {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .faq-question h4,
+[data-theme="dark"] .faq-question h4 {
+    color: #f1f5f9 !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .faq-answer p,
+[data-theme="dark"] .faq-answer p {
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .faq-question i,
+[data-theme="dark"] .faq-question i {
+    color: var(--primary-light) !important;
+}
+
+/* Dark Mode Cards and Containers */
+body.dark-mode .service-card {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .contact-item {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .working-hours {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .faq-item {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .contact-form-section {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .auth-card {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .stat-card {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .info-box {
+    background: #334155 !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .password-requirements {
+    background: #334155 !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .success-info {
+    background: #334155 !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .next-steps {
+    background: #334155 !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .logo a {
+    color: #f1f5f9;
+}
+
+body.dark-mode .dark-mode-toggle {
+    border-color: #475569;
+    color: #f1f5f9;
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    border-color: #3b82f6;
+    background: #334155;
+}
+
+/* Dark Mode Button Styles - Normal mode ile aynı (Mavi > Turuncu) */
+body.dark-mode .btn-primary:not(.dark-mode-toggle):not(.admin-dark-mode-toggle),
+[data-theme="dark"] .btn-primary:not(.dark-mode-toggle):not(.admin-dark-mode-toggle) {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+body.dark-mode .btn-primary:not(.dark-mode-toggle):not(.admin-dark-mode-toggle):hover,
+[data-theme="dark"] .btn-primary:not(.dark-mode-toggle):not(.admin-dark-mode-toggle):hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Dark mode'da tüm butonlar için mavi > turuncu geçişi */
+body.dark-mode .btn-light,
+body.dark-mode .btn-outline-light,
+body.dark-mode .btn-outline,
+body.dark-mode .btn-secondary,
+body.dark-mode input[type="submit"],
+[data-theme="dark"] .btn-light,
+[data-theme="dark"] .btn-outline-light,
+[data-theme="dark"] .btn-outline,
+[data-theme="dark"] .btn-secondary,
+[data-theme="dark"] input[type="submit"] {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+body.dark-mode .btn-light:hover,
+body.dark-mode .btn-outline-light:hover,
+body.dark-mode .btn-outline:hover,
+body.dark-mode .btn-secondary:hover,
+body.dark-mode input[type="submit"]:hover,
+[data-theme="dark"] .btn-light:hover,
+[data-theme="dark"] .btn-outline-light:hover,
+[data-theme="dark"] .btn-outline:hover,
+[data-theme="dark"] .btn-secondary:hover,
+[data-theme="dark"] input[type="submit"]:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Dark mode'da link butonları - Normal mode ile aynı (Mavi > Turuncu) */
+body.dark-mode .btn-link,
+[data-theme="dark"] .btn-link {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    border: none !important;
+    color: white !important;
+    text-decoration: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.375rem !important;
+}
+
+body.dark-mode .btn-link:hover,
+[data-theme="dark"] .btn-link:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* Dark mode'da stat card linkler - Normal mode ile aynı (Mavi > Turuncu) */
+body.dark-mode .stat-card-link,
+[data-theme="dark"] .stat-card-link {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+body.dark-mode .stat-card-link:hover,
+[data-theme="dark"] .stat-card-link:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+}
+
+/* Dark mode'da action butonları - Normal mode ile aynı (Mavi > Turuncu) */
+body.dark-mode .action-btn,
+[data-theme="dark"] .action-btn {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .action-btn:hover,
+[data-theme="dark"] .action-btn:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* ===================================
+   DARK MODE - Metin Görünürlüğü İyileştirmeleri
+   =================================== */
+
+/* Paragraf ve açıklama metinleri */
+body.dark-mode p,
+body.dark-mode .team-bio,
+body.dark-mode .service-detail,
+body.dark-mode .service-detail p,
+body.dark-mode .empty-state,
+body.dark-mode .empty-state p {
+    color: #e2e8f0 !important;
+}
+
+/* Başlıklar */
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5 {
+    color: #f1f5f9 !important;
+}
+
+/* Sidebar widget'ları */
+body.dark-mode .sidebar-widget,
+body.dark-mode .sidebar-widget h3,
+body.dark-mode .sidebar-widget p,
+body.dark-mode .sidebar-widget a {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .sidebar-widget {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Contact form section - Dashboard Style */
+body.dark-mode .contact-form-section input,
+body.dark-mode .contact-form-section textarea,
+body.dark-mode .contact-form-section select {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .contact-form-section input:focus,
+body.dark-mode .contact-form-section textarea:focus,
+body.dark-mode .contact-form-section select:focus {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
+}
+
+body.dark-mode .contact-form-section input::placeholder,
+body.dark-mode .contact-form-section textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .contact-form-section select option {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+/* Stat label */
+body.dark-mode .stat-label {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .stat-number {
+    color: #f1f5f9 !important;
+}
+
+/* Service item */
+body.dark-mode .service-item,
+body.dark-mode .service-item h3,
+body.dark-mode .service-item h4,
+body.dark-mode .service-item p {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .service-item {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Firm info */
+body.dark-mode .firm-info,
+body.dark-mode .firm-info h3,
+body.dark-mode .firm-info h4,
+body.dark-mode .firm-info p,
+body.dark-mode .firm-info span {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .firm-info {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* System status */
+body.dark-mode .system-status,
+body.dark-mode .system-status h3,
+body.dark-mode .system-status p,
+body.dark-mode .system-status span {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .system-status {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Form labels ve inputs */
+body.dark-mode label,
+body.dark-mode input[name="action"],
+body.dark-mode select[name="action"],
+body.dark-mode select[name="assigned_admin"],
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode input[type="tel"],
+body.dark-mode textarea,
+body.dark-mode select {
+    color: #f1f5f9 !important;
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Option elements */
+body.dark-mode option {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+/* Empty state */
+body.dark-mode .empty-state {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Search form */
+body.dark-mode .search-form h3,
+body.dark-mode .search-form label {
+    color: #f1f5f9 !important;
+}
+
+/* Table cells */
+body.dark-mode td,
+body.dark-mode th {
+    color: #f1f5f9 !important;
+}
+
+/* Links in dark mode */
+body.dark-mode a:not(.btn):not(.dark-mode-toggle) {
+    color: #60a5fa !important;
+}
+
+body.dark-mode a:not(.btn):not(.dark-mode-toggle):hover {
+    color: #93c5fd !important;
+}
+
+/* ===================================
+   DARK MODE - Card ve Özel Bölümler
+   =================================== */
+
+/* Value Cards - Hakkımızda sayfası */
+body.dark-mode .value-card,
+body.dark-mode .value-card h3,
+body.dark-mode .value-card p {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .value-card p {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .value-icon {
+    background: rgba(245, 158, 11, 0.1) !important;
+    color: #f59e0b !important;
+}
+
+body.dark-mode .value-icon i {
+    color: #f59e0b !important;
+}
+
+/* Team Cards - Takım üyeleri */
+body.dark-mode .team-card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .team-card .team-info h3,
+body.dark-mode .team-card .team-title {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .team-card .team-bio {
+    color: #e2e8f0 !important;
+}
+
+/* Service Detail - Hizmet detayları */
+body.dark-mode .service-detail {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .service-detail h2,
+body.dark-mode .service-detail h3,
+body.dark-mode .service-detail h4 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .service-detail p,
+body.dark-mode .service-detail li {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .service-header {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .service-icon {
+    background: rgba(245, 158, 11, 0.1) !important;
+    color: #f59e0b !important;
+}
+
+body.dark-mode .service-icon i {
+    color: #f59e0b !important;
+}
+
+body.dark-mode .service-content {
+    background: #1e293b !important;
+}
+
+body.dark-mode .service-description {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .service-features {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .feature-list {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .feature-list h4 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .feature-list ul li {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .service-process {
+    background: #1e293b !important;
+}
+
+body.dark-mode .process-steps {
+    background: transparent !important;
+}
+
+body.dark-mode .process-step {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .step-number {
+    background: rgba(245, 158, 11, 0.2) !important;
+    color: #f59e0b !important;
+    border-color: #f59e0b !important;
+}
+
+body.dark-mode .step-content h4 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .step-content p {
+    color: #cbd5e1 !important;
+}
+
+/* ===================================
+   DARK MODE - Form Input Düzeltmeleri
+   =================================== */
+
+/* Tüm input, select ve textarea alanları için yazma sırasında görünürlük */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode input[type="tel"],
+body.dark-mode input[type="url"],
+body.dark-mode input[type="search"],
+body.dark-mode input[type="date"],
+body.dark-mode input[type="time"],
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+    caret-color: #f59e0b !important; /* Cursor rengi */
+}
+
+/* Focus durumunda da görünürlük */
+body.dark-mode input[type="text"]:focus,
+body.dark-mode input[type="email"]:focus,
+body.dark-mode input[type="password"]:focus,
+body.dark-mode input[type="number"]:focus,
+body.dark-mode input[type="tel"]:focus,
+body.dark-mode input[type="url"]:focus,
+body.dark-mode input[type="search"]:focus,
+body.dark-mode input[type="date"]:focus,
+body.dark-mode input[type="time"]:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #f59e0b !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2) !important;
+}
+
+/* Placeholder renkleri */
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+/* Select dropdown seçenekleri */
+body.dark-mode select option {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode select option:checked {
+    background-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+/* Admin select[name="action"] ve diğer action select'leri */
+body.dark-mode select[name="action"],
+body.dark-mode select[name="assigned_admin"],
+body.dark-mode .actions select {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode select[name="action"] option,
+body.dark-mode select[name="assigned_admin"] option,
+body.dark-mode .actions select option {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+/* Django admin için ek stiller */
+body.dark-mode .changelist-form-container {
+    background: #0f172a !important;
+}
+
+body.dark-mode .actions label {
+    color: #f1f5f9 !important;
+}
+
+/* Disabled input'lar */
+body.dark-mode input:disabled,
+body.dark-mode textarea:disabled,
+body.dark-mode select:disabled {
+    background-color: #0f172a !important;
+    color: #64748b !important;
+    border-color: #1e293b !important;
+    cursor: not-allowed !important;
+}
+
+/* ===================================
+   DARK MODE - CTA Buttons ve Hero Bölümleri
+   =================================== */
+
+/* CTA Buttons container - Hero bölümü */
+body.dark-mode .cta-buttons {
+    background: transparent !important;
+}
+
+/* Hero section arka planı ve içerik */
+body.dark-mode .hero-section,
+body.dark-mode .hero,
+body.dark-mode .hero-content {
+    background-color: #0f172a !important;
+}
+
+/* Hero başlık ve metin renkleri */
+body.dark-mode .hero-title {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .hero-title .highlight {
+    color: #f59e0b !important;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+body.dark-mode .hero-subtitle {
+    color: #cbd5e1 !important;
+}
+
+/* Hero buttons container */
+body.dark-mode .hero-buttons {
+    background: transparent !important;
+}
+
+/* Hero image düzenleme */
+body.dark-mode .hero-image {
+    opacity: 0.8;
+    filter: brightness(0.85) contrast(1.1);
+}
+
+body.dark-mode .hero-image img {
+    border: 2px solid #334155;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero container genel ayarlar */
+body.dark-mode .hero .container {
+    background: transparent !important;
+}
+
+/* ===================================
+   CTA SECTION - Normal ve Dark Mode
+   =================================== */
+
+/* CTA Section - Normal mode gradient mavi */
+.cta-section,
+.cta-section.bg-primary {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    color: white !important;
+}
+
+.cta-section h2,
+.cta-section .cta-description {
+    color: white !important;
+}
+
+/* CTA Section - Dark mode */
+body.dark-mode .cta-section,
+body.dark-mode .cta-section.bg-primary {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+}
+
+/* ===================================
+   CONTACT DETAILS - Dashboard Uyumlu Dark Mode
+   =================================== */
+
+/* Contact details - Normal mode */
+.contact-item,
+.contact-item .contact-details h4,
+.contact-item .contact-details a,
+.contact-item .contact-details p {
+    color: #212529 !important;
+}
+
+.contact-item .contact-icon {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    color: white !important;
+}
+
+.contact-item .contact-icon i {
+    color: white !important;
+}
+
+/* Contact details - Dark mode (Dashboard Standartları) */
+body.dark-mode .contact-item {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .contact-item .contact-details h4 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .contact-item .contact-details p {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .contact-item .contact-details a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .contact-item .contact-details a:hover {
+    color: #93c5fd !important;
+}
+
+body.dark-mode .contact-item .contact-icon {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: #0f172a !important;
+}
+
+body.dark-mode .contact-item .contact-icon i {
+    color: #0f172a !important;
+}
+
+/* Working hours - Dashboard Style */
+body.dark-mode .working-hours {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .working-hours h3 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .hour-item {
+    color: #94a3b8 !important;
+    border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .hour-item span {
+    color: #f1f5f9 !important;
+}
+
+/* Emergency contact - Dashboard Compatible */
+body.dark-mode .emergency-contact {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+body.dark-mode .emergency-content h4 {
+    color: #ffffff !important;
+}
+
+body.dark-mode .emergency-content p {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Contact Form Section - Dashboard Style */
+body.dark-mode .contact-form-section {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .contact-form-section h2,
+[data-theme="dark"] .contact-form-section h2 {
+    color: var(--dark-text) !important;
+    font-weight: 700 !important;
+}
+
+body.dark-mode .contact-form-section .form-description,
+body.dark-mode .contact-form-section p,
+[data-theme="dark"] .contact-form-section .form-description,
+[data-theme="dark"] .contact-form-section p {
+    color: var(--gray-text) !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .contact-form-section label,
+[data-theme="dark"] .contact-form-section label {
+    color: var(--dark-text) !important;
+    font-weight: 600 !important;
+}
+
+/* Contact Info Section - Dashboard Style */
+body.dark-mode .contact-info-section h2,
+[data-theme="dark"] .contact-info-section h2 {
+    color: var(--dark-text) !important;
+    font-weight: 700 !important;
+}
+
+/* Map Section - Dashboard Style */
+body.dark-mode .map-section,
+[data-theme="dark"] .map-section {
+    background: var(--light-bg) !important;
+}
+
+body.dark-mode .section-title,
+[data-theme="dark"] .section-title {
+    color: var(--dark-text) !important;
+    font-weight: 700 !important;
+}
+
+/* FAQ Section - Dashboard Style */
+body.dark-mode .faq-section,
+[data-theme="dark"] .faq-section {
+    background: var(--light-bg) !important;
+}
+
+body.dark-mode .faq-item,
+[data-theme="dark"] .faq-item {
+    background: var(--white) !important;
+    border-color: var(--border-color) !important;
+}
+
+body.dark-mode .faq-question,
+[data-theme="dark"] .faq-question {
+    background: transparent !important;
+}
+
+body.dark-mode .faq-question:hover,
+[data-theme="dark"] .faq-question:hover {
+    background: var(--light-bg) !important;
+}
+
+body.dark-mode .faq-question h4 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .faq-question i {
+    color: #f59e0b !important;
+}
+
+body.dark-mode .faq-question:hover {
+    background: rgba(245, 158, 11, 0.05) !important;
+}
+
+body.dark-mode .faq-answer p {
+    color: #94a3b8 !important;
+}
+
+/* Tümünü Gör butonları - Normal mode ile aynı: mavi > turuncu */
+body.dark-mode .btn-outline.btn-sm,
+body.dark-mode .btn-outline,
+[data-theme="dark"] .btn-outline.btn-sm,
+[data-theme="dark"] .btn-outline {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+body.dark-mode .btn-outline.btn-sm:hover,
+body.dark-mode .btn-outline:hover,
+[data-theme="dark"] .btn-outline.btn-sm:hover,
+[data-theme="dark"] .btn-outline:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+}
+
+/* ===================================
+   DARK MODE - Feature Lists Dikey Ayırıcı
+   =================================== */
+
+/* Feature list dikey ayırıcıyı kaldır veya yumuşat */
+body.dark-mode .service-features {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .feature-list {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    border-left: none !important;
+    border-right: 2px solid #334155 !important;
+}
+
+body.dark-mode .feature-list:last-child {
+    border-right: none !important;
+}
+
+body.dark-mode .feature-list:first-child {
+    border-right: 2px solid #334155 !important;
+}
+
+/* ===================================
+   DARK MODE - Yönetici Panel Düzeltmeleri
+   =================================== */
+
+/* Section card'lar */
+body.dark-mode .section-card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .section-header {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .section-header h3 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .section-body {
+    background: #1e293b !important;
+}
+
+body.dark-mode .quick-actions {
+    background: transparent !important;
+}
+
+/* Dashboard istatistikleri */
+body.dark-mode .stats-grid,
+body.dark-mode .dashboard-grid {
+    background: transparent !important;
+}
+
+body.dark-mode .stat-card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Info boxes */
+body.dark-mode .info-box {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .info-box h4 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .info-box p,
+body.dark-mode .info-box span {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .btn-primary:not(.dark-mode-toggle):not(.admin-dark-mode-toggle):active,
+body.dark-mode .btn-primary:not(.dark-mode-toggle):not(.admin-dark-mode-toggle):focus {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0056b3 100%) !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .btn-secondary {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    border: none !important;
+    color: #0f172a !important;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .btn-outline {
+    background: transparent !important;
+    border: 2px solid #f59e0b !important;
+    color: #f59e0b !important;
+}
+
+body.dark-mode .btn-outline:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    border-color: #0056b3 !important;
+    color: #f1f5f9 !important;
+}
+
+/* Dark mode toggle butonları özel stil */
+body.dark-mode .dark-mode-toggle,
+body.dark-mode .admin-dark-mode-toggle {
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .dark-mode-toggle:hover,
+body.dark-mode .admin-dark-mode-toggle:hover {
+    border-color: #0056b3 !important;
+    background: rgba(0, 86, 179, 0.2) !important;
+}
+
+/* ===================================
+   FORM ELEMENTS - Dark Mode Uyumlu (Gelişmiş)
+   =================================== */
+
+/* Input, Textarea - Dark Mode */
+body.dark-mode input:not([type="checkbox"]):not([type="radio"]),
+body.dark-mode textarea,
+body.dark-mode .form-control,
+[data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="dark"] textarea,
+[data-theme="dark"] .form-control {
+    background-color: var(--white) !important;
+    color: var(--dark-text) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: var(--gray-text) !important;
+    opacity: 0.8;
+}
+
+/* Select Box - Dark Mode - İyileştirilmiş */
+body.dark-mode select,
+body.dark-mode select.form-control,
+[data-theme="dark"] select,
+[data-theme="dark"] select.form-control {
+    background-color: var(--white) !important;
+    color: var(--dark-text) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 2.5rem 0.75rem 1rem !important;
+    min-height: 44px !important;
+    line-height: 1.5 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    cursor: pointer !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23f59e0b' d='M8 11L3 6h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 14px !important;
+}
+
+/* Selected Option Visibility - İyileştirilmiş */
+body.dark-mode select option,
+[data-theme="dark"] select option {
+    background-color: var(--white) !important;
+    color: var(--dark-text) !important;
+    padding: 0.75rem 1rem !important;
+    min-height: 40px !important;
+    line-height: 1.6 !important;
+}
+
+body.dark-mode select option:checked,
+body.dark-mode select option:hover,
+[data-theme="dark"] select option:checked,
+[data-theme="dark"] select option:hover {
+    background-color: var(--light-bg) !important;
+    color: var(--primary-light) !important;
+    font-weight: 600 !important;
+}
+
+/* Light mode select arrow */
+select,
+select.form-control {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%230056b3' d='M8 11L3 6h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 14px !important;
+    padding-right: 2.5rem !important;
+    cursor: pointer !important;
+}
+
+/* Focus States - Enhanced */
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus,
+body.dark-mode .form-control:focus,
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] .form-control:focus {
+    border-color: var(--secondary-color) !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2) !important;
+    background-color: var(--white) !important;
+    outline: none !important;
+}
+
+/* ===================================
+   BUTTONS - Modern & Uyumlu
+   =================================== */
+
+/* Primary Button - NORMAL MODE: Mavi → Turuncu (hover) */
+.btn,
+.btn-primary,
+button[type="submit"],
+input[type="submit"] {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    color: white !important;
+    border: none;
+    padding: 0.875rem 1.75rem;
+    border-radius: var(--border-radius-lg);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.btn:hover,
+.btn-primary:hover,
+button[type="submit"]:hover,
+input[type="submit"]:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4) !important;
+}
+
+.btn:active,
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background: var(--gradient-secondary);
+    color: white !important;
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-secondary);
+}
+
+/* Outline Button - Gradient Style */
+.btn-outline {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border: none;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline:hover {
+    background: var(--gradient-secondary);
+    color: var(--white) !important;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .btn-outline {
+    background: var(--gradient-primary);
+    color: var(--white);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+    background: var(--gradient-secondary);
+    color: var(--white) !important;
+}
+
+/* Danger Button */
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.btn-danger:hover {
+    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+}
+
+/* Success Button */
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.btn-success:hover {
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+}
+
+/* Icon in Buttons */
+.btn i,
+.btn-primary i,
+.btn-secondary i {
+    font-size: 1.1rem;
+}
+
+/* ===================================
+   CARDS - Dark Mode
+   =================================== */
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .section-card,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .blog-card {
+    background: var(--white);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .section-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===================================
+   SECTION SPACING - Modern
+   =================================== */
+
+/* Section Headers */
+.section-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.section-header h2,
+.section-header h3 {
+    color: var(--dark-text);
+    font-weight: 700;
+    margin: 0;
+}
+
+[data-theme="dark"] .section-header {
+    border-bottom-color: var(--primary-light);
+}
+
+/* Section Body */
+.section-body {
+    padding: 1.5rem 0;
+}
+
+/* Section Divider */
+.section-divider {
+    height: 3px;
+    background: var(--gradient-primary);
+    margin: 3rem 0;
+    border-radius: 2px;
+}
+
+/* ===================================
+   TEXT COLORS - Dark Mode
+   =================================== */
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+    color: var(--dark-text) !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] li,
+[data-theme="dark"] span:not(.badge):not(.status-badge),
+[data-theme="dark"] label {
+    color: var(--dark-text) !important;
+}
+
+[data-theme="dark"] a:not(.btn):not(.button):not(.nav-link) {
+    color: var(--primary-light) !important;
+}
+
+[data-theme="dark"] a:not(.btn):not(.button):not(.nav-link):hover {
+    color: var(--accent-color) !important;
+}
+
+/* Button text always white in dark mode */
+[data-theme="dark"] .btn,
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] .btn-secondary,
+[data-theme="dark"] .btn-success,
+[data-theme="dark"] .btn-danger,
+[data-theme="dark"] .btn-warning,
+[data-theme="dark"] .btn-info,
+[data-theme="dark"] .action-btn {
+    color: white !important;
+}
+
+[data-theme="dark"] .btn span,
+[data-theme="dark"] .btn i,
+[data-theme="dark"] .action-btn span,
+[data-theme="dark"] .action-btn i {
+    color: white !important;
+}
+
+/* ===================================
+   FORM LABELS - Enhanced
+   =================================== */
+
+label,
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+}
+
+.required label::after,
+label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+[data-theme="dark"] label,
+[data-theme="dark"] .form-label {
+    color: var(--dark-text);
+}
+
+/* ===================================
+   ALERTS & MESSAGES - Modern
+   =================================== */
+
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+}
+
+.alert i {
+    font-size: 1.5rem;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+    border-left: 4px solid var(--success-color);
+}
+
+.alert-error,
+.alert-danger {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    border-left: 4px solid var(--danger-color);
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border-left: 4px solid var(--warning-color);
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+    color: #155e75;
+    border-left: 4px solid var(--info-color);
+}
+
+/* Dark Mode Alerts */
+[data-theme="dark"] .alert {
+    box-shadow: var(--shadow-md);
+}
+
+/* ===================================
+   TABLES - Dark Mode
+   =================================== */
+
+[data-theme="dark"] table {
+    background: var(--white);
+}
+
+[data-theme="dark"] thead th {
+    background: var(--white);
+    color: var(--dark-text);
+    border-bottom: 2px solid var(--border-color);
+}
+
+[data-theme="dark"] tbody td {
+    color: var(--dark-text);
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] tbody tr:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+/* ===================================
+   NAVBAR - Dark Mode Text
+   =================================== */
+
+[data-theme="dark"] .navbar {
+    background: var(--gradient-primary);
+}
+
+[data-theme="dark"] .navbar a {
+    color: white !important;
+}
+
+[data-theme="dark"] .navbar .nav-link:hover {
+    color: var(--accent-color) !important;
+}
+
+/* ===================================
+   BADGES - Modern
+   =================================== */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.badge-primary {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.badge-secondary {
+    background: var(--gradient-secondary);
+    color: white;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+.badge-info {
+    background: var(--gradient-accent);
+    color: white;
+}
+
+/* ===================================
+   BREADCRUMBS - Dark Mode
+   =================================== */
+
+[data-theme="dark"] .breadcrumb {
+    background: var(--white);
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .breadcrumb a {
+    color: var(--primary-light);
+}
+
+/* ===================================
+   DROPDOWN - Dark Mode
+   =================================== */
+
+[data-theme="dark"] .dropdown-menu {
+    background: var(--white);
+    border-color: var(--border-color);
+    box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary-light);
+}
+
+/* ===================================
+   PAGINATION - Dark Mode
+   =================================== */
+
+[data-theme="dark"] .pagination {
+    gap: 0.5rem;
+}
+
+[data-theme="dark"] .page-link {
+    background: var(--white);
+    color: var(--dark-text);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .page-link:hover {
+    background: var(--primary-light);
+    color: white;
+    border-color: var(--primary-light);
+}
+
+[data-theme="dark"] .page-item.active .page-link {
+    background: var(--gradient-primary);
+    border-color: var(--primary-color);
+}
+
+/* ===================================
+   MODAL - Dark Mode
+   =================================== */
+
+[data-theme="dark"] .modal-content {
+    background: var(--white);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-footer {
+    border-top-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-title {
+    color: var(--dark-text);
+}
+
+/* ===================================
+   TOOLTIPS - Modern
+   =================================== */
+
+.tooltip {
+    position: relative;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+}
+
+/* ===================================
+   SPACING UTILITIES - Modern
+   =================================== */
+
+.mb-1 { margin-bottom: var(--spacing-1); }
+.mb-2 { margin-bottom: var(--spacing-2); }
+.mb-3 { margin-bottom: var(--spacing-3); }
+.mb-4 { margin-bottom: var(--spacing-4); }
+.mb-5 { margin-bottom: var(--spacing-5); }
+.mb-6 { margin-bottom: var(--spacing-6); }
+.mb-8 { margin-bottom: var(--spacing-8); }
+
+.mt-1 { margin-top: var(--spacing-1); }
+.mt-2 { margin-top: var(--spacing-2); }
+.mt-3 { margin-top: var(--spacing-3); }
+.mt-4 { margin-top: var(--spacing-4); }
+.mt-5 { margin-top: var(--spacing-5); }
+.mt-6 { margin-top: var(--spacing-6); }
+.mt-8 { margin-top: var(--spacing-8); }
+
+.p-1 { padding: var(--spacing-1); }
+.p-2 { padding: var(--spacing-2); }
+.p-3 { padding: var(--spacing-3); }
+.p-4 { padding: var(--spacing-4); }
+.p-5 { padding: var(--spacing-5); }
+.p-6 { padding: var(--spacing-6); }
+.p-8 { padding: var(--spacing-8); }
+
+.gap-1 { gap: var(--spacing-1); }
+.gap-2 { gap: var(--spacing-2); }
+.gap-3 { gap: var(--spacing-3); }
+.gap-4 { gap: var(--spacing-4); }
+.gap-5 { gap: var(--spacing-5); }
+.gap-6 { gap: var(--spacing-6); }
+
+/* ===================================
+   TRANSITIONS - Smooth
+   =================================== */
+
+* {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.3s;
+}
+
+button, a, input, select, textarea {
+    transition: all 0.3s ease;
+}
+
+/* ===================================
+   LOGIN PAGE - Dark Mode (Dashboard Uyumlu)
+   =================================== */
+
+/* Auth Container - Dashboard Background */
+body.dark-mode .auth-container {
+    background: #0f172a !important;
+}
+
+/* Auth Card - Dashboard Card Style */
+body.dark-mode .auth-card {
+    background: #1e293b !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #334155;
+}
+
+/* Auth Header - Dashboard Text Colors */
+body.dark-mode .auth-header h1 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .auth-header p {
+    color: #94a3b8 !important;
+}
+
+/* Auth Form Labels - Dashboard Style */
+body.dark-mode .auth-form .form-label {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .auth-form .form-label i {
+    color: #f59e0b !important;
+}
+
+/* Auth Form Inputs - Dashboard Input Style */
+body.dark-mode .auth-form .form-control {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .auth-form .form-control:focus {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
+    background: #1e293b !important;
+}
+
+body.dark-mode .auth-form .form-control::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Auth Form Options - Dashboard Text */
+body.dark-mode .form-options {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .checkbox-label {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .forgot-password {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .forgot-password:hover {
+    color: #93c5fd !important;
+}
+
+/* Auth Footer - Dashboard Border */
+body.dark-mode .auth-footer {
+    border-top-color: #334155 !important;
+}
+
+body.dark-mode .auth-footer p {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .auth-footer a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .auth-footer a:hover {
+    color: #93c5fd !important;
+}
+
+/* Auth Info - Dashboard Background */
+body.dark-mode .auth-info {
+    background: transparent !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .info-content h2 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .info-content p {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .feature-item h4 {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .feature-item p {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .feature-item i {
+    color: #f59e0b !important;
+}
+
+/* Alert Dark Mode - Dashboard Style */
+body.dark-mode .alert {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #fca5a5 !important;
+    border-left-color: #ef4444 !important;
+}
+
+body.dark-mode .alert-danger {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #fca5a5 !important;
+    border-left-color: #ef4444 !important;
+}
+
+/* Captcha Dark Mode */
+body.dark-mode .captcha {
+    filter: brightness(1.2) contrast(0.9);
+}
+
+/* ===================================
+   SCROLLBAR - Dark Mode
+   =================================== */
+
+/* Light Mode Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    border-radius: 10px;
+    border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+}
+
+/* Dark Mode Scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    border-color: #1e293b;
+}
+
+/* ===================================
+   LOADING STATES
+   =================================== */
+
+.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 3px solid var(--primary-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===================================
+   ADMIN PANEL - Dashboard Uyumlu Dark Mode
+   =================================== */
+
+/* Admin Body - Dashboard Background */
+body.dark-mode.admin-page,
+[data-theme="dark"].admin-page,
+body[data-theme="dark"].admin-page {
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
+}
+
+/* Admin Container - Dashboard Background */
+body.dark-mode #container,
+[data-theme="dark"] #container {
+    background: #0f172a !important;
+}
+
+/* Admin Content - Dashboard Card Style */
+body.dark-mode #content,
+[data-theme="dark"] #content {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode #content-main,
+[data-theme="dark"] #content-main {
+    background: transparent !important;
+    color: #f1f5f9 !important;
+}
+
+/* Admin Headers - Dashboard Text Colors */
+body.dark-mode #content h1,
+body.dark-mode #content h2,
+body.dark-mode #content h3,
+body.dark-mode #content h4,
+body.dark-mode #content h5,
+body.dark-mode #content h6,
+[data-theme="dark"] #content h1,
+[data-theme="dark"] #content h2,
+[data-theme="dark"] #content h3,
+[data-theme="dark"] #content h4,
+[data-theme="dark"] #content h5,
+[data-theme="dark"] #content h6 {
+    color: #f1f5f9 !important;
+}
+
+/* Admin Text Elements - Dashboard Gray Text */
+body.dark-mode #content p,
+body.dark-mode #content span:not(.select2-selection__arrow),
+body.dark-mode #content div:not(.button):not(.select2-container),
+body.dark-mode #content li,
+[data-theme="dark"] #content p,
+[data-theme="dark"] #content span:not(.select2-selection__arrow),
+[data-theme="dark"] #content div:not(.button):not(.select2-container),
+[data-theme="dark"] #content li {
+    color: #94a3b8 !important;
+}
+
+/* Admin Labels - Dashboard White Text */
+body.dark-mode #content label,
+body.dark-mode label,
+[data-theme="dark"] #content label,
+[data-theme="dark"] label {
+    color: #f1f5f9 !important;
+}
+
+/* Admin strong tags */
+body.dark-mode #content strong,
+[data-theme="dark"] #content strong {
+    color: #f59e0b !important;
+}
+
+/* Admin Links Dark Mode */
+body.dark-mode #content a:not(.button):not(.btn),
+[data-theme="dark"] #content a:not(.button):not(.btn) {
+    color: #60a5fa !important;
+}
+
+body.dark-mode #content a:not(.button):not(.btn):hover,
+[data-theme="dark"] #content a:not(.button):not(.btn):hover {
+    color: #93c5fd !important;
+}
+
+/* Admin Module Dark Mode */
+body.dark-mode .module,
+[data-theme="dark"] .module {
+    background: transparent !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .module h2,
+body.dark-mode .module h3,
+body.dark-mode .module caption,
+[data-theme="dark"] .module h2,
+[data-theme="dark"] .module h3,
+[data-theme="dark"] .module caption {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: #0f172a !important;
+}
+
+/* Admin Table - Dashboard Style */
+body.dark-mode table,
+[data-theme="dark"] table {
+    background: transparent !important;
+}
+
+body.dark-mode thead th,
+[data-theme="dark"] thead th {
+    background: linear-gradient(135deg, #0f172a 0%, #1a202e 100%) !important;
+    color: #f1f5f9 !important;
+    border-bottom-color: #f59e0b !important;
+}
+
+body.dark-mode tbody td,
+[data-theme="dark"] tbody td {
+    color: #94a3b8 !important;
+    border-bottom-color: #334155 !important;
+}
+
+body.dark-mode tbody th,
+[data-theme="dark"] tbody th {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode tbody tr:hover,
+[data-theme="dark"] tbody tr:hover {
+    background: rgba(245, 158, 11, 0.05) !important;
+}
+
+body.dark-mode tbody th a,
+[data-theme="dark"] tbody th a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode tbody th a:hover,
+[data-theme="dark"] tbody th a:hover {
+    color: #93c5fd !important;
+}
+
+/* Admin Form Elements Dark Mode */
+body.dark-mode .form-row,
+[data-theme="dark"] .form-row {
+    background: transparent !important;
+    border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .form-row label,
+[data-theme="dark"] .form-row label {
+    color: #f1f5f9 !important;
+}
+
+/* Admin Input Fields - Dashboard Style */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="url"],
+body.dark-mode input[type="number"],
+body.dark-mode input[type="tel"],
+body.dark-mode input[type="date"],
+body.dark-mode input[type="time"],
+body.dark-mode textarea,
+body.dark-mode select,
+body.dark-mode .vTextField,
+body.dark-mode .vURLField,
+body.dark-mode .vLargeTextField,
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] input[type="url"],
+[data-theme="dark"] input[type="number"],
+[data-theme="dark"] input[type="tel"],
+[data-theme="dark"] input[type="date"],
+[data-theme="dark"] input[type="time"],
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .vTextField,
+[data-theme="dark"] .vURLField,
+[data-theme="dark"] .vLargeTextField {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus,
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Admin Select Options Dark Mode */
+body.dark-mode select option,
+[data-theme="dark"] select option {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode select option:checked,
+[data-theme="dark"] select option:checked {
+    background: #334155 !important;
+    color: #fbbf24 !important;
+}
+
+/* Admin Breadcrumbs Dark Mode */
+body.dark-mode .breadcrumbs,
+[data-theme="dark"] .breadcrumbs {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .breadcrumbs a,
+[data-theme="dark"] .breadcrumbs a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .breadcrumbs a:hover,
+[data-theme="dark"] .breadcrumbs a:hover {
+    color: #93c5fd !important;
+}
+
+/* Admin Actions Dark Mode */
+body.dark-mode .actions,
+[data-theme="dark"] .actions {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .actions label,
+[data-theme="dark"] .actions label {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .actions select,
+[data-theme="dark"] .actions select {
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .action-counter,
+[data-theme="dark"] .action-counter {
+    color: #94a3b8 !important;
+}
+
+/* Admin Submit Row Dark Mode */
+body.dark-mode .submit-row,
+[data-theme="dark"] .submit-row {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border-top-color: #334155 !important;
+}
+
+/* Admin Buttons Dark Mode - Normal mode ile aynı (Mavi > Turuncu) */
+body.dark-mode .button:not(.dark-mode-toggle):not(.theme-toggle),
+body.dark-mode input[type="submit"],
+body.dark-mode input[type="button"],
+body.dark-mode button:not(.theme-toggle),
+[data-theme="dark"] .button:not(.dark-mode-toggle):not(.theme-toggle),
+[data-theme="dark"] input[type="submit"],
+[data-theme="dark"] input[type="button"],
+[data-theme="dark"] button:not(.theme-toggle) {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+body.dark-mode .button:not(.dark-mode-toggle):not(.theme-toggle):hover,
+body.dark-mode input[type="submit"]:hover,
+body.dark-mode input[type="button"]:hover,
+body.dark-mode button:not(.theme-toggle):hover,
+[data-theme="dark"] .button:not(.dark-mode-toggle):not(.theme-toggle):hover,
+[data-theme="dark"] input[type="submit"]:hover,
+[data-theme="dark"] input[type="button"]:hover,
+[data-theme="dark"] button:not(.theme-toggle):hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+}
+
+/* Admin Filter Dark Mode */
+body.dark-mode #changelist-filter,
+[data-theme="dark"] #changelist-filter {
+    background: rgba(30, 41, 59, 0.5) !important;
+    border-color: #334155 !important;
+    padding: 20px !important;
+    border-radius: 12px !important;
+}
+
+body.dark-mode #changelist-filter h2,
+body.dark-mode #changelist-filter h3,
+[data-theme="dark"] #changelist-filter h2,
+[data-theme="dark"] #changelist-filter h3 {
+    color: #0f172a !important;
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    border-bottom-color: rgba(15, 23, 42, 0.2) !important;
+    padding: 12px 16px !important;
+    margin: -20px -20px 20px -20px !important;
+    border-radius: 0 !important;
+}
+
+body.dark-mode #changelist-filter details,
+[data-theme="dark"] #changelist-filter details {
+    background: transparent !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode #changelist-filter summary,
+[data-theme="dark"] #changelist-filter summary {
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode #changelist-filter ul,
+[data-theme="dark"] #changelist-filter ul {
+    background: transparent !important;
+}
+
+body.dark-mode #changelist-filter li,
+[data-theme="dark"] #changelist-filter li {
+    background: transparent !important;
+    border-bottom-color: #334155 !important;
+}
+
+body.dark-mode #changelist-filter a,
+[data-theme="dark"] #changelist-filter a {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode #changelist-filter a:hover,
+[data-theme="dark"] #changelist-filter a:hover {
+    color: #60a5fa !important;
+}
+
+body.dark-mode #changelist-filter li.selected,
+[data-theme="dark"] #changelist-filter li.selected {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+}
+
+body.dark-mode #changelist-filter li.selected a,
+[data-theme="dark"] #changelist-filter li.selected a {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* Admin Toolbar Dark Mode */
+body.dark-mode #toolbar,
+[data-theme="dark"] #toolbar {
+    background: transparent !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode #toolbar form,
+[data-theme="dark"] #toolbar form {
+    background: transparent !important;
+}
+
+body.dark-mode #toolbar form div,
+[data-theme="dark"] #toolbar form div {
+    background: transparent !important;
+}
+
+body.dark-mode #toolbar form label,
+[data-theme="dark"] #toolbar form label {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode #toolbar form input[type="text"],
+body.dark-mode #toolbar input#searchbar,
+[data-theme="dark"] #toolbar form input[type="text"],
+[data-theme="dark"] #toolbar input#searchbar {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode #toolbar img,
+[data-theme="dark"] #toolbar img {
+    filter: brightness(0) invert(1) !important;
+}
+
+body.dark-mode #toolbar form input[type="submit"],
+[data-theme="dark"] #toolbar form input[type="submit"] {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    color: white !important;
+}
+
+body.dark-mode #toolbar form input[type="submit"]:hover,
+[data-theme="dark"] #toolbar form input[type="submit"]:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+}
+
+/* Admin Paginator Dark Mode */
+body.dark-mode .paginator,
+[data-theme="dark"] .paginator {
+    background: transparent !important;
+}
+
+body.dark-mode .paginator a,
+body.dark-mode .paginator span,
+[data-theme="dark"] .paginator a,
+[data-theme="dark"] .paginator span {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .paginator a:hover,
+[data-theme="dark"] .paginator a:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: #0f172a !important;
+}
+
+/* Admin Messages Dark Mode */
+body.dark-mode .messagelist .success,
+[data-theme="dark"] .messagelist .success {
+    background: rgba(52, 211, 153, 0.15) !important;
+    color: #6ee7b7 !important;
+}
+
+body.dark-mode .messagelist .error,
+[data-theme="dark"] .messagelist .error {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #fca5a5 !important;
+}
+
+body.dark-mode .messagelist .warning,
+[data-theme="dark"] .messagelist .warning {
+    background: rgba(251, 191, 36, 0.15) !important;
+    color: #fcd34d !important;
+}
+
+/* Admin Help Text - Dashboard Style */
+body.dark-mode .help,
+body.dark-mode .help-block,
+body.dark-mode p.help,
+body.dark-mode .help-text,
+[data-theme="dark"] .help,
+[data-theme="dark"] .help-block,
+[data-theme="dark"] p.help,
+[data-theme="dark"] .help-text {
+    color: #94a3b8 !important;
+    font-style: italic;
+}
+
+/* Admin Object Tools Dark Mode - Normal mode ile aynı (Mavi > Turuncu) */
+body.dark-mode .object-tools,
+[data-theme="dark"] .object-tools {
+    background: transparent !important;
+}
+
+body.dark-mode .object-tools li a,
+[data-theme="dark"] .object-tools li a {
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%) !important;
+    color: white !important;
+}
+
+body.dark-mode .object-tools li a:hover,
+[data-theme="dark"] .object-tools li a:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+}
+
+/* Changelist Form Container */
+body.dark-mode .changelist-form-container,
+[data-theme="dark"] .changelist-form-container {
+    background: transparent !important;
+}
+
+/* Filtered Module */
+body.dark-mode .module.filtered,
+[data-theme="dark"] .module.filtered {
+    background: transparent !important;
+    border-color: #334155 !important;
+}
+
+/* Changelist Module */
+body.dark-mode #changelist,
+[data-theme="dark"] #changelist {
+    background: transparent !important;
+}
+
+/* Changelist Form */
+body.dark-mode #changelist-form,
+[data-theme="dark"] #changelist-form {
+    background: transparent !important;
+}
+
+/* Results Container */
+body.dark-mode .results,
+[data-theme="dark"] .results {
+    background: transparent !important;
+}
+
+/* Result List */
+body.dark-mode #result_list,
+[data-theme="dark"] #result_list {
+    background: transparent !important;
+    border-color: #334155 !important;
+}
+
+/* Action Checkbox Column */
+body.dark-mode .action-checkbox-column,
+[data-theme="dark"] .action-checkbox-column {
+    background: transparent !important;
+}
+
+/* Sort Options */
+body.dark-mode .sortoptions a,
+[data-theme="dark"] .sortoptions a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .sortoptions a:hover,
+[data-theme="dark"] .sortoptions a:hover {
+    color: #93c5fd !important;
+}
+
+/* Sorted Column */
+body.dark-mode .sorted,
+[data-theme="dark"] .sorted {
+    background: rgba(245, 158, 11, 0.05) !important;
+}
+
+/* ColMS and ColSM */
+body.dark-mode .colMS,
+body.dark-mode .colSM,
+[data-theme="dark"] .colMS,
+[data-theme="dark"] .colSM {
+    background: transparent !important;
+}
+
+/* Nowrap fields */
+body.dark-mode .nowrap,
+[data-theme="dark"] .nowrap {
+    color: #94a3b8 !important;
+}
+
+/* Field columns */
+body.dark-mode .field-name,
+body.dark-mode .field-firm,
+body.dark-mode .field-service,
+body.dark-mode .field-document_type,
+body.dark-mode .field-upload_date,
+body.dark-mode .field-uploaded_by,
+body.dark-mode .field-download_count,
+body.dark-mode .field-is_visible_to_firm,
+[data-theme="dark"] .field-name,
+[data-theme="dark"] .field-firm,
+[data-theme="dark"] .field-service,
+[data-theme="dark"] .field-document_type,
+[data-theme="dark"] .field-upload_date,
+[data-theme="dark"] .field-uploaded_by,
+[data-theme="dark"] .field-download_count,
+[data-theme="dark"] .field-is_visible_to_firm {
+    color: #94a3b8 !important;
+}
+
+/* Checkbox styling */
+body.dark-mode input[type="checkbox"],
+[data-theme="dark"] input[type="checkbox"] {
+    accent-color: #f59e0b !important;
+    cursor: pointer !important;
+}
+
+/* Icon images in dark mode */
+body.dark-mode img[src*="icon-"],
+[data-theme="dark"] img[src*="icon-"] {
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.8;
+}
+
+body.dark-mode img[src*="icon-yes"],
+[data-theme="dark"] img[src*="icon-yes"] {
+    filter: brightness(0) saturate(100%) invert(70%) sepia(50%) saturate(500%) hue-rotate(100deg) !important;
+}
+
+body.dark-mode img[src*="icon-no"],
+[data-theme="dark"] img[src*="icon-no"] {
+    filter: brightness(0) saturate(100%) invert(50%) sepia(50%) saturate(500%) hue-rotate(340deg) !important;
+}
+
+/* Admin Inline Related Dark Mode */
+body.dark-mode .inline-related,
+body.dark-mode .inline-group {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .inline-related h3 {
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
+}
+
+/* Django Header User Tools */
+body.dark-mode #header #user-tools {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode #header #user-tools strong {
+    color: #f59e0b !important;
+}
+
+body.dark-mode #header #user-tools a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode #header #user-tools a:hover {
+    color: #93c5fd !important;
+}
+
+body.dark-mode #header #logout-form button {
+    color: #60a5fa !important;
+}
+
+body.dark-mode #header #logout-form button:hover {
+    color: #93c5fd !important;
+}
+
+/* Django Header Branding */
+body.dark-mode #header #branding h1,
+body.dark-mode #header #branding h1 a {
+    color: #f1f5f9 !important;
+}
+
+/* Django Header Background */
+body.dark-mode #header {
+    background: #1e293b !important;
+    border-bottom-color: #334155 !important;
+}
+
+/* ===================================
+   ADMIN INDEX PAGE - Dashboard Dark Mode
+   =================================== */
+
+/* Dashboard Body Class */
+body.dark-mode.dashboard,
+body[data-theme="dark"].dashboard {
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
+}
+
+/* Dashboard Container */
+body.dark-mode.dashboard #container,
+body[data-theme="dark"].dashboard #container {
+    background: #0f172a !important;
+}
+
+/* Dashboard Content */
+body.dark-mode.dashboard #content,
+[data-theme="dark"].dashboard #content {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode.dashboard #content-main,
+[data-theme="dark"].dashboard #content-main {
+    background: transparent !important;
+}
+
+body.dark-mode.dashboard .main,
+[data-theme="dark"].dashboard .main {
+    background: transparent !important;
+}
+
+/* Dashboard colMS */
+body.dark-mode.dashboard .colMS,
+[data-theme="dark"].dashboard .colMS {
+    background: transparent !important;
+}
+
+/* App List */
+body.dark-mode.dashboard .app-list,
+[data-theme="dark"].dashboard .app-list {
+    background: transparent !important;
+}
+
+/* App List Modules */
+body.dark-mode .app-list .module,
+[data-theme="dark"] .app-list .module {
+    background: transparent !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode.dashboard .module,
+[data-theme="dark"].dashboard .module {
+    background: transparent !important;
+    border-color: #334155 !important;
+}
+
+/* Model Rows */
+body.dark-mode .model-row,
+[data-theme="dark"] .model-row {
+    background: transparent !important;
+}
+
+body.dark-mode .model-row th,
+body.dark-mode .model-row td,
+[data-theme="dark"] .model-row th,
+[data-theme="dark"] .model-row td {
+    background: transparent !important;
+}
+
+body.dark-mode .model-row:hover,
+[data-theme="dark"] .model-row:hover {
+    background: rgba(245, 158, 11, 0.05) !important;
+}
+
+body.dark-mode .model-row:hover th,
+body.dark-mode .model-row:hover td,
+[data-theme="dark"] .model-row:hover th,
+[data-theme="dark"] .model-row:hover td {
+    background: transparent !important;
+}
+
+/* Dashboard Module Tables */
+body.dark-mode .dashboard .module table,
+[data-theme="dark"].dashboard .module table {
+    background: transparent !important;
+}
+
+body.dark-mode .dashboard .module tbody,
+[data-theme="dark"].dashboard .module tbody {
+    background: transparent !important;
+}
+
+body.dark-mode .dashboard .module th,
+[data-theme="dark"].dashboard .module th {
+    background: transparent !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .dashboard .module th a,
+[data-theme="dark"].dashboard .module th a {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .dashboard .module th a:hover,
+[data-theme="dark"].dashboard .module th a:hover {
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .dashboard .module td,
+[data-theme="dark"].dashboard .module td {
+    background: transparent !important;
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .dashboard .module td a,
+[data-theme="dark"].dashboard .module td a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode .dashboard .module td a:hover,
+[data-theme="dark"].dashboard .module td a:hover {
+    color: #93c5fd !important;
+}
+
+/* Dashboard App Modules */
+body.dark-mode .dashboard .app-blog.module,
+body.dark-mode .dashboard .app-documents.module,
+body.dark-mode .dashboard .app-firms.module,
+body.dark-mode .dashboard .app-accounts.module,
+body.dark-mode .dashboard .app-services.module,
+body.dark-mode .dashboard .app-core.module,
+[data-theme="dark"].dashboard .app-blog.module,
+[data-theme="dark"].dashboard .app-documents.module,
+[data-theme="dark"].dashboard .app-firms.module,
+[data-theme="dark"].dashboard .app-accounts.module,
+[data-theme="dark"].dashboard .app-services.module,
+[data-theme="dark"].dashboard .app-core.module {
+    background: transparent !important;
+    border: 1px solid #334155 !important;
+}
+
+/* Dashboard Model Rows */
+body.dark-mode .dashboard .model-row th,
+body.dark-mode .dashboard .model-row td,
+[data-theme="dark"].dashboard .model-row th,
+[data-theme="dark"].dashboard .model-row td {
+    background: transparent !important;
+}
+
+body.dark-mode .dashboard .model-row:hover th,
+body.dark-mode .dashboard .model-row:hover td,
+[data-theme="dark"].dashboard .model-row:hover th,
+[data-theme="dark"].dashboard .model-row:hover td {
+    background: rgba(245, 158, 11, 0.05) !important;
+}
+
+/* Dashboard Links */
+body.dark-mode .dashboard .addlink,
+[data-theme="dark"].dashboard .addlink {
+    color: #34d399 !important;
+}
+
+body.dark-mode .dashboard .changelink,
+[data-theme="dark"].dashboard .changelink {
+    color: #22d3ee !important;
+}
+
+body.dark-mode .dashboard .deletelink,
+[data-theme="dark"].dashboard .deletelink {
+    color: #f87171 !important;
+}
+
+/* Current App/Model Highlighting */
+body.dark-mode .current-app .module,
+[data-theme="dark"] .current-app .module {
+    border-left: 4px solid #f59e0b !important;
+}
+
+body.dark-mode .current-model th a,
+[data-theme="dark"] .current-model th a {
+    color: #f59e0b !important;
+    font-weight: 700 !important;
+}
+
+/* Content Related (Recent Actions Sidebar) */
+body.dark-mode #content-related,
+[data-theme="dark"] #content-related {
+    background: transparent !important;
+}
+
+body.dark-mode #content-related .module,
+[data-theme="dark"] #content-related .module {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode #content-related h2,
+body.dark-mode #content-related h3,
+[data-theme="dark"] #content-related h2,
+[data-theme="dark"] #content-related h3 {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: #0f172a !important;
+}
+
+body.dark-mode #content-related .actionlist,
+[data-theme="dark"] #content-related .actionlist {
+    background: transparent !important;
+}
+
+body.dark-mode #content-related .actionlist li,
+[data-theme="dark"] #content-related .actionlist li {
+    background: transparent !important;
+    border-bottom-color: #334155 !important;
+}
+
+body.dark-mode #content-related .actionlist a,
+[data-theme="dark"] #content-related .actionlist a {
+    color: #60a5fa !important;
+}
+
+body.dark-mode #content-related .actionlist a:hover,
+[data-theme="dark"] #content-related .actionlist a:hover {
+    color: #93c5fd !important;
+}
+
+body.dark-mode #content-related .mini,
+body.dark-mode #content-related .quiet,
+[data-theme="dark"] #content-related .mini,
+[data-theme="dark"] #content-related .quiet {
+    color: #64748b !important;
+}
+
+body.dark-mode #content-related .addlink,
+[data-theme="dark"] #content-related .addlink {
+    color: #34d399 !important;
+}
+
+body.dark-mode #content-related .changelink,
+[data-theme="dark"] #content-related .changelink {
+    color: #22d3ee !important;
+}
+
+body.dark-mode #content-related .deletelink,
+[data-theme="dark"] #content-related .deletelink {
+    color: #f87171 !important;
+}
+
+/* Recent Actions Module Specific */
+body.dark-mode #recent-actions-module,
+[data-theme="dark"] #recent-actions-module {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Skip to Content Link */
+body.dark-mode .skip-to-content-link {
+    background: #f59e0b !important;
+    color: #0f172a !important;
+}
+
+body.dark-mode .skip-to-content-link:focus {
+    background: #fbbf24 !important;
+}
+
+/* Footer */
+body.dark-mode #footer {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+    border-top-color: #334155 !important;
+}
+
+/* Theme Toggle (Django Native) */
+body.dark-mode .theme-toggle {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .theme-toggle:hover {
+    background: rgba(245, 158, 11, 0.2) !important;
+    border-color: #f59e0b !important;
+}
+
+body.dark-mode .theme-toggle svg {
+    fill: #f1f5f9 !important;
+}
+
+body.dark-mode .theme-label-when-auto,
+body.dark-mode .theme-label-when-light,
+body.dark-mode .theme-label-when-dark {
+    color: #f1f5f9 !important;
+}
+
+/* Clear Fix */
+body.dark-mode .clear {
+    background: transparent !important;
+}
+
+/* ===================================
+   COMPREHENSIVE DARK MODE - ALL PAGES
+   =================================== */
+
+/* Page Hero - All Pages */
+body.dark-mode .page-hero,
+[data-theme="dark"] .page-hero {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+}
+
+body.dark-mode .page-hero h1,
+body.dark-mode .page-hero p,
+[data-theme="dark"] .page-hero h1,
+[data-theme="dark"] .page-hero p {
+    color: white !important;
+}
+
+/* About Page - Value Cards */
+body.dark-mode .value-card,
+[data-theme="dark"] .value-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .value-icon,
+[data-theme="dark"] .value-icon {
+    color: var(--secondary-color) !important;
+}
+
+/* Feature Cards */
+body.dark-mode .feature-card,
+[data-theme="dark"] .feature-card {
+    background: transparent !important;
+}
+
+body.dark-mode .feature-icon,
+[data-theme="dark"] .feature-icon {
+    color: var(--secondary-color) !important;
+}
+
+/* Team Grid Cards */
+body.dark-mode .team-card,
+[data-theme="dark"] .team-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+/* Service Detail Pages */
+body.dark-mode .service-detail,
+[data-theme="dark"] .service-detail {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-lg);
+}
+
+body.dark-mode .service-header,
+[data-theme="dark"] .service-header {
+    background: transparent !important;
+}
+
+body.dark-mode .service-standards,
+[data-theme="dark"] .service-standards {
+    background: var(--light-bg) !important;
+}
+
+body.dark-mode .standard-item,
+[data-theme="dark"] .standard-item {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .standard-item i,
+[data-theme="dark"] .standard-item i {
+    color: var(--success-color) !important;
+}
+
+/* Stats Section */
+body.dark-mode .stats-section,
+[data-theme="dark"] .stats-section {
+    background: var(--light-bg) !important;
+}
+
+body.dark-mode .stat-item,
+[data-theme="dark"] .stat-item {
+    background: var(--white) !important;
+}
+
+/* CTA Section - All Pages */
+body.dark-mode .cta-section,
+body.dark-mode .cta-section.bg-primary,
+[data-theme="dark"] .cta-section,
+[data-theme="dark"] .cta-section.bg-primary {
+    background: var(--gradient-primary) !important;
+}
+
+body.dark-mode .cta-section h2,
+body.dark-mode .cta-section p,
+body.dark-mode .cta-description,
+[data-theme="dark"] .cta-section h2,
+[data-theme="dark"] .cta-section p,
+[data-theme="dark"] .cta-description {
+    color: white !important;
+}
+
+body.dark-mode .cta-buttons,
+[data-theme="dark"] .cta-buttons {
+    background: transparent !important;
+}
+
+/* Dashboard Pages - Firm & Admin */
+body.dark-mode .dashboard-header,
+[data-theme="dark"] .dashboard-header {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+}
+
+body.dark-mode .dashboard-header h1,
+body.dark-mode .dashboard-header p,
+[data-theme="dark"] .dashboard-header h1,
+[data-theme="dark"] .dashboard-header p {
+    color: white !important;
+}
+
+/* Section Cards - Dashboard */
+body.dark-mode .section-card,
+[data-theme="dark"] .section-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .section-header,
+[data-theme="dark"] .section-header {
+    background: var(--light-bg) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .section-body,
+[data-theme="dark"] .section-body {
+    background: var(--white) !important;
+}
+
+/* Item Rows */
+body.dark-mode .item-row,
+[data-theme="dark"] .item-row {
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .item-row strong,
+[data-theme="dark"] .item-row strong {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .text-muted,
+[data-theme="dark"] .text-muted {
+    color: var(--gray-text) !important;
+}
+
+/* Settings Pages */
+body.dark-mode .settings-card,
+[data-theme="dark"] .settings-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .settings-card h3,
+[data-theme="dark"] .settings-card h3 {
+    color: var(--dark-text) !important;
+    border-bottom-color: var(--primary-light) !important;
+}
+
+body.dark-mode .settings-card label,
+[data-theme="dark"] .settings-card label {
+    color: var(--dark-text) !important;
+}
+
+/* Status Badges - Already handled above */
+
+/* Empty State */
+body.dark-mode .empty-state-inline,
+[data-theme="dark"] .empty-state-inline {
+    color: var(--gray-text) !important;
+}
+
+/* BG Light Sections */
+body.dark-mode .bg-light,
+body.dark-mode section.bg-light,
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] section.bg-light {
+    background-color: var(--light-bg) !important;
+}
+
+/* Service Icon */
+body.dark-mode .service-icon,
+[data-theme="dark"] .service-icon {
+    color: var(--secondary-color) !important;
+}
+
+/* Text White (for CTA sections) */
+body.dark-mode .text-white,
+body.dark-mode .text-white *,
+[data-theme="dark"] .text-white,
+[data-theme="dark"] .text-white * {
+    color: white !important;
+}
+
+/* Text Center */
+body.dark-mode .text-center,
+[data-theme="dark"] .text-center {
+    text-align: center;
+}
+
+/* About Grid */
+body.dark-mode .about-grid,
+[data-theme="dark"] .about-grid {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .about-content h2,
+[data-theme="dark"] .about-content h2 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .about-content p,
+[data-theme="dark"] .about-content p {
+    color: var(--gray-text) !important;
+}
+
+/* Team Title */
+body.dark-mode .team-title,
+[data-theme="dark"] .team-title {
+    color: var(--accent-color) !important;
+}
+
+/* Service Title */
+body.dark-mode .service-title h2,
+[data-theme="dark"] .service-title h2 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .service-title p,
+[data-theme="dark"] .service-title p {
+    color: var(--gray-text) !important;
+}
+
+/* Service Content */
+body.dark-mode .service-content h3,
+[data-theme="dark"] .service-content h3 {
+    color: var(--dark-text) !important;
+    border-bottom-color: var(--primary-light) !important;
+}
+
+body.dark-mode .service-description p,
+[data-theme="dark"] .service-description p {
+    color: var(--gray-text) !important;
+}
+
+/* Feature List */
+body.dark-mode .feature-list h4,
+[data-theme="dark"] .feature-list h4 {
+    color: var(--primary-light) !important;
+}
+
+body.dark-mode .feature-list li,
+[data-theme="dark"] .feature-list li {
+    color: var(--dark-text) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .feature-list li:before,
+[data-theme="dark"] .feature-list li:before {
+    color: var(--success-color) !important;
+}
+
+/* Process Steps */
+body.dark-mode .process-steps,
+[data-theme="dark"] .process-steps {
+    background: transparent !important;
+}
+
+body.dark-mode .process-step,
+[data-theme="dark"] .process-step {
+    background: transparent !important;
+}
+
+body.dark-mode .step-number,
+[data-theme="dark"] .step-number {
+    background: var(--secondary-color) !important;
+    color: white !important;
+}
+
+body.dark-mode .step-content h4,
+[data-theme="dark"] .step-content h4 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .step-content p,
+[data-theme="dark"] .step-content p {
+    color: var(--gray-text) !important;
+}
+
+/* Stat Icon Colors */
+body.dark-mode .stat-icon,
+[data-theme="dark"] .stat-icon {
+    color: inherit !important;
+}
+
+body.dark-mode .stat-card.info .stat-icon,
+[data-theme="dark"] .stat-card.info .stat-icon {
+    color: var(--info-color) !important;
+}
+
+body.dark-mode .stat-card.success .stat-icon,
+[data-theme="dark"] .stat-card.success .stat-icon {
+    color: var(--success-color) !important;
+}
+
+body.dark-mode .stat-card.warning .stat-icon,
+[data-theme="dark"] .stat-card.warning .stat-icon {
+    color: var(--warning-color) !important;
+}
+
+/* Service Info Wrapper */
+body.dark-mode .service-info-wrapper,
+[data-theme="dark"] .service-info-wrapper {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .service-info-wrapper strong,
+[data-theme="dark"] .service-info-wrapper strong {
+    color: var(--dark-text) !important;
+}
+
+/* Item Actions */
+body.dark-mode .item-actions,
+[data-theme="dark"] .item-actions {
+    background: transparent !important;
+}
+
+/* Settings Container */
+body.dark-mode .settings-container,
+[data-theme="dark"] .settings-container {
+    background: transparent !important;
+}
+
+body.dark-mode .settings-grid,
+[data-theme="dark"] .settings-grid {
+    background: transparent !important;
+}
+
+/* Page Header */
+body.dark-mode .page-header,
+[data-theme="dark"] .page-header {
+    background: transparent !important;
+}
+
+body.dark-mode .page-header h1,
+[data-theme="dark"] .page-header h1 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .page-header p,
+[data-theme="dark"] .page-header p {
+    color: var(--gray-text) !important;
+}
+
+/* ===================================
+   BLOG PAGES - Dark Mode
+   =================================== */
+
+/* Blog Post Card */
+body.dark-mode .blog-post-card,
+[data-theme="dark"] .blog-post-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .post-title a,
+[data-theme="dark"] .post-title a {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .post-title a:hover,
+[data-theme="dark"] .post-title a:hover {
+    color: var(--primary-light) !important;
+}
+
+body.dark-mode .post-meta,
+body.dark-mode .post-excerpt,
+body.dark-mode .post-views,
+[data-theme="dark"] .post-meta,
+[data-theme="dark"] .post-excerpt,
+[data-theme="dark"] .post-views {
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .post-meta i,
+[data-theme="dark"] .post-meta i {
+    color: var(--primary-light) !important;
+}
+
+/* Blog Sidebar */
+body.dark-mode .sidebar-widget,
+[data-theme="dark"] .sidebar-widget {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .sidebar-widget h3,
+[data-theme="dark"] .sidebar-widget h3 {
+    color: var(--dark-text) !important;
+    border-bottom-color: var(--primary-light) !important;
+}
+
+body.dark-mode .category-list li,
+[data-theme="dark"] .category-list li {
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .category-list a,
+[data-theme="dark"] .category-list a {
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .category-list a:hover,
+[data-theme="dark"] .category-list a:hover {
+    color: var(--primary-light) !important;
+}
+
+body.dark-mode .category-list i,
+[data-theme="dark"] .category-list i {
+    color: var(--primary-light) !important;
+}
+
+body.dark-mode .popular-post-content a,
+[data-theme="dark"] .popular-post-content a {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .popular-post-content a:hover,
+[data-theme="dark"] .popular-post-content a:hover {
+    color: var(--primary-light) !important;
+}
+
+body.dark-mode .tag,
+[data-theme="dark"] .tag {
+    background: var(--light-bg) !important;
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .tag:hover,
+[data-theme="dark"] .tag:hover {
+    background: var(--secondary-color) !important;
+    color: white !important;
+}
+
+/* ===================================
+   SERVICE PAGES - Dark Mode
+   =================================== */
+
+/* Service Card */
+body.dark-mode .service-card,
+[data-theme="dark"] .service-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .service-header,
+[data-theme="dark"] .service-header {
+    background: var(--light-bg) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .service-title h3,
+[data-theme="dark"] .service-title h3 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .service-type,
+[data-theme="dark"] .service-type {
+    background: var(--secondary-color) !important;
+    color: white !important;
+}
+
+body.dark-mode .service-body,
+[data-theme="dark"] .service-body {
+    background: var(--white) !important;
+}
+
+body.dark-mode .service-description,
+body.dark-mode .service-description p,
+[data-theme="dark"] .service-description,
+[data-theme="dark"] .service-description p {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .meta-item,
+[data-theme="dark"] .meta-item {
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .meta-item i,
+[data-theme="dark"] .meta-item i {
+    color: var(--primary-light) !important;
+}
+
+body.dark-mode .service-notes,
+[data-theme="dark"] .service-notes {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-color: var(--warning-color) !important;
+}
+
+body.dark-mode .service-notes strong,
+[data-theme="dark"] .service-notes strong {
+    color: var(--warning-color) !important;
+}
+
+body.dark-mode .service-notes p,
+[data-theme="dark"] .service-notes p {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .service-footer,
+[data-theme="dark"] .service-footer {
+    background: var(--light-bg) !important;
+    border-top-color: var(--border-color) !important;
+}
+
+/* ===================================
+   DOCUMENT PAGES - Dark Mode
+   =================================== */
+
+/* Filters Card */
+body.dark-mode .filters-card,
+[data-theme="dark"] .filters-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .filters-header,
+[data-theme="dark"] .filters-header {
+    background: var(--light-bg) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .filters-header h3,
+[data-theme="dark"] .filters-header h3 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .filters-body,
+[data-theme="dark"] .filters-body {
+    background: var(--white) !important;
+}
+
+/* Document Card */
+body.dark-mode .document-card,
+[data-theme="dark"] .document-card {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .document-header,
+[data-theme="dark"] .document-header {
+    background: var(--light-bg) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .document-info h3,
+[data-theme="dark"] .document-info h3 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .document-meta,
+body.dark-mode .document-size,
+body.dark-mode .document-date,
+[data-theme="dark"] .document-meta,
+[data-theme="dark"] .document-size,
+[data-theme="dark"] .document-date {
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .document-type,
+[data-theme="dark"] .document-type {
+    background: var(--secondary-color) !important;
+    color: white !important;
+}
+
+body.dark-mode .document-body,
+[data-theme="dark"] .document-body {
+    background: var(--white) !important;
+}
+
+body.dark-mode .document-description,
+[data-theme="dark"] .document-description {
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .detail-item,
+[data-theme="dark"] .detail-item {
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .detail-item strong,
+[data-theme="dark"] .detail-item strong {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .document-footer,
+[data-theme="dark"] .document-footer {
+    background: var(--light-bg) !important;
+    border-top-color: var(--border-color) !important;
+}
+
+/* Document Icon Colors - Preserve original colors */
+body.dark-mode .document-icon .fa-file-pdf,
+[data-theme="dark"] .document-icon .fa-file-pdf {
+    color: #e74c3c !important;
+}
+
+body.dark-mode .document-icon .fa-file-word,
+[data-theme="dark"] .document-icon .fa-file-word {
+    color: #2b579a !important;
+}
+
+body.dark-mode .document-icon .fa-file-excel,
+[data-theme="dark"] .document-icon .fa-file-excel {
+    color: #217346 !important;
+}
+
+body.dark-mode .document-icon .fa-file-image,
+[data-theme="dark"] .document-icon .fa-file-image {
+    color: #e67e22 !important;
+}
+
+body.dark-mode .document-icon .fa-file,
+[data-theme="dark"] .document-icon .fa-file {
+    color: var(--gray-text) !important;
+}
+
+/* Empty State - All Pages */
+body.dark-mode .empty-state,
+[data-theme="dark"] .empty-state {
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .empty-state h3,
+[data-theme="dark"] .empty-state h3 {
+    color: var(--dark-text) !important;
+}
+
+body.dark-mode .empty-state p,
+[data-theme="dark"] .empty-state p {
+    color: var(--gray-text) !important;
+}
+
+body.dark-mode .empty-state i,
+[data-theme="dark"] .empty-state i {
+    color: var(--gray-text) !important;
+}
+
+/* ===================================
+   PRINT STYLES
+   =================================== */
+
+@media print {
+    [data-theme="dark"] * {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+}
+

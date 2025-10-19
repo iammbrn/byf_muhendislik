@@ -1,0 +1,590 @@
+/* BYF Mühendislik - Django Admin Özel Tasarımı */
+/* Ana Site ile Tam Uyumlu Modern Admin Paneli */
+/* Modern Dark/Light Mode Desteği */
+/* VERSION 4.0 - ULTIMATE FIX - KESIN ÇÖZÜM */
+
+/* ===================================
+   CRITICAL OVERRIDES - EN YÜKSEK ÖNCELİK
+   =================================== */
+
+/* FORCE EVERYTHING - ULTRA AGRESIF */
+* {
+    box-sizing: border-box !important;
+}
+
+html, body {
+    width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+/* Container - HER DURUMDA GENİŞ */
+#container {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Content - MERKEZ VE GENİŞ */
+#content {
+    width: 100% !important;
+    max-width: 1800px !important;
+    margin: 0 auto !important;
+    padding: 2rem 3rem !important;
+}
+
+/* Content-main - TAM GENİŞLİK */
+#content-main {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* Django column constraints - KALDIR */
+.colM,
+.colMS,
+.colSM {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Changelist - TAM GENİŞLİK */
+#changelist {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Changelist form - TAM GENİŞLİK */
+#changelist-form {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+}
+
+/* Results container */
+.results {
+    width: 100% !important;
+    max-width: none !important;
+    overflow-x: auto !important;
+}
+
+/* ===================================
+   RENK PALETİ - LIGHT MODE (Varsayılan)
+   =================================== */
+:root, [data-theme="light"] {
+    /* Ana Renkler - Site ile Tam Uyumlu */
+    --admin-primary: #1e3a8a;        /* Derin Mavi */
+    --admin-primary-dark: #1e293b;   /* Koyu Lacivert */
+    --admin-primary-light: #3b82f6;  /* Parlak Mavi */
+    --admin-secondary: #f59e0b;      /* Turuncu Altın */
+    --admin-accent: #06b6d4;         /* Cyan */
+    
+    /* Durum Renkleri */
+    --admin-success: #10b981;        /* Yeşil */
+    --admin-danger: #ef4444;         /* Kırmızı */
+    --admin-warning: #f59e0b;        /* Turuncu */
+    --admin-info: #06b6d4;           /* Cyan */
+    
+    /* Nötr Renkler - LIGHT */
+    --admin-bg: #f8fafc;             /* Açık gri-mavi arka plan */
+    --admin-surface: #ffffff;        /* Beyaz yüzey */
+    --admin-surface-hover: #f1f5f9;  /* Hover */
+    --admin-text: #0f172a;           /* Koyu metin */
+    --admin-text-secondary: #64748b; /* Gri metin */
+    --admin-border: #e2e8f0;         /* Border */
+    
+    /* Gradient'ler */
+    --admin-gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    --admin-gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    --admin-gradient-accent: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    
+    /* Gölgeler */
+    --admin-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --admin-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --admin-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* ===================================
+   DARK MODE - Modern Koyu Tema
+   =================================== */
+[data-theme="dark"] {
+    /* Ana Renkler - Daha Parlak */
+    --admin-primary: #3b82f6;        /* Parlak Mavi */
+    --admin-primary-dark: #60a5fa;   /* Daha Açık Mavi */
+    --admin-primary-light: #93c5fd;  /* Çok Açık Mavi */
+    --admin-secondary: #fbbf24;      /* Parlak Turuncu */
+    --admin-accent: #22d3ee;         /* Parlak Cyan */
+    
+    /* Durum Renkleri - Parlak */
+    --admin-success: #34d399;        /* Parlak Yeşil */
+    --admin-danger: #f87171;         /* Parlak Kırmızı */
+    --admin-warning: #fbbf24;        /* Parlak Turuncu */
+    --admin-info: #22d3ee;           /* Parlak Cyan */
+    
+    /* Nötr Renkler - DARK */
+    --admin-bg: #0f172a;             /* Koyu lacivert arka plan */
+    --admin-surface: #1e293b;        /* Koyu gri-mavi yüzey */
+    --admin-surface-hover: #334155;  /* Hover - daha açık */
+    --admin-text: #f1f5f9;           /* Açık metin */
+    --admin-text-secondary: #94a3b8; /* Açık gri metin */
+    --admin-border: #334155;         /* Koyu border */
+    
+    /* Gradient'ler - Parlak */
+    --admin-gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    --admin-gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    --admin-gradient-accent: linear-gradient(135deg, #0891b2 0%, #22d3ee 100%);
+    
+    /* Gölgeler - Daha Güçlü */
+    --admin-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --admin-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --admin-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+}
+
+/* ===================================
+   GENEL DÜZENLEMELER
+   =================================== */
+body {
+    background: var(--admin-bg) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    color: var(--admin-text) !important;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ===================================
+   BREADCRUMBS - MODERN NAVIGATION
+   =================================== */
+.breadcrumbs {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    padding: 1rem 2rem !important;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 12px 12px;
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumbs a {
+    color: var(--admin-primary) !important;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+    color: var(--admin-secondary) !important;
+}
+
+[data-theme="dark"] .breadcrumbs {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .breadcrumbs a {
+    color: var(--admin-primary-light) !important;
+}
+
+[data-theme="dark"] .breadcrumbs a:hover {
+    color: var(--admin-secondary) !important;
+}
+
+/* ===================================
+   CONTENT HEADINGS - MODERN & CLEAN
+   =================================== */
+#content h1 {
+    color: #111827 !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 2rem 0 !important;
+    padding: 0 0 1rem 0 !important;
+    border-bottom: 3px solid var(--admin-primary) !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+}
+
+[data-theme="dark"] #content h1 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ===================================
+   MODULES & CARDS - MODERN DESIGN
+   =================================== */
+.module {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+
+.module:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.module h2,
+.module caption {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    color: #0056b3 !important;
+    padding: 1.25rem 1.75rem !important;
+    font-weight: 700 !important;
+    font-size: 1.05rem !important;
+    margin: 0;
+    border-bottom: 2px solid #e2e8f0 !important;
+    letter-spacing: 0.01em;
+}
+
+[data-theme="dark"] .module {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .module h2,
+[data-theme="dark"] .module caption {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    border-bottom: none !important;
+}
+
+/* ===================================
+   TABLES - MODERN & CLEAN
+   =================================== */
+#result_list {
+    width: 100% !important;
+    max-width: none !important;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    table-layout: auto !important;
+    border-collapse: collapse !important;
+}
+
+/* Table headers - Modern gradient */
+#result_list thead th {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    padding: 1.125rem 1rem !important;
+    font-weight: 700 !important;
+    font-size: 0.875rem !important;
+    border-bottom: none !important;
+    text-align: left !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap !important;
+}
+
+/* Table cells - Clean spacing */
+#result_list tbody td {
+    padding: 1rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: var(--admin-text) !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 350px !important;
+    vertical-align: middle !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+}
+
+/* Row hover - Subtle effect */
+#result_list tbody tr {
+    transition: all 0.2s ease;
+}
+
+#result_list tbody tr:hover {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Alternate rows */
+#result_list tbody tr:nth-child(even) {
+    background: #fafbfc;
+}
+
+#result_list tbody tr:nth-child(even):hover {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+}
+
+/* Dark mode table */
+[data-theme="dark"] #result_list {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] #result_list thead th {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+}
+
+[data-theme="dark"] #result_list tbody td {
+    border-bottom-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] #result_list tbody tr:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%) !important;
+}
+
+/* Checkbox column */
+#result_list tbody td:first-child,
+#result_list thead th:first-child {
+    width: 45px !important;
+    max-width: 45px !important;
+    text-align: center !important;
+}
+
+/* ===================================
+   FILTERS - SIDEBAR
+   =================================== */
+#changelist-filter {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--admin-shadow-sm);
+    min-width: 250px !important;
+    max-width: 280px !important;
+}
+
+/* Filtered layout - Side by side */
+.filtered #content {
+    display: flex !important;
+    gap: 1.5rem !important;
+    align-items: flex-start !important;
+}
+
+.filtered #changelist {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+
+.filtered #changelist-filter {
+    flex: 0 0 280px !important;
+}
+
+/* ===================================
+   FORMS - MODERN INPUT DESIGN
+   =================================== */
+.form-row {
+    width: 100% !important;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.form-row:last-child {
+    border-bottom: none;
+}
+
+/* Input fields - Modern style */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+    width: 100% !important;
+    max-width: none !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 0.875rem 1.25rem !important;
+    font-size: 0.95rem !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--admin-primary) !important;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    outline: none !important;
+}
+
+/* Dark mode inputs */
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+    border-color: var(--admin-primary-light) !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ===================================
+   BUTTONS - MODERN & PROMINENT
+   =================================== */
+.button, 
+input[type="submit"], 
+button {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.875rem 1.75rem !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    letter-spacing: 0.01em;
+}
+
+.button:hover, 
+input[type="submit"]:hover, 
+button:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+}
+
+.button:active,
+input[type="submit"]:active,
+button:active {
+    transform: translateY(0);
+}
+
+/* ===================================
+   ACTIONS BAR - MODERN & CLEAN
+   =================================== */
+.actions {
+    padding: 1.5rem !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    margin: 0 0 2rem 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.actions label {
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    color: #475569 !important;
+    margin: 0 !important;
+}
+
+.actions select {
+    flex: 1 !important;
+    max-width: 400px !important;
+}
+
+.actions button,
+.actions input[type="submit"] {
+    flex-shrink: 0 !important;
+}
+
+[data-theme="dark"] .actions {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border-color: #334155 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .actions label {
+    color: #cbd5e1 !important;
+}
+
+/* ===================================
+   PAGINATION - MODERN DESIGN
+   =================================== */
+.paginator {
+    padding: 2rem 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.paginator a, 
+.paginator span {
+    padding: 0.625rem 1rem;
+    min-width: 40px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: var(--admin-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.paginator a:hover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.paginator .this-page {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    color: white;
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .paginator a,
+[data-theme="dark"] .paginator span {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+[data-theme="dark"] .paginator a:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    color: white;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 1024px) {
+#content {
+        padding: 1.5rem 2rem !important;
+}
+
+    .filtered #content {
+        flex-direction: column !important;
+}
+
+    .filtered #changelist-filter {
+    width: 100% !important;
+        max-width: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #content {
+        padding: 1rem !important;
+    }
+}

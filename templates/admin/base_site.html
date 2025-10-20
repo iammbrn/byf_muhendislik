@@ -1110,7 +1110,7 @@
         /* Content box - Mobilde daha küçük padding */
         .admin-content-box {
             padding: 25px 20px !important;
-    border-radius: 12px !important;
+            border-radius: 12px !important;
         }
         
         /* Sidebar - Mobilde düzgün */
@@ -1142,6 +1142,208 @@
         #content.colSM {
             grid-template-columns: 1fr !important;
             gap: 1rem !important;
+        }
+        
+        /* ===================================
+           ADMIN FORM MOBİLE FİXES
+           =================================== */
+        
+        /* Form rows - Stack on mobile */
+        .form-row {
+            display: block !important;
+            padding: 12px 0 !important;
+        }
+        
+        .form-row > div,
+        .form-row > .field-box {
+            width: 100% !important;
+            float: none !important;
+            display: block !important;
+            padding: 0 !important;
+            margin-bottom: 15px !important;
+        }
+        
+        /* Input fields - Full width on mobile */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="url"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Fieldsets - Better mobile spacing */
+        .module {
+            margin: 0 0 20px 0 !important;
+        }
+        
+        fieldset {
+            padding: 15px !important;
+        }
+        
+        /* Submit row - Stack buttons */
+        .submit-row {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            padding: 15px !important;
+        }
+        
+        .submit-row input,
+        .submit-row a,
+        .submit-row button {
+            width: 100% !important;
+            text-align: center !important;
+            margin: 0 !important;
+        }
+        
+        /* Object tools - Stack on mobile */
+        .object-tools {
+            float: none !important;
+            width: 100% !important;
+            margin: 0 0 20px 0 !important;
+        }
+        
+        .object-tools li {
+            display: block !important;
+            width: 100% !important;
+            margin: 0 0 10px 0 !important;
+        }
+        
+        .object-tools li a {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Inline formsets - Better mobile layout */
+        .inline-group,
+        .inline-related {
+            overflow-x: auto !important;
+        }
+        
+        /* File inputs - Full width */
+        input[type="file"] {
+            width: 100% !important;
+        }
+        
+        /* Checkbox/Radio - Better spacing */
+        .vCheckboxLabel {
+            padding-left: 0 !important;
+            margin-top: 10px !important;
+        }
+        
+        /* Help text - Readable */
+        .help,
+        .helptext {
+            font-size: 0.85rem !important;
+            line-height: 1.4 !important;
+        }
+        
+        /* Actions - Better mobile layout */
+        .actions {
+            padding: 12px !important;
+        }
+        
+        .actions select {
+            width: 100% !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .actions button,
+        .actions .button {
+            width: 100% !important;
+        }
+        
+        /* Change list filters - Mobile optimized */
+        #changelist-filter {
+            width: 100% !important;
+            float: none !important;
+            margin-bottom: 20px !important;
+        }
+        
+        #changelist .results {
+            overflow-x: auto !important;
+        }
+        
+        /* Django Admin Change Form - Mobile Optimizations */
+        .aligned label {
+            width: 100% !important;
+            float: none !important;
+            padding: 0 0 8px 0 !important;
+            text-align: left !important;
+        }
+        
+        .aligned .vTextField,
+        .aligned .vURLField,
+        .aligned .vLargeTextField {
+            width: 100% !important;
+            margin-left: 0 !important;
+        }
+        
+        /* Wide form elements */
+        .vTextField,
+        .vLargeTextField,
+        .vURLField,
+        .vFileBrowseField {
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Related widget wrapper */
+        .related-widget-wrapper {
+            width: 100% !important;
+            display: block !important;
+        }
+        
+        .related-widget-wrapper select {
+            width: 100% !important;
+        }
+        
+        /* Image preview in admin */
+        .admin img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+        
+        /* Date/Time widgets */
+        .datetime input {
+            width: 100% !important;
+        }
+        
+        .datetimeshortcuts {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 5px !important;
+            margin-top: 5px !important;
+        }
+        
+        /* Inline tabular - Horizontal scroll */
+        .inline-group .tabular {
+            overflow-x: auto !important;
+            display: block !important;
+        }
+        
+        /* Django autocomplete */
+        .select2-container {
+            width: 100% !important;
+        }
+        
+        /* Error lists */
+        .errorlist {
+            margin: 5px 0 !important;
+            padding: 8px 12px !important;
+        }
+        
+        /* Field wrappers */
+        .field-box {
+            clear: both !important;
         }
         
         /* Footer - Mobile responsive */
@@ -1190,6 +1392,58 @@
         
         .main-footer .footer-logo-tagline {
             font-size: 1.6rem !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        /* Very small mobile - Extra compact */
+        #main,
+        .main,
+        .main.shifted {
+            padding: 80px 10px 20px 10px !important;
+        }
+        
+        .admin-content-box {
+            padding: 15px 12px !important;
+        }
+        
+        #content h1 {
+            font-size: 1.25rem !important;
+        }
+        
+        .breadcrumbs {
+            padding: 8px 12px !important;
+            font-size: 0.8rem !important;
+        }
+        
+        /* Buttons - Full width */
+        .button,
+        input[type="submit"],
+        input[type="button"],
+        .submit-row input {
+            padding: 10px 15px !important;
+            font-size: 0.9rem !important;
+        }
+        
+        /* Form fields - Compact */
+        input,
+        select,
+        textarea {
+            font-size: 16px !important; /* Prevents zoom on iOS */
+        }
+    }
+    
+    @media (min-width: 769px) and (max-width: 968px) {
+        /* Tablet - Form improvements */
+        .form-row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 15px !important;
+        }
+        
+        .form-row > div {
+            flex: 1 1 45% !important;
+            min-width: 200px !important;
         }
     }
     

@@ -19,6 +19,12 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = 'Kullanıcı'
         verbose_name_plural = 'Kullanıcılar'
+        indexes = [
+            models.Index(fields=['user_type', 'is_active'], name='user_type_active_idx'),
+            models.Index(fields=['-date_joined'], name='user_date_joined_idx'),
+            models.Index(fields=['email'], name='user_email_lookup_idx'),
+        ]
+        db_table_comment = 'Kullanıcılar - sistem erişim hesapları'
     
     def __str__(self):
         return f"{self.username} ({self.get_user_type_display()})"
@@ -32,6 +38,7 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = 'Kullanıcı Profili'
         verbose_name_plural = 'Kullanıcı Profilleri'
+        db_table_comment = 'Kullanıcı profil bilgileri - ek detaylar'
     
     def __str__(self):
         return f"{self.user.username} Profili"

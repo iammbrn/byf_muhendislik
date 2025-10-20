@@ -126,9 +126,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     )
     
     class Media:
-        css = {
-            'all': ('admin/css/custom_admin.css',)
-        }
+        # CSS already loaded globally via base_site.html - no need to duplicate
         js = ('admin/js/json_editor.js',)
 
 

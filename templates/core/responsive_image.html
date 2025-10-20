@@ -1,0 +1,14 @@
+{% if image %}
+<img src="{{ image.url }}" 
+     alt="{{ alt }}"
+     loading="lazy"
+     decoding="async"
+     class="responsive-img {{ css_class }}"
+     {% if image.width and image.height %}
+     width="{{ image.width }}"
+     height="{{ image.height }}"
+     {% endif %}
+     sizes="{{ sizes }}"
+     style="max-width: 100%; height: auto; object-fit: cover;">
+{% endif %}
+

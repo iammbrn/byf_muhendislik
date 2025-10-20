@@ -34,6 +34,14 @@ class BlogPost(models.Model):
         verbose_name = 'Blog Yazısı'
         verbose_name_plural = 'Blog Yazıları'
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['-published_at'], name='blog_published_date_idx'),
+            models.Index(fields=['status', '-published_at'], name='blog_status_pub_idx'),
+            models.Index(fields=['-views'], name='blog_views_idx'),
+            models.Index(fields=['category', '-published_at'], name='blog_cat_pub_idx'),
+            models.Index(fields=['author', '-published_at'], name='blog_author_pub_idx'),
+        ]
+        db_table_comment = 'Blog yazıları - SEO optimized content'
     
     def __str__(self):
         return self.title

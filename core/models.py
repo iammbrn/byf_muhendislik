@@ -36,6 +36,7 @@ class SiteSettings(models.Model):
     class Meta:
         verbose_name = 'Site Ayarı'
         verbose_name_plural = 'Site Ayarları'
+        db_table_comment = 'Site genel ayarları - tekil kayıt'
     
     def __str__(self):
         return self.site_name
@@ -63,6 +64,13 @@ class ActivityLog(models.Model):
     class Meta:
         verbose_name = 'Aktivite Kaydı'
         verbose_name_plural = 'Aktivite Kayıtları'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['-created_at'], name='activity_created_idx'),
+            models.Index(fields=['user', '-created_at'], name='activity_user_idx'),
+            models.Index(fields=['action', '-created_at'], name='activity_action_idx'),
+        ]
+        db_table_comment = 'Kullanıcı aktivite logları'
 
     def __str__(self):
         return f"{self.user} - {self.action} - {self.created_at}"
@@ -107,6 +115,12 @@ class ContactMessage(models.Model):
         verbose_name = 'İletişim Mesajı'
         verbose_name_plural = 'İletişim Mesajları'
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['-created_at'], name='contact_created_idx'),
+            models.Index(fields=['status', '-created_at'], name='contact_status_idx'),
+            models.Index(fields=['email'], name='contact_email_idx'),
+        ]
+        db_table_comment = 'İletişim formu mesajları'
     
     def __str__(self):
         return f"{self.name} {self.surname} - {self.subject}"
@@ -174,6 +188,11 @@ class ServiceCategory(models.Model):
         verbose_name = 'Hizmet Kategorisi'
         verbose_name_plural = 'Hizmet Kategorileri'
         ordering = ['order', 'title']
+        indexes = [
+            models.Index(fields=['is_active', 'order'], name='svc_cat_active_order_idx'),
+            models.Index(fields=['slug'], name='svc_cat_slug_idx'),
+        ]
+        db_table_comment = 'Hizmet kategorileri - dinamik hizmet tanımları'
     
     def __str__(self):
         return self.title
@@ -248,6 +267,11 @@ class TeamMember(models.Model):
         verbose_name = 'Ekip Üyesi'
         verbose_name_plural = 'Ekip Üyeleri'
         ordering = ['order', 'name']
+        indexes = [
+            models.Index(fields=['is_active', 'order'], name='team_active_order_idx'),
+            models.Index(fields=['slug'], name='team_slug_idx'),
+        ]
+        db_table_comment = 'Ekip üyeleri - hakkımızda sayfası için'
     
     def __str__(self):
         return f"{self.name} - {self.title}"

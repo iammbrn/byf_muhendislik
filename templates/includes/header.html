@@ -133,6 +133,9 @@
 
     <!-- Mobil Navigasyon -->
     <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Menüyü Kapat">
+            <i class="fas fa-times"></i>
+        </button>
         <nav class="mobile-nav-content">
             <a href="{% url 'home' %}" class="mobile-nav-link {% if request.path == '/' %}active{% endif %}">
                 <i class="fas fa-home"></i>
@@ -247,10 +250,11 @@
 }
 
 .logo-img {
-    height: 60px;
+    height: 70px;
     width: auto;
     object-fit: contain;
     transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .logo-text {
@@ -449,10 +453,52 @@ body.dark-mode .dropdown-divider,
     transition: left 0.3s ease;
 }
 
+.mobile-nav-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1002;
+    transition: all 0.3s ease;
+    color: var(--dark-text);
+}
+
+.mobile-nav-close:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-light);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.mobile-nav-close i {
+    font-size: 1.3rem;
+}
+
 /* DARK MODE - MOBILE NAV */
 body.dark-mode .mobile-nav,
 [data-theme="dark"] .mobile-nav {
     background: #0f172a !important;
+}
+
+body.dark-mode .mobile-nav-close,
+[data-theme="dark"] .mobile-nav-close {
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .mobile-nav-close:hover,
+[data-theme="dark"] .mobile-nav-close:hover {
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: white !important;
 }
 
 .mobile-nav.active {
@@ -612,7 +658,7 @@ body.dark-mode .mobile-user-info,
 
 @media (max-width: 968px) {
     .logo-img {
-        height: 50px;
+        height: 60px;
     }
 
     .logo-name {
@@ -635,7 +681,7 @@ body.dark-mode .mobile-user-info,
     }
     
     .logo-img {
-        height: 45px;
+        height: 55px;
     }
 
     .logo-name {
@@ -713,17 +759,42 @@ document.addEventListener('DOMContentLoaded', function() {
     initDarkMode();
     
     // Mobile menu functionality
+    const mobileNavClose = document.getElementById('mobileNavClose');
+    
+    function openMobileNav() {
+        mobileNav.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileNav() {
+        mobileNav.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
     mobileMenuToggle.addEventListener('click', function() {
-        mobileNav.classList.toggle('active');
-        document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+        openMobileNav();
     });
     
-    // Mobil menüyü kapatma
+    // Close button
+    if (mobileNavClose) {
+        mobileNavClose.addEventListener('click', function() {
+            closeMobileNav();
+        });
+    }
+    
+    // Mobil menüyü kapatma (backdrop tıklandığında)
     mobileNav.addEventListener('click', function(e) {
         if (e.target === mobileNav) {
-            mobileNav.classList.remove('active');
-            document.body.style.overflow = '';
+            closeMobileNav();
         }
+    });
+    
+    // Mobil menü linklerine tıklandığında menüyü kapat
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            closeMobileNav();
+        });
     });
 });
 </script>

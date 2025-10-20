@@ -1,0 +1,265 @@
+/* BYF Mühendislik - Image Optimization CSS */
+/* Global image optimization rules for better performance and responsiveness */
+
+/* ===================================
+   GLOBAL IMAGE RULES
+   =================================== */
+
+/* All images responsive by default */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Prevent layout shift during image load */
+img[width][height] {
+    height: auto;
+}
+
+/* Image loading states */
+img:not([src]) {
+    visibility: hidden;
+}
+
+/* Lazy loading fade-in */
+img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+img[loading="lazy"].loaded,
+img[loading="lazy"]:not([data-src]) {
+    opacity: 1;
+}
+
+/* ===================================
+   BLOG IMAGES - OPTIMIZED SIZES
+   =================================== */
+
+/* Featured images - Desktop */
+.blog-featured-image img,
+.post-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Content images within blog posts */
+.blog-content img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* ===================================
+   RESPONSIVE IMAGE BREAKPOINTS
+   =================================== */
+
+/* Desktop: Full resolution */
+@media (min-width: 1024px) {
+    .blog-featured-image img {
+        max-height: 600px;
+    }
+}
+
+/* Tablet: Medium resolution */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .blog-featured-image img {
+        max-height: 500px;
+    }
+    
+    .post-image {
+        height: 220px;
+    }
+}
+
+/* Mobile: Small resolution */
+@media (max-width: 767px) {
+    .blog-featured-image img {
+        max-height: 400px;
+    }
+    
+    .post-image {
+        height: 200px;
+    }
+    
+    .similar-post-image {
+        height: 150px;
+    }
+}
+
+/* Small mobile: Extra small resolution */
+@media (max-width: 480px) {
+    .blog-featured-image img {
+        max-height: 300px;
+    }
+    
+    .post-image {
+        height: 180px;
+    }
+    
+    .similar-post-image {
+        height: 120px;
+    }
+    
+    /* Content images - Smaller margins */
+    .blog-content img {
+        margin: 1rem 0 !important;
+    }
+}
+
+/* ===================================
+   HERO & BANNER IMAGES
+   =================================== */
+
+.hero-image img,
+.about-image img,
+.page-hero img,
+.banner-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+/* Hero and About images responsive - maintain full coverage */
+@media (max-width: 768px) {
+    .hero-image img,
+    .about-image img {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-image img,
+    .about-image img {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+/* ===================================
+   TEAM MEMBER IMAGES
+   =================================== */
+
+.team-image img,
+.team-card img,
+.author-avatar img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* ===================================
+   THUMBNAIL IMAGES
+   =================================== */
+
+.thumbnail,
+.thumb,
+.mini-image {
+    max-width: 150px;
+    height: auto;
+}
+
+@media (max-width: 480px) {
+    .thumbnail,
+    .thumb {
+        max-width: 100px;
+    }
+}
+
+/* ===================================
+   IMAGE PERFORMANCE OPTIMIZATIONS
+   =================================== */
+
+/* Aspect ratio boxes to prevent layout shift */
+.aspect-ratio-16-9 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+}
+
+.aspect-ratio-4-3 {
+    position: relative;
+    padding-bottom: 75%; /* 4:3 */
+    height: 0;
+    overflow: hidden;
+}
+
+.aspect-ratio-1-1 {
+    position: relative;
+    padding-bottom: 100%; /* 1:1 */
+    height: 0;
+    overflow: hidden;
+}
+
+.aspect-ratio-16-9 img,
+.aspect-ratio-4-3 img,
+.aspect-ratio-1-1 img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ===================================
+   DARK MODE IMAGE ADJUSTMENTS
+   =================================== */
+
+[data-theme="dark"] img {
+    opacity: 0.9;
+}
+
+[data-theme="dark"] img:hover {
+    opacity: 1;
+}
+
+/* ===================================
+   PRINT STYLES
+   =================================== */
+
+@media print {
+    img {
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+    
+    .blog-featured-image,
+    .post-image,
+    .similar-post-image {
+        max-height: none;
+    }
+}
+
+/* ===================================
+   ACCESSIBILITY
+   =================================== */
+
+/* Ensure images don't cause horizontal scroll */
+img {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    img {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    img {
+        transition: none !important;
+    }
+    
+    .post-image img,
+    .similar-post-image img {
+        transform: none !important;
+    }
+}
+

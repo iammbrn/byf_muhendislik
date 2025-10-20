@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
 import uuid
 
 class Service(models.Model):
@@ -33,9 +34,33 @@ class Service(models.Model):
         verbose_name = 'Hizmet'
         verbose_name_plural = 'Hizmetler'
         ordering = ['-request_date']
+        indexes = [
+            models.Index(fields=['-request_date'], name='service_request_date_idx'),
+            models.Index(fields=['firm', 'status'], name='service_firm_status_idx'),
+            models.Index(fields=['status', '-request_date'], name='service_status_date_idx'),
+            models.Index(fields=['-completion_date'], name='service_completion_idx'),
+        ]
+        db_table_comment = 'Hizmet kayıtları - müşteri hizmetlerinin detayları'
     
     def __str__(self):
         return f"{self.firm.name} - {self.get_service_type_display()}"
+    
+    def clean(self):
+        """Validate service data"""
+        super().clean()
+        
+        # Completion date must be after start date
+        if self.start_date and self.completion_date:
+            if self.completion_date < self.start_date:
+                raise ValidationError({
+                    'completion_date': 'Tamamlanma tarihi başlangıç tarihinden önce olamaz.'
+                })
+        
+        # Assigned admin must be admin type
+        if self.assigned_admin and self.assigned_admin.user_type != 'admin':
+            raise ValidationError({
+                'assigned_admin': 'Sadece admin tipi kullanıcılar atanabilir.'
+            })
 
 class ServiceRequest(models.Model):
     PRIORITY_CHOICES = (
@@ -72,6 +97,13 @@ class ServiceRequest(models.Model):
         verbose_name = 'Hizmet Talebi'
         verbose_name_plural = 'Hizmet Talepleri'
         ordering = ['-request_date']
+        indexes = [
+            models.Index(fields=['-request_date'], name='svcreq_request_date_idx'),
+            models.Index(fields=['firm', 'status'], name='svcreq_firm_status_idx'),
+            models.Index(fields=['status', '-request_date'], name='svcreq_status_date_idx'),
+            models.Index(fields=['tracking_code'], name='svcreq_tracking_code_idx'),
+        ]
+        db_table_comment = 'Hizmet talepleri - müşterilerden gelen yeni hizmet istekleri'
     
     def __str__(self):
         return f"{self.firm.name} - {self.title}"

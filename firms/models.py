@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator, RegexValidator
 import uuid
 
 class Firm(models.Model):
@@ -9,11 +11,21 @@ class Firm(models.Model):
         ('suspended', 'Askıda'),
     )
     
-    name = models.CharField(max_length=255, verbose_name='Firma Adı')
+    name = models.CharField(max_length=255, verbose_name='Firma Adı', db_index=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='firm')
-    tax_number = models.CharField(max_length=20, blank=True, verbose_name='Vergi No')
-    phone = models.CharField(max_length=15, verbose_name='Telefon')
-    email = models.EmailField(verbose_name='E-posta')
+    tax_number = models.CharField(
+        max_length=20, 
+        blank=True, 
+        verbose_name='Vergi No',
+        validators=[RegexValidator(regex=r'^\d{10}$', message='Vergi numarası 10 haneli olmalıdır.', code='invalid_tax_number')],
+        help_text='10 haneli vergi numarası'
+    )
+    phone = models.CharField(
+        max_length=15, 
+        verbose_name='Telefon',
+        validators=[RegexValidator(regex=r'^\+?[\d\s\-()]{10,15}$', message='Geçerli bir telefon numarası girin.')]
+    )
+    email = models.EmailField(verbose_name='E-posta', validators=[EmailValidator()])
     address = models.TextField(verbose_name='Adres')
     city = models.CharField(max_length=100, verbose_name='Şehir')
     country = models.CharField(max_length=100, default='Türkiye', verbose_name='Ülke')
@@ -29,6 +41,12 @@ class Firm(models.Model):
         verbose_name = 'Firma'
         verbose_name_plural = 'Firmalar'
         ordering = ['-registration_date']
+        indexes = [
+            models.Index(fields=['-registration_date'], name='firm_reg_date_idx'),
+            models.Index(fields=['status', '-registration_date'], name='firm_status_date_idx'),
+            models.Index(fields=['city', 'status'], name='firm_city_status_idx'),
+        ]
+        db_table_comment = 'Firma bilgileri - müşteri firmaların kayıtları'
     
     def __str__(self):
         return self.name
@@ -36,6 +54,22 @@ class Firm(models.Model):
     @property
     def is_active(self):
         return self.status == 'active'
+    
+    def clean(self):
+        """Validate firm data"""
+        super().clean()
+        
+        # Ensure user is firma type
+        if self.user and self.user.user_type != 'firma':
+            raise ValidationError({
+                'user': 'Firma için sadece firma tipi kullanıcılar atanabilir.'
+            })
+        
+        # Validate tax number format if provided
+        if self.tax_number and not self.tax_number.isdigit():
+            raise ValidationError({
+                'tax_number': 'Vergi numarası sadece rakam içermelidir.'
+            })
 
 class FirmServiceHistory(models.Model):
     firm = models.ForeignKey(Firm, on_delete=models.CASCADE, related_name='service_history')
@@ -49,6 +83,10 @@ class FirmServiceHistory(models.Model):
         verbose_name = 'Firma Hizmet Geçmişi'
         verbose_name_plural = 'Firma Hizmet Geçmişleri'
         ordering = ['-service_date']
+        indexes = [
+            models.Index(fields=['firm', '-service_date'], name='firmhist_firm_date_idx'),
+        ]
+        db_table_comment = 'Firma hizmet geçmişi - eski kayıtlar için'
     
     def __str__(self):
         return f"{self.firm.name} - {self.service_type}"

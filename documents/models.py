@@ -37,6 +37,14 @@ class Document(models.Model):
         verbose_name = 'Doküman'
         verbose_name_plural = 'Dokümanlar'
         ordering = ['-upload_date']
+        indexes = [
+            models.Index(fields=['-upload_date'], name='doc_upload_date_idx'),
+            models.Index(fields=['firm', '-upload_date'], name='doc_firm_date_idx'),
+            models.Index(fields=['service', '-upload_date'], name='doc_service_date_idx'),
+            models.Index(fields=['document_type', '-upload_date'], name='doc_type_date_idx'),
+            models.Index(fields=['is_visible_to_firm', '-upload_date'], name='doc_visible_date_idx'),
+        ]
+        db_table_comment = 'Doküman yönetimi - firmalar için dosya saklama'
     
     def __str__(self):
         return self.name

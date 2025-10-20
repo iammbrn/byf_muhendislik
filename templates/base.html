@@ -71,6 +71,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/image-optimization.css' %}">
     <link rel="stylesheet" href="{% static 'css/dark-mode-fixes.css' %}">
     
     <!-- Font Awesome CDN - Async load -->
@@ -109,6 +110,7 @@
     {% include 'includes/footer.html' %}
 
     <!-- JavaScript Dosyaları - Defer for better performance -->
+    <script defer src="{% static 'js/image-loader.js' %}"></script>
     <script defer src="{% static 'js/main.js' %}"></script>
     <script defer src="{% static 'js/dashboard.js' %}"></script>
     <script defer src="{% static 'js/forms.js' %}"></script>

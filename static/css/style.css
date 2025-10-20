@@ -369,14 +369,53 @@ a:hover {
     box-shadow: var(--shadow-secondary);
 }
 
-.btn-danger {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: var(--white);
+.btn-danger,
+.delete-btn,
+button[name="delete"],
+input[type="submit"][value*="Sil"],
+a[href*="delete"],
+.deletelink {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: var(--white) !important;
+    border: 2px solid transparent !important;
+    padding: 0.625rem 1.25rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    border-radius: var(--border-radius) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    min-width: 100px !important;
+    justify-content: center !important;
 }
 
-.btn-danger:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+.btn-danger:hover:not(:disabled),
+.delete-btn:hover,
+button[name="delete"]:hover,
+input[type="submit"][value*="Sil"]:hover,
+a[href*="delete"]:hover,
+.deletelink:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4) !important;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    border-color: #b91c1c !important;
+}
+
+.btn-danger:active,
+.delete-btn:active,
+button[name="delete"]:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 5px 15px -5px rgba(239, 68, 68, 0.4) !important;
+}
+
+.btn-danger:disabled,
+.delete-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
 }
 
 .btn-info {
@@ -799,6 +838,9 @@ textarea.form-control {
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-image img {
@@ -807,6 +849,10 @@ textarea.form-control {
     object-fit: cover;
     object-position: center;
     transition: transform 0.3s ease;
+    display: block;
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 .hero-image:hover img {
@@ -975,6 +1021,9 @@ textarea.form-control {
     overflow: hidden;
     border-radius: 12px;
     box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .about-image img {
@@ -983,6 +1032,10 @@ textarea.form-control {
     object-fit: cover;
     object-position: center;
     transition: transform 0.3s ease;
+    display: block;
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 .about-image:hover img {

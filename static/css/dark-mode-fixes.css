@@ -743,13 +743,17 @@ body.dark-mode .hero-buttons {
 
 /* Hero image düzenleme */
 body.dark-mode .hero-image {
-    opacity: 0.8;
-    filter: brightness(0.85) contrast(1.1);
+    opacity: 0.85;
 }
 
 body.dark-mode .hero-image img {
-    border: 2px solid #334155;
+    filter: brightness(0.85) contrast(1.05);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .about-image img {
+    filter: brightness(0.85) contrast(1.05);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Hero container genel ayarlar */
@@ -1258,12 +1262,22 @@ input[type="submit"]:hover {
 }
 
 /* Danger Button */
-.btn-danger {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+.btn-danger,
+.delete-btn,
+button[name="delete"],
+input[type="submit"][value*="Sil"],
+a[href*="delete"] {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
 }
 
-.btn-danger:hover {
-    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+.btn-danger:hover,
+.delete-btn:hover,
+button[name="delete"]:hover,
+input[type="submit"][value*="Sil"]:hover,
+a[href*="delete"]:hover {
+    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4) !important;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
 }
 
 /* Success Button */
@@ -2701,7 +2715,22 @@ body.dark-mode .dashboard .changelink,
 
 body.dark-mode .dashboard .deletelink,
 [data-theme="dark"].dashboard .deletelink {
-    color: #f87171 !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition: all 0.3s ease !important;
+}
+
+body.dark-mode .dashboard .deletelink:hover,
+[data-theme="dark"].dashboard .deletelink:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.5) !important;
 }
 
 /* Current App/Model Highlighting */
@@ -2776,7 +2805,22 @@ body.dark-mode #content-related .changelink,
 
 body.dark-mode #content-related .deletelink,
 [data-theme="dark"] #content-related .deletelink {
-    color: #f87171 !important;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition: all 0.3s ease !important;
+}
+
+body.dark-mode #content-related .deletelink:hover,
+[data-theme="dark"] #content-related .deletelink:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.5) !important;
 }
 
 /* Recent Actions Module Specific */

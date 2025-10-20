@@ -538,7 +538,7 @@ body.change-list.filtered #changelist-filter,
     padding-bottom: 2rem !important;
 }
 
-/* Body flexbox for footer */
+/* Body flexbox for footer - ensures footer always at bottom */
 body {
     min-height: 100vh !important;
     display: flex !important;
@@ -549,12 +549,21 @@ body {
     flex: 1 0 auto !important;
     display: flex !important;
     flex-direction: column !important;
+    min-height: 100vh !important; /* Ensure container takes full height */
 }
 
 #main,
 .main,
 .main.shifted {
     flex: 1 0 auto !important;
+    margin-bottom: 0 !important; /* No bottom margin to allow footer to flow naturally */
+}
+
+/* Ensure footer is always pushed to bottom and never overlapped */
+#footer,
+.main-footer {
+    flex-shrink: 0 !important; /* Footer never shrinks */
+    margin-top: auto !important; /* Push to bottom */
 }
 
 /* ========================================
@@ -655,6 +664,64 @@ body {
     .main.shifted {
         padding: 110px 0 20px 0 !important;
     }
+    
+    /* Toolbar responsiveness */
+    #toolbar {
+        padding: 1rem !important;
+    }
+    
+    #toolbar form {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        max-width: 100% !important;
+    }
+    
+    #toolbar input[type="text"] {
+        border-radius: 8px !important;
+        border-right: 2px solid #e2e8f0 !important;
+    }
+    
+    #toolbar input[type="submit"] {
+        border-radius: 8px !important;
+        width: 100% !important;
+    }
+    
+    /* Admin actions responsiveness */
+    .actions {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+    
+    .actions label,
+    .actions select,
+    .actions button {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    /* Pagination responsiveness */
+    .pagination {
+        font-size: 0.85rem !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 0.25rem !important;
+    }
+    
+    .pagination a,
+    .pagination span {
+        padding: 0.4rem 0.6rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    /* Results table mobile scroll */
+    .results {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    #result_list {
+        min-width: 600px !important;
+    }
 }
 
 /* ========================================
@@ -664,53 +731,118 @@ body {
 /* Sidebar - Sticky ile footer'a girmez, eşit mesafe */
 #nav-sidebar {
     position: sticky !important;
-    top: 10px !important; /* Header ile eşit boşluk (10px) */
+    top: 100px !important; /* Header yüksekliği + boşluk */
     left: 0 !important;
     width: 275px !important;
+    max-height: calc(100vh - 250px) !important; /* Footer için daha fazla boşluk bırak */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Toggle sidebar button - also sticky */
+.toggle-nav-sidebar {
+    position: sticky !important;
+    top: 100px !important; /* Header ile uyumlu */
+    z-index: 1000 !important;
 }
 
 /* ========================================
-   STICKY SECTION COLOR FIXES
+   STICKY SECTION COLOR FIXES & FOOTER OVERLAP FIX
    ======================================== */
 
-/* Sticky sections - match site theme */
+/* Sticky sections - match site theme, prevent footer overlap */
 .sticky {
-    background-color: #f8f9fa !important;
-    border-bottom: 2px solid #e9ecef !important;
+    background-color: transparent !important; /* Remove background to prevent visual conflicts */
+    border: none !important;
+    position: sticky !important;
+    z-index: 999 !important;
+    bottom: auto !important; /* Prevent sticking to bottom and overlapping footer */
 }
 
-body.dark-mode .sticky,
-[data-theme="dark"] .sticky {
-    background-color: #1e293b !important;
-    border-bottom: 2px solid #334155 !important;
+/* Fix for change-list pages - ensure footer is always below sticky elements */
+body.change-list #main,
+body.change-list .main,
+body.change-list .main.shifted {
+    min-height: calc(100vh - 200px) !important; /* Ensure enough space for footer */
+    padding-bottom: 3rem !important; /* Add space before footer */
 }
 
-/* Toggle nav sidebar button in sticky */
-.sticky .toggle-nav-sidebar {
+/* Ensure changelist content area doesn't overlap footer */
+body.change-list #content {
+    padding-bottom: 4rem !important; /* Extra space to prevent sticky elements from overlapping footer */
+}
+
+/* Prevent sticky table headers from overlapping footer */
+body.change-list .results {
+    margin-bottom: 2rem !important; /* Space between table and footer */
+}
+
+/* Ensure actions bar doesn't stick to footer area */
+body.change-list .actions {
+    position: relative !important; /* Override any absolute/fixed positioning */
+    margin-bottom: 2rem !important;
+}
+
+/* Nav sidebar sticky positioning - prevent footer overlap */
+#nav-sidebar.sticky {
     background-color: #ffffff !important;
-    border-color: #dee2e6 !important;
-    color: #495057 !important;
+    border-right: 1px solid #e2e8f0 !important;
+    border-bottom: none !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05) !important;
+    max-height: calc(100vh - 250px) !important; /* Ensure sidebar doesn't extend into footer area */
+    overflow-y: auto !important;
 }
 
-.sticky .toggle-nav-sidebar:hover,
-.sticky .toggle-nav-sidebar:focus {
-    background-color: #e9ecef !important;
-    color: #212529 !important;
-}
-
-body.dark-mode .sticky .toggle-nav-sidebar,
-[data-theme="dark"] .sticky .toggle-nav-sidebar {
-    background-color: #0f172a !important;
-    border-color: #334155 !important;
-    color: #94a3b8 !important;
-}
-
-body.dark-mode .sticky .toggle-nav-sidebar:hover,
-body.dark-mode .sticky .toggle-nav-sidebar:focus,
-[data-theme="dark"] .sticky .toggle-nav-sidebar:hover,
-[data-theme="dark"] .sticky .toggle-nav-sidebar:focus {
+body.dark-mode #nav-sidebar.sticky,
+[data-theme="dark"] #nav-sidebar.sticky {
     background-color: #1e293b !important;
-    color: #f1f5f9 !important;
+    border-right-color: #334155 !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Toggle nav sidebar button */
+.toggle-nav-sidebar,
+button.toggle-nav-sidebar {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    border: 2px solid transparent !important;
+    color: white !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2) !important;
+}
+
+.toggle-nav-sidebar:hover,
+button.toggle-nav-sidebar:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+.toggle-nav-sidebar:active,
+button.toggle-nav-sidebar:active {
+    transform: translateY(0) !important;
+}
+
+body.dark-mode .toggle-nav-sidebar,
+body.dark-mode button.toggle-nav-sidebar,
+[data-theme="dark"] .toggle-nav-sidebar,
+[data-theme="dark"] button.toggle-nav-sidebar {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .toggle-nav-sidebar:hover,
+body.dark-mode button.toggle-nav-sidebar:hover,
+[data-theme="dark"] .toggle-nav-sidebar:hover,
+[data-theme="dark"] button.toggle-nav-sidebar:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4) !important;
 }
 
 /* ========================================
@@ -812,18 +944,1652 @@ body.dark-mode a.deletelink:hover,
     background: rgba(30, 58, 138, 0.5);
 }
 
+/* ========================================
+   DELETE CONFIRMATION PAGE FIXES
+   ======================================== */
+
+/* Delete confirmation page layout */
+body.delete-confirmation #content,
+body.delete-confirmation #content-main {
+    width: 100% !important;
+    max-width: 900px !important;
+    margin: 0 auto !important;
+    padding: 2rem !important;
+}
+
+body.delete-confirmation #main,
+body.delete-confirmation .main {
+    padding: 110px 0 40px 0 !important;
+    min-height: calc(100vh - 400px) !important; /* Ensure footer doesn't overlap */
+}
+
+/* Hide admin sidebar on delete pages to prevent conflicts */
+body.delete-confirmation #nav-sidebar,
+body.delete-confirmation .toggle-nav-sidebar {
+    display: none !important;
+}
+
+/* ========================================
+   HISTORY PAGE LAYOUT FIXES
+   ======================================== */
+
+/* History page - clean layout matching other admin pages */
+body.change-history #content,
+body.change-history #content-main {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 2rem !important;
+}
+
+body.change-history #main,
+body.change-history .main {
+    padding: 110px 0 40px 0 !important;
+    min-height: calc(100vh - 400px) !important;
+}
+
+/* Hide admin sidebar on history page */
+body.change-history #nav-sidebar,
+body.change-history .toggle-nav-sidebar {
+    display: none !important;
+}
+
+/* History module - proper styling */
+#change-history.module {
+    background: var(--admin-surface) !important;
+    border: 1px solid var(--admin-border) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="dark"] #change-history.module {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* History table - clean design */
+#change-history table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 0 !important;
+}
+
+#change-history thead th {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    padding: 1.125rem 1.5rem !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    border-bottom: none !important;
+}
+
+#change-history tbody th,
+#change-history tbody td {
+    padding: 1rem 1.5rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: var(--admin-text) !important;
+    vertical-align: middle !important;
+}
+
+[data-theme="dark"] #change-history tbody th,
+[data-theme="dark"] #change-history tbody td {
+    border-bottom-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+#change-history tbody tr:hover {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+}
+
+[data-theme="dark"] #change-history tbody tr:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%) !important;
+}
+
+/* No history message */
+.no-history-message {
+    padding: 3rem !important;
+    text-align: center !important;
+    color: var(--admin-text-secondary) !important;
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+}
+
+/* History page paginator */
+#change-history .paginator {
+    padding: 2rem 0 !important;
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+}
+
+#change-history .paginator a,
+#change-history .paginator span {
+    padding: 0.625rem 1rem !important;
+    min-width: 40px !important;
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    color: var(--admin-primary) !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+#change-history .paginator a:hover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    border-color: transparent !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+#change-history .paginator .this-page {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    color: white !important;
+    border-color: transparent !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3) !important;
+}
+
+#change-history .paginator .total-count {
+    margin-left: 1rem !important;
+    color: var(--admin-text-secondary) !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="dark"] #change-history .paginator a,
+[data-theme="dark"] #change-history .paginator span {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] #change-history .paginator a:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%) !important;
+    color: white !important;
+}
+
+/* Mobile responsive history page */
+@media (max-width: 768px) {
+    body.change-history #content,
+    body.change-history #content-main {
+        padding: 1rem !important;
+    }
+    
+    body.change-history #main,
+    body.change-history .main {
+        padding: 90px 0 30px 0 !important;
+    }
+    
+    #change-history table {
+        display: block !important;
+        overflow-x: auto !important;
+    }
+    
+    #change-history thead th,
+    #change-history tbody th,
+    #change-history tbody td {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.875rem !important;
+    }
+}
+
+/* ========================================
+   HEADER & FOOTER - EXACT COPY FROM SITE
+   ======================================== */
+
+/* Ensure main site header is 100% identical to standard pages */
+body.delete-confirmation .main-header,
+body.delete-selected .main-header,
+body.change-history .main-header {
+    display: block !important;
+    visibility: visible !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Dark mode - main-header background consistency */
+[data-theme="dark"] body.delete-confirmation .main-header,
+[data-theme="dark"] body.delete-selected .main-header,
+[data-theme="dark"] body.change-history .main-header {
+    background: #1e293b !important;
+    border-bottom: 1px solid #334155 !important;
+}
+
+body.delete-confirmation .header-content,
+body.delete-selected .header-content,
+body.change-history .header-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 1rem 0 !important;
+}
+
+body.delete-confirmation .main-nav,
+body.delete-selected .main-nav,
+body.change-history .main-nav {
+    display: block !important;
+    visibility: visible !important;
+    border: none !important;
+    background: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Dark mode - main-nav background consistency */
+[data-theme="dark"] body.delete-confirmation .main-nav,
+[data-theme="dark"] body.delete-selected .main-nav,
+[data-theme="dark"] body.change-history .main-nav {
+    background: none !important;
+    border: none !important;
+}
+
+body.delete-confirmation .nav-list,
+body.delete-selected .nav-list,
+body.change-history .nav-list {
+    display: flex !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 2rem !important;
+    border: none !important;
+    background: none !important;
+}
+
+/* Dark mode - nav-list background consistency */
+[data-theme="dark"] body.delete-confirmation .nav-list,
+[data-theme="dark"] body.delete-selected .nav-list,
+[data-theme="dark"] body.change-history .nav-list {
+    background: none !important;
+    border: none !important;
+}
+
+body.delete-confirmation .header-actions,
+body.delete-selected .header-actions,
+body.change-history .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+/* Navigation items and links - exact styling */
+body.delete-confirmation .nav-item,
+body.delete-selected .nav-item,
+body.change-history .nav-item {
+    list-style: none !important;
+    background: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Dark mode - nav-item background consistency */
+[data-theme="dark"] body.delete-confirmation .nav-item,
+[data-theme="dark"] body.delete-selected .nav-item,
+[data-theme="dark"] body.change-history .nav-item {
+    background: none !important;
+    border: none !important;
+}
+
+body.delete-confirmation .nav-link,
+body.delete-selected .nav-link,
+body.change-history .nav-link {
+    text-decoration: none !important;
+    color: var(--dark-text) !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 0 !important;
+    position: relative !important;
+    transition: color 0.3s ease !important;
+}
+
+/* Dark mode - nav-link text color consistency */
+[data-theme="dark"] body.delete-confirmation .nav-link,
+[data-theme="dark"] body.delete-selected .nav-link,
+[data-theme="dark"] body.change-history .nav-link {
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] body.delete-confirmation .nav-link:hover,
+[data-theme="dark"] body.delete-selected .nav-link:hover,
+[data-theme="dark"] body.change-history .nav-link:hover,
+[data-theme="dark"] body.delete-confirmation .nav-link.active,
+[data-theme="dark"] body.delete-selected .nav-link.active,
+[data-theme="dark"] body.change-history .nav-link.active {
+    color: #60a5fa !important;
+}
+
+body.delete-confirmation .nav-link:hover,
+body.delete-selected .nav-link:hover,
+body.change-history .nav-link:hover,
+body.delete-confirmation .nav-link.active,
+body.delete-selected .nav-link.active,
+body.change-history .nav-link.active {
+    color: var(--primary-light) !important;
+}
+
+body.delete-confirmation .nav-link.active::after,
+body.delete-selected .nav-link.active::after,
+body.change-history .nav-link.active::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    background: var(--primary-light) !important;
+}
+
+/* Logo styling - exact match */
+body.delete-confirmation .logo,
+body.delete-selected .logo,
+body.change-history .logo {
+    flex-shrink: 0 !important;
+}
+
+body.delete-confirmation .logo-link,
+body.delete-selected .logo-link,
+body.change-history .logo-link {
+    text-decoration: none !important;
+    color: var(--dark-text) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    transition: all 0.3s ease !important;
+}
+
+body.delete-confirmation .logo-link:hover,
+body.delete-selected .logo-link:hover,
+body.change-history .logo-link:hover {
+    transform: translateX(3px) !important;
+}
+
+body.delete-confirmation .logo-img,
+body.delete-selected .logo-img,
+body.change-history .logo-img {
+    height: 70px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    transition: all 0.3s ease !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)) !important;
+}
+
+body.delete-confirmation .logo-name,
+body.delete-selected .logo-name,
+body.change-history .logo-name {
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    letter-spacing: 1px !important;
+}
+
+body.delete-confirmation .logo-tagline,
+body.delete-selected .logo-tagline,
+body.change-history .logo-tagline {
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: var(--gray-text) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+}
+
+/* User menu styling */
+body.delete-confirmation .user-menu,
+body.delete-selected .user-menu,
+body.change-history .user-menu {
+    position: relative !important;
+}
+
+body.delete-confirmation .user-toggle,
+body.delete-selected .user-toggle,
+body.change-history .user-toggle {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    background: none !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 25px !important;
+    padding: 0.5rem 1rem !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    color: var(--dark-text) !important;
+}
+
+body.delete-confirmation .user-toggle:hover,
+body.delete-selected .user-toggle:hover,
+body.change-history .user-toggle:hover {
+    border-color: var(--primary-light) !important;
+}
+
+/* Dark mode toggle button */
+body.delete-confirmation .dark-mode-toggle,
+body.delete-selected .dark-mode-toggle,
+body.change-history .dark-mode-toggle {
+    background: none !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    color: var(--dark-text) !important;
+}
+
+body.delete-confirmation .dark-mode-toggle:hover,
+body.delete-selected .dark-mode-toggle:hover,
+body.change-history .dark-mode-toggle:hover {
+    border-color: var(--primary-light) !important;
+    background: var(--light-bg) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Mobile menu toggle */
+body.delete-confirmation .mobile-menu-toggle,
+body.delete-selected .mobile-menu-toggle,
+body.change-history .mobile-menu-toggle {
+    display: none !important;
+}
+
+@media (max-width: 968px) {
+    body.delete-confirmation .main-nav,
+    body.delete-selected .main-nav,
+    body.change-history .main-nav {
+        display: none !important;
+    }
+    
+    body.delete-confirmation .mobile-menu-toggle,
+    body.delete-selected .mobile-menu-toggle,
+    body.change-history .mobile-menu-toggle {
+        display: flex !important;
+    }
+}
+
+/* Ensure main site footer is 100% identical to standard pages */
+body.delete-confirmation .main-footer,
+body.delete-selected .main-footer,
+body.change-history .main-footer {
+    display: block !important;
+    visibility: visible !important;
+    margin-top: 3rem !important;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    color: white !important;
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+}
+
+/* Dark mode - main-footer already has dark background, ensure consistency */
+[data-theme="dark"] body.delete-confirmation .main-footer,
+[data-theme="dark"] body.delete-selected .main-footer,
+[data-theme="dark"] body.change-history .main-footer {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+}
+
+body.delete-confirmation .main-footer::before,
+body.delete-selected .main-footer::before,
+body.change-history .main-footer::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+}
+
+body.delete-confirmation .footer-content,
+body.delete-selected .footer-content,
+body.change-history .footer-content {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr !important;
+    gap: 3rem !important;
+    padding: 3rem 0 !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+}
+
+body.delete-confirmation .footer-section,
+body.delete-selected .footer-section,
+body.change-history .footer-section {
+    display: block !important;
+    background: none !important;
+    border: none !important;
+}
+
+/* Dark mode - footer-section consistency */
+[data-theme="dark"] body.delete-confirmation .footer-section,
+[data-theme="dark"] body.delete-selected .footer-section,
+[data-theme="dark"] body.change-history .footer-section {
+    background: none !important;
+    border: none !important;
+}
+
+body.delete-confirmation .footer-links,
+body.delete-selected .footer-links,
+body.change-history .footer-links {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+}
+
+/* Dark mode - footer-links background consistency */
+[data-theme="dark"] body.delete-confirmation .footer-links,
+[data-theme="dark"] body.delete-selected .footer-links,
+[data-theme="dark"] body.change-history .footer-links {
+    background: none !important;
+    border: none !important;
+}
+
+[data-theme="dark"] body.delete-confirmation .footer-links li,
+[data-theme="dark"] body.delete-selected .footer-links li,
+[data-theme="dark"] body.change-history .footer-links li {
+    background: none !important;
+    border: none !important;
+}
+
+body.delete-confirmation .footer-links li,
+body.delete-selected .footer-links li,
+body.change-history .footer-links li {
+    margin-bottom: 0.75rem !important;
+    background: none !important;
+    border: none !important;
+    list-style: none !important;
+}
+
+body.delete-confirmation .footer-links a,
+body.delete-selected .footer-links a,
+body.change-history .footer-links a {
+    color: #bdc3c7 !important;
+    text-decoration: none !important;
+    transition: color 0.3s ease !important;
+}
+
+/* Dark mode - footer-links text color consistency */
+[data-theme="dark"] body.delete-confirmation .footer-links a,
+[data-theme="dark"] body.delete-selected .footer-links a,
+[data-theme="dark"] body.change-history .footer-links a {
+    color: #cbd5e1 !important;
+}
+
+body.delete-confirmation .footer-links a:hover,
+body.delete-selected .footer-links a:hover,
+body.change-history .footer-links a:hover {
+    color: #f59e0b !important;
+    padding-left: 0.5rem !important;
+}
+
+/* Dark mode - footer-links hover color consistency */
+[data-theme="dark"] body.delete-confirmation .footer-links a:hover,
+[data-theme="dark"] body.delete-selected .footer-links a:hover,
+[data-theme="dark"] body.change-history .footer-links a:hover {
+    color: #fbbf24 !important;
+}
+
+body.delete-confirmation .footer-bottom,
+body.delete-selected .footer-bottom,
+body.change-history .footer-bottom {
+    border-top: 1px solid #34495e !important;
+    padding: 1.5rem 0 !important;
+}
+
+body.delete-confirmation .footer-logo,
+body.delete-selected .footer-logo,
+body.change-history .footer-logo {
+    display: block !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Footer logo link and image - exact styling */
+body.delete-confirmation .footer-logo-link,
+body.delete-selected .footer-logo-link,
+body.change-history .footer-logo-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+}
+
+body.delete-confirmation .footer-logo-link:hover,
+body.delete-selected .footer-logo-link:hover,
+body.change-history .footer-logo-link:hover {
+    transform: translateX(3px) !important;
+}
+
+body.delete-confirmation .footer-logo-img,
+body.delete-selected .footer-logo-img,
+body.change-history .footer-logo-img {
+    height: 70px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+}
+
+body.delete-confirmation .footer-logo-text,
+body.delete-selected .footer-logo-text,
+body.change-history .footer-logo-text {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    line-height: 1 !important;
+}
+
+body.delete-confirmation .footer-logo-name,
+body.delete-selected .footer-logo-name,
+body.change-history .footer-logo-name {
+    font-size: 1.85rem !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    letter-spacing: 1.5px !important;
+}
+
+body.delete-confirmation .footer-logo-tagline,
+body.delete-selected .footer-logo-tagline,
+body.change-history .footer-logo-tagline {
+    font-size: 1.85rem !important;
+    font-weight: 800 !important;
+    color: #f59e0b !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Footer description */
+body.delete-confirmation .footer-description,
+body.delete-selected .footer-description,
+body.change-history .footer-description {
+    line-height: 1.6 !important;
+    margin-bottom: 1.5rem !important;
+    color: #bdc3c7 !important;
+}
+
+/* Footer section headings */
+body.delete-confirmation .footer-section h3,
+body.delete-selected .footer-section h3,
+body.change-history .footer-section h3 {
+    color: #f59e0b !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    background: none !important;
+    border: none !important;
+}
+
+/* Dark mode - footer-section h3 color consistency */
+[data-theme="dark"] body.delete-confirmation .footer-section h3,
+[data-theme="dark"] body.delete-selected .footer-section h3,
+[data-theme="dark"] body.change-history .footer-section h3 {
+    color: #fbbf24 !important;
+}
+
+/* Social links */
+body.delete-confirmation .social-links,
+body.delete-selected .social-links,
+body.change-history .social-links {
+    display: flex !important;
+    gap: 1rem !important;
+}
+
+body.delete-confirmation .social-link,
+body.delete-selected .social-link,
+body.change-history .social-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 42px !important;
+    height: 42px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+    color: white !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid transparent !important;
+}
+
+body.delete-confirmation .social-link:hover,
+body.delete-selected .social-link:hover,
+body.change-history .social-link:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    transform: translateY(-3px) !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Contact info */
+body.delete-confirmation .contact-info,
+body.delete-selected .contact-info,
+body.change-history .contact-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+}
+
+body.delete-confirmation .contact-item,
+body.delete-selected .contact-item,
+body.change-history .contact-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    padding: 0.5rem !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+body.delete-confirmation .contact-item:hover,
+body.delete-selected .contact-item:hover,
+body.change-history .contact-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    transform: translateX(5px) !important;
+}
+
+body.delete-confirmation .contact-item i,
+body.delete-selected .contact-item i,
+body.change-history .contact-item i {
+    color: #f59e0b !important;
+    margin-top: 0.2rem !important;
+    width: 18px !important;
+    font-size: 1.1rem !important;
+}
+
+body.delete-confirmation .contact-item a,
+body.delete-confirmation .contact-item span,
+body.delete-selected .contact-item a,
+body.delete-selected .contact-item span,
+body.change-history .contact-item a,
+body.change-history .contact-item span {
+    color: #e2e8f0 !important;
+    text-decoration: none !important;
+    transition: color 0.3s ease !important;
+    flex: 1 !important;
+}
+
+body.delete-confirmation .contact-item a:hover,
+body.delete-selected .contact-item a:hover,
+body.change-history .contact-item a:hover {
+    color: #f59e0b !important;
+}
+
+/* Footer bottom content */
+body.delete-confirmation .footer-bottom-content,
+body.delete-selected .footer-bottom-content,
+body.change-history .footer-bottom-content {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+body.delete-confirmation .copyright,
+body.delete-selected .copyright,
+body.change-history .copyright {
+    color: #bdc3c7 !important;
+}
+
+body.delete-confirmation .footer-bottom-links,
+body.delete-selected .footer-bottom-links,
+body.change-history .footer-bottom-links {
+    display: flex !important;
+    gap: 2rem !important;
+}
+
+body.delete-confirmation .footer-bottom-links a,
+body.delete-selected .footer-bottom-links a,
+body.change-history .footer-bottom-links a {
+    color: #bdc3c7 !important;
+    text-decoration: none !important;
+    font-size: 0.9rem !important;
+    transition: color 0.3s ease !important;
+}
+
+body.delete-confirmation .footer-bottom-links a:hover,
+body.delete-selected .footer-bottom-links a:hover,
+body.change-history .footer-bottom-links a:hover {
+    color: #3498db !important;
+}
+
+/* Footer container - ensure proper width */
+body.delete-confirmation .main-footer .container,
+body.delete-selected .main-footer .container,
+body.change-history .main-footer .container {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+}
+
+/* Responsive footer - mobile */
+@media (max-width: 768px) {
+    body.delete-confirmation .footer-content,
+    body.delete-selected .footer-content,
+    body.change-history .footer-content {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+    
+    body.delete-confirmation .footer-bottom-content,
+    body.delete-selected .footer-bottom-content,
+    body.change-history .footer-bottom-content {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        text-align: center !important;
+    }
+    
+    body.delete-confirmation .footer-bottom-links,
+    body.delete-selected .footer-bottom-links,
+    body.change-history .footer-bottom-links {
+        justify-content: center !important;
+    }
+    
+    body.delete-confirmation .footer-logo-img,
+    body.delete-selected .footer-logo-img,
+    body.change-history .footer-logo-img {
+        height: 55px !important;
+    }
+    
+    body.delete-confirmation .footer-logo-name,
+    body.delete-selected .footer-logo-name,
+    body.change-history .footer-logo-name {
+        font-size: 1.4rem !important;
+    }
+    
+    body.delete-confirmation .footer-logo-tagline,
+    body.delete-selected .footer-logo-tagline,
+    body.change-history .footer-logo-tagline {
+        font-size: 1.4rem !important;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 968px) {
+    body.delete-confirmation .footer-content,
+    body.delete-selected .footer-content,
+    body.change-history .footer-content {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 2rem !important;
+    }
+    
+    body.delete-confirmation .footer-logo-img,
+    body.delete-selected .footer-logo-img,
+    body.change-history .footer-logo-img {
+        height: 60px !important;
+    }
+    
+    body.delete-confirmation .footer-logo-name,
+    body.delete-selected .footer-logo-name,
+    body.change-history .footer-logo-name {
+        font-size: 1.6rem !important;
+    }
+    
+    body.delete-confirmation .footer-logo-tagline,
+    body.delete-selected .footer-logo-tagline,
+    body.change-history .footer-logo-tagline {
+        font-size: 1.6rem !important;
+    }
+}
+
+/* Breadcrumbs on special pages - match site style */
+body.delete-confirmation .breadcrumbs,
+body.delete-selected .breadcrumbs,
+body.change-history .breadcrumbs {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    padding: 14px 24px !important;
+    margin-bottom: 25px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #1e3a8a !important;
+}
+
+[data-theme="dark"] body.delete-confirmation .breadcrumbs,
+[data-theme="dark"] body.delete-selected .breadcrumbs,
+[data-theme="dark"] body.change-history .breadcrumbs {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border-color: #334155 !important;
+    border-left-color: #3b82f6 !important;
+}
+
+body.delete-confirmation .breadcrumbs a,
+body.delete-selected .breadcrumbs a,
+body.change-history .breadcrumbs a {
+    color: #1e3a8a !important;
+    font-weight: 600 !important;
+}
+
+body.delete-confirmation .breadcrumbs a:hover,
+body.delete-selected .breadcrumbs a:hover,
+body.change-history .breadcrumbs a:hover {
+    color: #f59e0b !important;
+}
+
+[data-theme="dark"] body.delete-confirmation .breadcrumbs a,
+[data-theme="dark"] body.delete-selected .breadcrumbs a,
+[data-theme="dark"] body.change-history .breadcrumbs a {
+    color: #60a5fa !important;
+}
+
+/* Delete confirmation form - matches site design */
+.delete-confirmation form {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #ef4444 !important; /* Red accent stripe */
+    border-radius: 12px !important;
+    padding: 2rem !important;
+    margin-bottom: 2rem !important;
+    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+}
+
+.delete-confirmation form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    border-radius: 12px 12px 0 0;
+}
+
+/* Prevent nested elements overlap */
+.delete-confirmation form > * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.delete-confirmation fieldset {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+[data-theme="dark"] .delete-confirmation form {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    border-left-color: #ef4444 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Delete confirmation heading - matches site design */
+.delete-confirmation h1 {
+    color: #0f172a !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 1rem !important;
+    border-bottom: 3px solid #e2e8f0 !important;
+    position: relative !important;
+}
+
+.delete-confirmation h1::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+[data-theme="dark"] .delete-confirmation h1 {
+    color: #f1f5f9 !important;
+    border-bottom-color: #334155 !important;
+}
+
+/* Delete confirmation warning text */
+.delete-confirmation p {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.25rem !important;
+    color: #475569 !important;
+}
+
+[data-theme="dark"] .delete-confirmation p {
+    color: #cbd5e1 !important;
+}
+
+/* Warning box for first paragraph */
+.delete-confirmation form > p:first-of-type {
+    background: #fef2f2 !important;
+    border: 2px solid #fee2e2 !important;
+    border-left: 4px solid #ef4444 !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 8px !important;
+    color: #991b1b !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="dark"] .delete-confirmation form > p:first-of-type {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+    color: #fca5a5 !important;
+}
+
+/* Related objects list - improved design matching site */
+.delete-confirmation ul,
+.delete-confirmation .related-objects-container ul {
+    background: #ffffff !important;
+    border: 2px solid #e2e8f0 !important;
+    border-left: 4px solid #3b82f6 !important; /* Blue accent for informational content */
+    border-radius: 8px !important;
+    padding: 1.5rem !important;
+    margin: 1.5rem 0 !important;
+    list-style-position: inside !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+}
+
+.delete-confirmation ul ul,
+.delete-confirmation .related-objects-container ul ul {
+    margin: 0.75rem 0 0.75rem 1.5rem !important;
+    padding: 0.75rem !important;
+    background: #f8fafc !important;
+    border: none !important;
+    border-left: 2px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+}
+
+[data-theme="dark"] .delete-confirmation ul,
+[data-theme="dark"] .delete-confirmation .related-objects-container ul {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    border-left-color: #3b82f6 !important;
+}
+
+[data-theme="dark"] .delete-confirmation ul ul,
+[data-theme="dark"] .delete-confirmation .related-objects-container ul ul {
+    background: #1a1f2e !important;
+    border-left-color: #475569 !important;
+}
+
+.delete-confirmation ul li,
+.delete-confirmation .related-objects-container ul li {
+    padding: 0.75rem 0 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: #334155 !important;
+    font-weight: 500 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+.delete-confirmation ul li:last-child,
+.delete-confirmation .related-objects-container ul li:last-child {
+    border-bottom: none !important;
+}
+
+[data-theme="dark"] .delete-confirmation ul li,
+[data-theme="dark"] .delete-confirmation .related-objects-container ul li {
+    color: #cbd5e1 !important;
+    border-bottom-color: #334155 !important;
+}
+
+/* Delete confirmation summary text */
+.delete-confirmation ul + p {
+    font-weight: 600 !important;
+    color: #dc2626 !important;
+    background: #fef2f2 !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 8px !important;
+    border-left: 4px solid #ef4444 !important;
+    margin-top: 1rem !important;
+}
+
+[data-theme="dark"] .delete-confirmation ul + p {
+    color: #fca5a5 !important;
+    background: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Delete confirmation buttons - professional layout */
+.delete-confirmation .submit-row {
+    background: transparent !important;
+    padding: 1.5rem 0 0 0 !important;
+    border-top: 2px solid #e2e8f0 !important;
+    margin-top: 2rem !important;
+    display: flex !important;
+    gap: 1rem !important;
+    align-items: center !important;
+}
+
+[data-theme="dark"] .delete-confirmation .submit-row {
+    border-top-color: #334155 !important;
+}
+
+.delete-confirmation .submit-row input[type="submit"] {
+    order: 2 !important;
+    flex: 0 0 auto !important;
+}
+
+.delete-confirmation .submit-row .cancel-link,
+.delete-confirmation .submit-row a {
+    order: 1 !important;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid #e2e8f0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.delete-confirmation .submit-row .cancel-link:hover,
+.delete-confirmation .submit-row a:hover {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-theme="dark"] .delete-confirmation .submit-row .cancel-link,
+[data-theme="dark"] .delete-confirmation .submit-row a {
+    background: #334155 !important;
+    color: #cbd5e1 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .delete-confirmation .submit-row .cancel-link:hover,
+[data-theme="dark"] .delete-confirmation .submit-row a:hover {
+    background: #475569 !important;
+    color: #f1f5f9 !important;
+}
+
+/* Related objects container wrapper */
+.delete-confirmation .related-objects-container {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Mobile responsive delete page */
+@media (max-width: 768px) {
+    body.delete-confirmation #content,
+    body.delete-confirmation #content-main {
+        padding: 1rem !important;
+    }
+    
+    body.delete-confirmation #main,
+    body.delete-confirmation .main {
+        padding: 90px 0 30px 0 !important;
+    }
+    
+    .delete-confirmation form {
+        padding: 1.5rem !important;
+    }
+    
+    .delete-confirmation h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .delete-confirmation .submit-row {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    
+    .delete-confirmation .submit-row input[type="submit"],
+    .delete-confirmation .submit-row .cancel-link,
+    .delete-confirmation .submit-row a {
+        width: 100% !important;
+        text-align: center !important;
+        order: unset !important;
+    }
+    
+    .delete-confirmation .submit-row input[type="submit"] {
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* ========================================
+   SELECT FIELD VISIBILITY FIX (STATUS & ACTION)
+   ======================================== */
+
+/* Ensure all select fields show selected value clearly in NORMAL MODE */
+select[name="status"],
+select[name="action"],
+.field-status select,
+.actions select,
+select.vSelectField {
+    min-height: 38px !important;
+    padding: 0.625rem 2.5rem 0.625rem 1rem !important;
+    background-color: #ffffff !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23334155' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 12px 12px !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    color: #0f172a !important; /* Dark text for visibility in normal mode */
+    font-size: 0.95rem !important;
+    font-weight: 600 !important; /* Bold for better visibility */
+    cursor: pointer !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    line-height: 1.5 !important;
+}
+
+select[name="status"]:focus,
+select[name="action"]:focus,
+.field-status select:focus,
+.actions select:focus,
+select.vSelectField:focus {
+    border-color: #1e3a8a !important;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1) !important;
+    outline: none !important;
+}
+
+/* Dark mode select fields */
+[data-theme="dark"] select[name="status"],
+[data-theme="dark"] select[name="action"],
+[data-theme="dark"] .field-status select,
+[data-theme="dark"] .actions select,
+[data-theme="dark"] select.vSelectField {
+    background-color: #1e293b !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23cbd5e1' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E") !important;
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] select[name="status"]:focus,
+[data-theme="dark"] select[name="action"]:focus,
+[data-theme="dark"] .field-status select:focus,
+[data-theme="dark"] .actions select:focus,
+[data-theme="dark"] select.vSelectField:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Select field options - ensure visibility in NORMAL MODE */
+select[name="status"] option,
+select[name="action"] option,
+.field-status select option,
+.actions select option,
+select.vSelectField option {
+    padding: 0.5rem 1rem !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important; /* Dark text for high contrast */
+    font-weight: 500 !important;
+}
+
+[data-theme="dark"] select[name="status"] option,
+[data-theme="dark"] select[name="action"] option,
+[data-theme="dark"] .field-status select option,
+[data-theme="dark"] .actions select option,
+[data-theme="dark"] select.vSelectField option {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+/* Highlighted/selected option - visible in dropdown */
+select[name="status"] option:checked,
+select[name="action"] option:checked,
+.field-status select option:checked,
+.actions select option:checked,
+select.vSelectField option:checked {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Hover state for options */
+select[name="status"] option:hover,
+select[name="action"] option:hover,
+.field-status select option:hover,
+.actions select option:hover,
+select.vSelectField option:hover {
+    background-color: #f1f5f9 !important;
+    color: #1e3a8a !important;
+}
+
+[data-theme="dark"] select[name="status"] option:checked,
+[data-theme="dark"] select[name="action"] option:checked,
+[data-theme="dark"] .field-status select option:checked,
+[data-theme="dark"] .actions select option:checked,
+[data-theme="dark"] select.vSelectField option:checked {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] select[name="status"] option:hover,
+[data-theme="dark"] select[name="action"] option:hover,
+[data-theme="dark"] .field-status select option:hover,
+[data-theme="dark"] .actions select option:hover,
+[data-theme="dark"] select.vSelectField option:hover {
+    background-color: #334155 !important;
+    color: #60a5fa !important;
+}
+
+/* ========================================
+   ACTION CONFIRMATION PAGES LAYOUT
+   ======================================== */
+
+/* Action confirmation pages (after clicking Go/Git button) */
+body.delete-selected #content,
+body.delete-selected #content-main {
+    width: 100% !important;
+    max-width: 900px !important;
+    margin: 0 auto !important;
+    padding: 2rem !important;
+}
+
+body.delete-selected #main,
+body.delete-selected .main {
+    padding: 110px 0 40px 0 !important;
+    min-height: calc(100vh - 400px) !important; /* Ensure footer doesn't overlap */
+}
+
+/* Hide admin sidebar on action pages to prevent conflicts */
+body.delete-selected #nav-sidebar,
+body.delete-selected .toggle-nav-sidebar {
+    display: none !important;
+}
+
+/* Header and footer already defined above in shared section */
+
+/* Breadcrumbs styling already defined above in shared section */
+
+/* Form container styling - matches site design */
+body.delete-selected form {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #ef4444 !important; /* Red accent stripe */
+    border-radius: 12px !important;
+    padding: 2rem !important;
+    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    position: relative !important;
+}
+
+body.delete-selected form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    border-radius: 12px 12px 0 0;
+}
+
+[data-theme="dark"] body.delete-selected form {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    border-left-color: #ef4444 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Heading styling - matches site h1 design */
+body.delete-selected h1 {
+    color: #0f172a !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 1rem !important;
+    border-bottom: 3px solid #e2e8f0 !important;
+    position: relative !important;
+}
+
+body.delete-selected h1::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+[data-theme="dark"] body.delete-selected h1 {
+    color: #f1f5f9 !important;
+    border-bottom-color: #334155 !important;
+}
+
+/* Paragraph text - readable */
+body.delete-selected p {
+    color: #475569 !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.25rem !important;
+    font-size: 1rem !important;
+}
+
+[data-theme="dark"] body.delete-selected p {
+    color: #cbd5e1 !important;
+}
+
+/* Warning box for critical info */
+body.delete-selected > p:first-of-type,
+body.delete-selected form > p:first-of-type {
+    background: #fef2f2 !important;
+    border: 2px solid #fee2e2 !important;
+    border-left: 4px solid #ef4444 !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 8px !important;
+    color: #991b1b !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="dark"] body.delete-selected > p:first-of-type,
+[data-theme="dark"] body.delete-selected form > p:first-of-type {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+    color: #fca5a5 !important;
+}
+
+/* Related objects list - improved design */
+body.delete-selected ul {
+    background: #ffffff !important;
+    border: 2px solid #e2e8f0 !important;
+    border-left: 4px solid #3b82f6 !important; /* Blue accent for info */
+    border-radius: 8px !important;
+    padding: 1.5rem !important;
+    margin: 1.5rem 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+}
+
+body.delete-selected ul li {
+    padding: 0.75rem 0 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: #334155 !important;
+    font-weight: 500 !important;
+    word-wrap: break-word !important;
+}
+
+body.delete-selected ul li:last-child {
+    border-bottom: none !important;
+}
+
+/* Nested lists */
+body.delete-selected ul ul {
+    margin: 0.75rem 0 0.75rem 1.5rem !important;
+    padding: 0.75rem !important;
+    background: #f8fafc !important;
+    border-left: 2px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+}
+
+[data-theme="dark"] body.delete-selected ul {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    border-left-color: #3b82f6 !important;
+}
+
+[data-theme="dark"] body.delete-selected ul li {
+    color: #cbd5e1 !important;
+    border-bottom-color: #334155 !important;
+}
+
+[data-theme="dark"] body.delete-selected ul ul {
+    background: #1a1f2e !important;
+    border-left-color: #475569 !important;
+}
+
+/* Submit row buttons - professional layout */
+body.delete-selected .submit-row {
+    display: flex !important;
+    gap: 1rem !important;
+    padding: 1.5rem 0 0 0 !important;
+    border-top: 2px solid #e2e8f0 !important;
+    margin-top: 2rem !important;
+    align-items: center !important;
+}
+
+[data-theme="dark"] body.delete-selected .submit-row {
+    border-top-color: #334155 !important;
+}
+
+/* Cancel link styling */
+body.delete-selected .submit-row .cancel-link,
+body.delete-selected .submit-row a[href*=".."] {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid #e2e8f0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+body.delete-selected .submit-row .cancel-link:hover,
+body.delete-selected .submit-row a[href*=".."]:hover {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-theme="dark"] body.delete-selected .submit-row .cancel-link,
+[data-theme="dark"] body.delete-selected .submit-row a[href*=".."] {
+    background: #334155 !important;
+    color: #cbd5e1 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] body.delete-selected .submit-row .cancel-link:hover,
+[data-theme="dark"] body.delete-selected .submit-row a[href*=".."]:hover {
+    background: #475569 !important;
+    color: #f1f5f9 !important;
+}
+
+/* Mobile responsive for action pages */
+@media (max-width: 768px) {
+    body.delete-selected #content,
+    body.delete-selected #content-main {
+        padding: 1rem !important;
+    }
+    
+    body.delete-selected form {
+        padding: 1.5rem !important;
+    }
+    
+    body.delete-selected .submit-row {
+        flex-direction: column !important;
+    }
+    
+    body.delete-selected .submit-row input,
+    body.delete-selected .submit-row a,
+    body.delete-selected .submit-row button {
+        width: 100% !important;
+    }
+}
+
 /* Main content sidebar açıkken kaymaz */
 body:not(.popup) .main.shifted {
     margin-left: 0 !important;
     padding-left: 0 !important;
 }
 
-/* Toggle button - Fixed */
-.toggle-nav-sidebar {
+/* Ensure proper spacing for footer on all admin pages */
+.admin-main-content {
+    min-height: calc(100vh - 350px) !important;
+    padding-bottom: 3rem !important;
+}
+
+/* Main site header compatibility with admin - EXACT COPY from standard pages */
+.main-header {
     position: fixed !important;
+    top: 0 !important;
     left: 0 !important;
-    top: 10px !important;
-    z-index: 1001 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: var(--white) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Main site footer always at bottom - EXACT COPY from standard pages */
+.main-footer {
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Ensure all main site navigation elements are visible */
+body.delete-confirmation .logo,
+body.delete-selected .logo,
+body.change-history .logo,
+body.delete-confirmation .logo-link,
+body.delete-selected .logo-link,
+body.change-history .logo-link,
+body.delete-confirmation .logo-img,
+body.delete-selected .logo-img,
+body.change-history .logo-img,
+body.delete-confirmation .logo-text,
+body.delete-selected .logo-text,
+body.change-history .logo-text {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+/* Ensure footer sections are fully visible */
+body.delete-confirmation .footer-content,
+body.delete-selected .footer-content,
+body.change-history .footer-content,
+body.delete-confirmation .footer-section,
+body.delete-selected .footer-section,
+body.change-history .footer-section,
+body.delete-confirmation .footer-bottom,
+body.delete-selected .footer-bottom,
+body.change-history .footer-bottom {
+    display: block !important;
+    visibility: visible !important;
+}
+
+body.delete-confirmation .footer-content,
+body.delete-selected .footer-content,
+body.change-history .footer-content {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr !important;
+    gap: 3rem !important;
 }
 
 /* ========================================

@@ -29,7 +29,7 @@
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
     max-width: 100%;
@@ -295,6 +295,14 @@
     .quick-actions {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .section-header h3 {
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -308,6 +316,67 @@
 
     .quick-actions {
         grid-template-columns: 1fr;
+    }
+    
+    .dashboard-header {
+        padding: 1.5rem 0;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .stat-card {
+        padding: 1.25rem;
+    }
+    
+    .stat-number {
+        font-size: 1.75rem;
+    }
+    
+    .section-header {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .section-header h3 {
+        font-size: 0.95rem;
+    }
+    
+    .section-body {
+        padding: 1rem;
+    }
+    
+    .service-item, .firm-item {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .service-info h4, .firm-info h4 {
+        font-size: 0.95rem;
+    }
+    
+    .service-meta, .firm-meta {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+    }
+    
+    .action-btn i {
+        font-size: 1.5rem;
+    }
+    
+    .action-btn span {
+        font-size: 0.8rem;
     }
 }
 </style>

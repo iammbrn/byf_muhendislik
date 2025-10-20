@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .models import Service, ServiceRequest
+from core.admin_filters import ServiceStatusFilter, ServiceTypeFilter, PriorityFilter
 
 
 # Status badge colors - shared across admin classes
@@ -19,9 +20,10 @@ STATUS_COLORS = {
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'firm', 'service_type', 'status', 'request_date', 'assigned_admin')
-    list_filter = ('service_type', 'status', 'request_date')
+    list_filter = (ServiceTypeFilter, ServiceStatusFilter, 'firm', 'assigned_admin')
     search_fields = ('name', 'firm__name', 'description')
     readonly_fields = ('request_date', 'unique_id')
+    date_hierarchy = 'request_date'  # Date filter at top - request_date not in list_filter
     
     def get_queryset(self, request):
         """Show only completed services"""
@@ -30,9 +32,10 @@ class ServiceAdmin(admin.ModelAdmin):
 @admin.register(ServiceRequest)
 class ServiceRequestAdmin(admin.ModelAdmin):
     list_display = ('title', 'firm', 'service_type', 'priority', 'status_badge', 'request_date', 'action_buttons')
-    list_filter = ('service_type', 'priority', 'status', 'request_date')
+    list_filter = (ServiceStatusFilter, ServiceTypeFilter, PriorityFilter, 'firm')
     search_fields = ('title', 'firm__name', 'description', 'tracking_code')
     readonly_fields = ('request_date', 'updated_at', 'unique_id', 'tracking_code')
+    date_hierarchy = 'request_date'  # Date filter at top - removed from list_filter to avoid duplication
     fieldsets = (
         ('Talep Bilgileri', {
             'fields': ('firm', 'service_type', 'title', 'description', 'priority', 'requested_completion_date', 'tracking_code')
@@ -46,6 +49,22 @@ class ServiceRequestAdmin(admin.ModelAdmin):
         }),
     )
     actions = ['approve_requests', 'reject_requests', 'delete_selected']
+    
+    def has_module_permission(self, request):
+        """Allow both superusers and staff to access this module"""
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_view_permission(self, request, obj=None):
+        """Allow viewing for superusers and staff"""
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_change_permission(self, request, obj=None):
+        """Allow editing for superusers and staff"""
+        return request.user.is_superuser or request.user.is_staff
+    
+    def has_delete_permission(self, request, obj=None):
+        """Allow deletion only for superusers"""
+        return request.user.is_superuser
     
     def get_queryset(self, request):
         """Show only pending and approved requests"""

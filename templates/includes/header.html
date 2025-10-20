@@ -101,6 +101,11 @@
                         </a>
                         {% endif %}
                         <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item delete-account-trigger" data-delete-url="{% url 'delete_account' %}">
+                            <i class="fas fa-user-times"></i>
+                            Hesabımı Sil
+                        </a>
+                        <div class="dropdown-divider"></div>
                         <a href="{% url 'custom_logout' %}" class="dropdown-item">
                             <i class="fas fa-sign-out-alt"></i>
                             Çıkış Yap
@@ -191,6 +196,10 @@
                     Ayarlar
                 </a>
                 {% endif %}
+                <a href="#" class="mobile-nav-link delete-account-trigger" data-delete-url="{% url 'delete_account' %}">
+                    <i class="fas fa-user-times"></i>
+                    Hesabımı Sil
+                </a>
                 <a href="{% url 'custom_logout' %}" class="mobile-nav-link">
                     <i class="fas fa-sign-out-alt"></i>
                     Çıkış Yap
@@ -390,6 +399,18 @@
     width: 16px;
 }
 
+.dropdown-item.delete-account-trigger {
+    color: #ef4444;
+}
+
+.dropdown-item.delete-account-trigger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.dropdown-item.delete-account-trigger i {
+    color: #ef4444;
+}
+
 .dropdown-divider {
     height: 1px;
     background: var(--border-color);
@@ -428,18 +449,60 @@ body.dark-mode .dropdown-divider,
 .mobile-menu-toggle {
     display: none;
     flex-direction: column;
-    gap: 4px;
-    background: none;
-    border: none;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: var(--gradient-primary);
+    border: 2px solid transparent;
+    border-radius: 10px;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 10px;
+    width: 48px;
+    height: 48px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.15);
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--gradient-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.mobile-menu-toggle:active {
+    transform: translateY(0);
 }
 
 .mobile-menu-toggle span {
-    width: 25px;
+    width: 24px;
     height: 3px;
-    background: var(--dark-text);
+    background: white;
+    border-radius: 2px;
     transition: all 0.3s ease;
+    display: block;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .mobile-menu-toggle {
+    background: var(--gradient-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .mobile-menu-toggle:hover {
+    background: var(--gradient-secondary);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
 }
 
 .mobile-nav {
@@ -642,6 +705,7 @@ body.dark-mode .mobile-user-info,
     color: #f39c12;
 }
 
+/* Mobile Responsive Styles */
 @media (max-width: 968px) {
     .main-nav {
         display: none;
@@ -653,6 +717,44 @@ body.dark-mode .mobile-user-info,
     
     .user-toggle span {
         display: none;
+    }
+    
+    /* Optimize header actions spacing on mobile */
+    .header-actions {
+        gap: 0.5rem;
+    }
+    
+    /* Make login button more compact on mobile */
+    .auth-buttons .btn {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.813rem;
+        border-radius: 8px;
+        white-space: nowrap;
+    }
+    
+    .auth-buttons .btn i {
+        font-size: 0.875rem;
+    }
+    
+    /* User toggle more compact */
+    .user-toggle {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .user-toggle i:first-child {
+        font-size: 1.1rem;
+    }
+    
+    /* Dark mode toggle slightly smaller */
+    .dark-mode-toggle {
+        width: 38px;
+        height: 38px;
+        border-width: 1.5px;
+    }
+    
+    .dark-mode-toggle i {
+        font-size: 1rem;
     }
 }
 
@@ -681,16 +783,102 @@ body.dark-mode .mobile-user-info,
     }
     
     .logo-img {
-        height: 55px;
+        height: 50px;
     }
 
     .logo-name {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .logo-tagline {
-        font-size: 0.65rem;
-        letter-spacing: 1px;
+        font-size: 0.6rem;
+        letter-spacing: 0.8px;
+    }
+    
+    /* Even more compact on small mobile */
+    .header-actions {
+        gap: 0.4rem;
+    }
+    
+    .auth-buttons .btn {
+        padding: 0.45rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    .auth-buttons .btn i {
+        display: none; /* Hide icon on very small screens to save space */
+    }
+    
+    .mobile-menu-toggle {
+        width: 44px;
+        height: 44px;
+        padding: 9px;
+    }
+    
+    .mobile-menu-toggle span {
+        width: 22px;
+    }
+    
+    .dark-mode-toggle {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .dark-mode-toggle i {
+        font-size: 0.95rem;
+    }
+    
+    .user-toggle {
+        padding: 0.45rem 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small devices - maximum compactness */
+    .logo-img {
+        height: 45px;
+    }
+    
+    .logo-name {
+        font-size: 1rem;
+    }
+    
+    .logo-tagline {
+        font-size: 0.55rem;
+    }
+    
+    .header-actions {
+        gap: 0.35rem;
+    }
+    
+    .auth-buttons .btn {
+        padding: 0.4rem 0.65rem;
+        font-size: 0.7rem;
+    }
+    
+    .mobile-menu-toggle {
+        width: 42px;
+        height: 42px;
+        padding: 8px;
+        gap: 4px;
+    }
+    
+    .mobile-menu-toggle span {
+        width: 20px;
+        height: 2.5px;
+    }
+    
+    .dark-mode-toggle {
+        width: 34px;
+        height: 34px;
+    }
+    
+    .user-toggle {
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .user-toggle i:first-child {
+        font-size: 1rem;
     }
 }
 </style>
@@ -763,16 +951,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function openMobileNav() {
         mobileNav.classList.add('active');
+        mobileMenuToggle.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
     
     function closeMobileNav() {
         mobileNav.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
         document.body.style.overflow = '';
     }
     
     mobileMenuToggle.addEventListener('click', function() {
-        openMobileNav();
+        if (mobileNav.classList.contains('active')) {
+            closeMobileNav();
+        } else {
+            openMobileNav();
+        }
     });
     
     // Close button
@@ -792,9 +986,217 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobil menü linklerine tıklandığında menüyü kapat
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     mobileNavLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function(e) {
+            // Don't close menu if it's the delete account link (needs confirmation)
+            if (!link.classList.contains('delete-account-trigger')) {
             closeMobileNav();
+            }
         });
     });
+    
+    // Delete Account Confirmation Dialog
+    initDeleteAccountConfirmation();
 });
+
+function initDeleteAccountConfirmation() {
+    const deleteAccountTriggers = document.querySelectorAll('.delete-account-trigger');
+    
+    deleteAccountTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            const deleteUrl = this.getAttribute('data-delete-url');
+            showDeleteAccountModal(deleteUrl);
+        });
+    });
+}
+
+function showDeleteAccountModal(deleteUrl) {
+    // Create modal backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'delete-account-modal-backdrop';
+    backdrop.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.2s ease;
+    `;
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'delete-account-modal';
+    modal.style.cssText = `
+        background: var(--white);
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.3s ease;
+        position: relative;
+    `;
+    
+    modal.innerHTML = `
+        <div style="text-align: center;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #ef4444; margin-bottom: 1rem;"></i>
+            <h2 style="color: var(--dark-text); margin-bottom: 1rem; font-size: 1.5rem; font-weight: 700;">
+                Hesabınızı Silmek İstediğinizden Emin misiniz?
+            </h2>
+            <p style="color: var(--gray-text); margin-bottom: 1.5rem; line-height: 1.6;">
+                Bu işlem <strong style="color: #ef4444;">geri alınamaz</strong>. Hesabınız ve tüm ilişkili verileriniz 
+                (firma bilgileri, hizmet geçmişi, dokümanlar) kalıcı olarak silinecektir.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <button class="cancel-delete-btn" style="
+                    padding: 0.75rem 1.5rem;
+                    background: #6b7280;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    min-width: 120px;
+                ">
+                    <i class="fas fa-times"></i> İptal
+                </button>
+                <button class="confirm-delete-btn" style="
+                    padding: 0.75rem 1.5rem;
+                    background: #ef4444;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    min-width: 120px;
+                ">
+                    <i class="fas fa-trash-alt"></i> Evet, Sil
+                </button>
+            </div>
+        </div>
+    `;
+    
+    backdrop.appendChild(modal);
+    document.body.appendChild(backdrop);
+    
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .cancel-delete-btn:hover {
+            background: #4b5563 !important;
+            transform: translateY(-2px);
+        }
+        .confirm-delete-btn:hover {
+            background: #dc2626 !important;
+            transform: translateY(-2px);
+        }
+        [data-theme="dark"] .delete-account-modal {
+            background: #1e293b !important;
+            border: 1px solid #334155 !important;
+        }
+        [data-theme="dark"] .delete-account-modal h2 {
+            color: #f1f5f9 !important;
+        }
+        [data-theme="dark"] .delete-account-modal p {
+            color: #cbd5e1 !important;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Close on backdrop click
+    backdrop.addEventListener('click', function(e) {
+        if (e.target === backdrop) {
+            closeModal();
+        }
+    });
+    
+    // Cancel button
+    modal.querySelector('.cancel-delete-btn').addEventListener('click', closeModal);
+    
+    // Confirm button - submit form to delete account
+    modal.querySelector('.confirm-delete-btn').addEventListener('click', function() {
+        // Create and submit a form
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = deleteUrl;
+        
+        // Add CSRF token - try multiple methods
+        let csrfToken = null;
+        
+        // Method 1: Try to get from existing form
+        const existingToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (existingToken) {
+            csrfToken = existingToken.value;
+        }
+        
+        // Method 2: Try to get from cookie
+        if (!csrfToken) {
+            const cookieValue = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrftoken='));
+            if (cookieValue) {
+                csrfToken = cookieValue.split('=')[1];
+            }
+        }
+        
+        // Method 3: Try to get from meta tag
+        if (!csrfToken) {
+            const metaToken = document.querySelector('meta[name="csrf-token"]');
+            if (metaToken) {
+                csrfToken = metaToken.getAttribute('content');
+            }
+        }
+        
+        // Add CSRF token to form
+        if (csrfToken) {
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrfmiddlewaretoken';
+            csrfInput.value = csrfToken;
+            form.appendChild(csrfInput);
+        } else {
+            console.error('CSRF token not found - form may be rejected');
+        }
+        
+        document.body.appendChild(form);
+        form.submit();
+    });
+    
+    function closeModal() {
+        backdrop.style.animation = 'fadeIn 0.2s ease reverse';
+        setTimeout(() => {
+            backdrop.remove();
+            style.remove();
+        }, 200);
+    }
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+}
 </script>

@@ -10,6 +10,7 @@ urlpatterns = [
     path('firma-paneli/', views.firm_dashboard, name='firm_dashboard'),
     path('ayarlar/', views.admin_settings, name='admin_settings'),
     path('firma-ayarlari/', views.firm_settings, name='firm_settings'),
+    path('hesap-sil/', views.delete_account, name='delete_account'),
     # Password reset
     path('sifre-sifirla/', auth_views.PasswordResetView.as_view(
         template_name='accounts/password_reset.html',

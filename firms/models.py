@@ -8,29 +8,36 @@ class Firm(models.Model):
     STATUS_CHOICES = (
         ('active', 'Aktif'),
         ('inactive', 'Pasif'),
-        ('suspended', 'Askıda'),
     )
     
     name = models.CharField(max_length=255, verbose_name='Firma Adı', db_index=True)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='firm')
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name='firm',
+        null=True,  # Allow null for initial creation
+        blank=True,  # Allow blank in forms
+        help_text='Kullanıcı hesabı otomatik olarak oluşturulur'
+    )
     tax_number = models.CharField(
         max_length=20, 
         blank=True, 
         verbose_name='Vergi No',
         validators=[RegexValidator(regex=r'^\d{10}$', message='Vergi numarası 10 haneli olmalıdır.', code='invalid_tax_number')],
-        help_text='10 haneli vergi numarası'
+        help_text='10 haneli vergi numarası (opsiyonel)'
     )
     phone = models.CharField(
         max_length=15, 
+        blank=True,  # Make optional
         verbose_name='Telefon',
         validators=[RegexValidator(regex=r'^\+?[\d\s\-()]{10,15}$', message='Geçerli bir telefon numarası girin.')]
     )
-    email = models.EmailField(verbose_name='E-posta', validators=[EmailValidator()])
-    address = models.TextField(verbose_name='Adres')
-    city = models.CharField(max_length=100, verbose_name='Şehir')
-    country = models.CharField(max_length=100, default='Türkiye', verbose_name='Ülke')
+    email = models.EmailField(blank=True, verbose_name='E-posta', validators=[EmailValidator()])  # Make optional
+    address = models.TextField(blank=True, verbose_name='Adres')  # Make optional
+    city = models.CharField(max_length=100, blank=True, verbose_name='Şehir')  # Make optional
+    country = models.CharField(max_length=100, default='Türkiye', blank=True, verbose_name='Ülke')
     website = models.URLField(blank=True, verbose_name='Web Sitesi')
-    contact_person = models.CharField(max_length=255, verbose_name='Yetkili Kişi')
+    contact_person = models.CharField(max_length=255, blank=True, verbose_name='Yetkili Kişi')  # Make optional
     contact_person_title = models.CharField(max_length=255, blank=True, verbose_name='Yetkili Unvanı')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
     registration_date = models.DateTimeField(auto_now_add=True)
@@ -55,11 +62,25 @@ class Firm(models.Model):
     def is_active(self):
         return self.status == 'active'
     
+    def delete(self, *args, **kwargs):
+        """
+        Override delete to also remove associated user.
+        When a firm is deleted, the associated user should also be deleted
+        to maintain data consistency.
+        """
+        user = self.user
+        # Delete the firm first
+        result = super().delete(*args, **kwargs)
+        # Then delete the associated user if it exists
+        if user:
+            user.delete()
+        return result
+    
     def clean(self):
         """Validate firm data"""
         super().clean()
         
-        # Ensure user is firma type
+        # Ensure user is firma type (if user is assigned)
         if self.user and self.user.user_type != 'firma':
             raise ValidationError({
                 'user': 'Firma için sadece firma tipi kullanıcılar atanabilir.'

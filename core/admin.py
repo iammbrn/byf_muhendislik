@@ -2,12 +2,14 @@ from django.contrib import admin
 from .models import SiteSettings, ActivityLog, ProvisionedCredential, ContactMessage, ServiceCategory, TeamMember
 from django.utils.html import format_html
 from django.utils import timezone
+from .admin_filters import AdminTypeFilter, ActiveStatusFilter, ContactMessageStatusFilter
 
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ("site_name", "contact_email", "contact_phone", "updated_at")
-    search_fields = ("site_name", "contact_email")
+    search_fields = ("site_name", "contact_email", "contact_phone")
+    readonly_fields = ('updated_at',)
     
     fieldsets = (
         ('Temel Bilgiler', {
@@ -33,23 +35,43 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(ActivityLog)
 class ActivityLogAdmin(admin.ModelAdmin):
-    list_display = ("user", "action", "created_at")
-    list_filter = ("action", "created_at")
+    list_display = ("user", "action", "message_preview", "created_at")
+    list_filter = ("action", "user__user_type")
     search_fields = ("user__username", "message")
+    date_hierarchy = 'created_at'  # Date filter at top - removed from list_filter to avoid duplication
+    readonly_fields = ('user', 'action', 'message', 'created_at')
+    
+    def get_queryset(self, request):
+        """Optimize with select_related"""
+        qs = super().get_queryset(request)
+        return qs.select_related('user')
+    
+    def message_preview(self, obj):
+        """Show truncated message"""
+        if obj.message and len(obj.message) > 50:
+            return obj.message[:50] + '...'
+        return obj.message or '-'
+    message_preview.short_description = 'Mesaj'
 
 
 @admin.register(ProvisionedCredential)
 class ProvisionedCredentialAdmin(admin.ModelAdmin):
-    list_display = ("username", "is_admin", "created_at")
-    list_filter = ("is_admin", "created_at")
-    search_fields = ("username", "user__username")
+    list_display = ("username", "user", "is_admin", "created_at")
+    list_filter = (AdminTypeFilter,)
+    search_fields = ("username", "user__username", "user__email")
     readonly_fields = ("username", "password_plain", "is_admin", "created_at")
+    date_hierarchy = 'created_at'  # Date filter at top - removed from list_filter to avoid duplication
+    
+    def get_queryset(self, request):
+        """Optimize with select_related"""
+        qs = super().get_queryset(request)
+        return qs.select_related('user')
 
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('full_name_display', 'email', 'phone', 'subject', 'status_badge', 'created_at')
-    list_filter = ('status', 'created_at')
+    list_filter = (ContactMessageStatusFilter, 'created_at')
     search_fields = ('name', 'surname', 'email', 'phone', 'subject', 'message')
     readonly_fields = ('name', 'surname', 'email', 'phone', 'subject', 'message', 'created_at')
     actions = ['mark_as_read', 'mark_as_replied', 'archive_messages', 'delete_selected']
@@ -108,7 +130,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'order', 'is_active', 'updated_at')
-    list_filter = ('is_active', 'created_at')
+    list_filter = (ActiveStatusFilter, 'created_at')
     search_fields = ('title', 'subtitle', 'description')
     prepopulated_fields = {'slug': ('title',)}
     fieldsets = (
@@ -133,7 +155,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):
     list_display = ('name', 'title', 'image_preview', 'order', 'is_active', 'updated_at')
-    list_filter = ('is_active', 'created_at')
+    list_filter = (ActiveStatusFilter, 'created_at')
     search_fields = ('name', 'title', 'bio')
     prepopulated_fields = {'slug': ('name',)}
     list_editable = ('order', 'is_active')

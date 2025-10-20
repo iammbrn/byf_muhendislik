@@ -138,6 +138,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -148,6 +149,27 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Prevent horizontal scroll on all elements */
+img, video, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Ensure tables are responsive */
+table {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    display: block;
+}
+
+/* Prevent text overflow */
+h1, h2, h3, h4, h5, h6, p, li, span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .main-content {
@@ -899,7 +921,7 @@ textarea.form-control {
 .services-grid,
 .services-preview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 2rem;
     margin-top: 2rem;
 }
@@ -938,7 +960,7 @@ textarea.form-control {
 /* Stats Section - Unified */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 }

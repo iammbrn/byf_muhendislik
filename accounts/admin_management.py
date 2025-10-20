@@ -8,6 +8,7 @@ from django.urls import reverse
 from core.utils import generate_secure_password, log_activity
 from core.models import ProvisionedCredential
 from .models import CustomUser
+from core.admin_filters import ActiveStatusFilter, SuperuserFilter
 
 User = get_user_model()
 
@@ -29,8 +30,8 @@ class AdminUserManagementAdmin(admin.ModelAdmin):
     - Otomatik username ve password oluşturur
     """
     
-    list_display = ('username_display', 'email', 'full_name_display', 'is_active', 'date_joined', 'credentials_link')
-    list_filter = ('is_active', 'date_joined', 'is_superuser')
+    list_display = ('username_display', 'email', 'full_name_display', 'active_status_display', 'date_joined', 'credentials_link')
+    list_filter = (ActiveStatusFilter, SuperuserFilter, 'date_joined')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     readonly_fields = ('username', 'date_joined', 'last_login', 'credential_info')
     actions = ['activate_admins', 'deactivate_admins', 'delete_selected']
@@ -61,8 +62,10 @@ class AdminUserManagementAdmin(admin.ModelAdmin):
     )
     
     def get_queryset(self, request):
-        """Sadece admin tipi kullanıcıları göster"""
+        """Sadece admin tipi kullanıcıları göster (aktif ve pasif)"""
         qs = super().get_queryset(request)
+        # Show all admin users regardless of is_active status
+        # Users can filter by is_active using the sidebar filter
         return qs.filter(user_type='admin', is_staff=True)
     
     def has_module_permission(self, request):
@@ -107,6 +110,18 @@ class AdminUserManagementAdmin(admin.ModelAdmin):
             return f"{obj.first_name} {obj.last_name}".strip()
         return '-'
     full_name_display.short_description = 'Ad Soyad'
+    
+    def active_status_display(self, obj):
+        """Display active status with visual indicators"""
+        if obj.is_active:
+            return format_html(
+                '<span style="color: #10b981; font-weight: 600;">✓ Aktif</span>'
+            )
+        return format_html(
+            '<span style="color: #ef4444; font-weight: 600;">✗ Pasif</span>'
+        )
+    active_status_display.short_description = 'Durum'
+    active_status_display.admin_order_field = 'is_active'
     
     def credentials_link(self, obj):
         """Link to credentials"""

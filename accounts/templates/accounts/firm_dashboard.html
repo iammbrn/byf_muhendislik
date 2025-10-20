@@ -319,6 +319,102 @@ function getCookie(name) {
     .dashboard-content { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 }
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 1.5rem 0;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1.25rem;
+    }
+    
+    .stat-number {
+        font-size: 1.75rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    .stat-icon {
+        font-size: 2rem;
+    }
+    
+    .section-header {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .section-header h3 {
+        font-size: 1rem;
+    }
+    
+    .section-body {
+        padding: 1rem;
+    }
+    
+    .item-row {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    
+    .item-row-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .item-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .item-action-buttons {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .service-info-wrapper strong {
+        font-size: 0.95rem;
+    }
+    
+    .text-muted {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-card-link {
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .stat-icon {
+        font-size: 1.75rem;
+    }
+    
+    .section-header h3 {
+        font-size: 0.9rem;
+    }
+    
+    .status-badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
 </style>
 {% endblock %}
 

@@ -26,6 +26,9 @@
     body {
         margin: 0 !important;
         padding: 0 !important;
+        min-height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     
     /* Container - Django admin container'ını temizle */
@@ -440,42 +443,90 @@
     }
     
     /* ===================================
-       BUTONLAR - GÖZE ÇARPAN AKSİYON
+       BUTONLAR - SITE STANDARTI İLE TAM UYUMLU
        =================================== */
     
     .submit-row input[type="submit"],
     .button,
     button[type="submit"],
-    input[type="submit"] {
+    button[type="button"],
+    input[type="submit"],
+    input[type="button"],
+    .object-tools a {
         background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
         color: white !important;
         border: none !important;
-        padding: 12px 24px !important;
-        border-radius: 8px !important;
+        padding: 0.875rem 1.75rem !important;
+        border-radius: 10px !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         cursor: pointer !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25) !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
+        box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        letter-spacing: 0.02em !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
+        white-space: nowrap !important;
+        min-width: 120px !important;
     }
     
     .submit-row input[type="submit"]:hover,
     .button:hover,
     button[type="submit"]:hover,
-    input[type="submit"]:hover {
+    button[type="button"]:hover,
+    input[type="submit"]:hover,
+    input[type="button"]:hover,
+    .object-tools a:hover {
         background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35) !important;
+        box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
     }
     
     .submit-row input[type="submit"]:active,
     .button:active,
     button[type="submit"]:active,
-    input[type="submit"]:active {
+    button[type="button"]:active,
+    input[type="submit"]:active,
+    input[type="button"]:active,
+    .object-tools a:active {
         transform: translateY(0) !important;
         box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2) !important;
+    }
+    
+    /* Delete buttons - red theme */
+    input[type="submit"][value="Evet, eminim"],
+    input[type="submit"][value*="Sil"],
+    .deletelink {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    }
+    
+    input[type="submit"][value="Evet, eminim"]:hover,
+    input[type="submit"][value*="Sil"]:hover,
+    .deletelink:hover {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+        box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4) !important;
+    }
+    
+    /* Cancel/Back buttons - gray theme */
+    .cancel-link,
+    a.cancel-link,
+    .submit-row a[href="#"],
+    .submit-row a[href*=".."] {
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+        border: 2px solid #e2e8f0 !important;
+    }
+    
+    .cancel-link:hover,
+    a.cancel-link:hover,
+    .submit-row a[href="#"]:hover,
+    .submit-row a[href*=".."]:hover {
+        background: #e2e8f0 !important;
+        color: #1e293b !important;
+        border-color: #cbd5e1 !important;
     }
     
     /* Label'lar - Okunabilir */
@@ -824,12 +875,6 @@
        =================================== */
     
     /* Body ve Container - Footer için flex layout */
-    body {
-        min-height: 100vh !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-    
     #container {
         flex: 1 0 auto !important;
         display: flex !important;
@@ -839,6 +884,19 @@
     #main,
     .main {
         flex: 1 0 auto !important;
+    }
+    
+    /* Delete and action pages - ensure proper flex behavior */
+    body.delete-confirmation #container,
+    body.delete-selected #container {
+        flex: 1 0 auto !important;
+    }
+    
+    body.delete-confirmation #main,
+    body.delete-selected #main {
+        flex: 1 0 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     
     /* Django admin footer bloğu */

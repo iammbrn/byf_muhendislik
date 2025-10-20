@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block bodyclass %}{{ block.super }} delete-confirmation{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">Ana Sayfa</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+&rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+&rsaquo; <a href="{% url opts|admin_urlname:'change' object.pk|admin_urlquote %}">{{ object|truncatewords:"18" }}</a>
+&rsaquo; Sil
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>{{ object }} "{{ escaped_object }}" nesnesini silmek istediğinizden emin misiniz?</h1>
+
+{% if perms_lacking %}
+    <p>Seçili nesneyi silmek, ilişkili nesneleri de silmeyi gerektirir, ancak hesabınızın aşağıdaki nesne türlerini silme izni bulunmamaktadır:</p>
+    <ul>
+    {% for obj in perms_lacking %}
+        <li>{{ obj }}</li>
+    {% endfor %}
+    </ul>
+{% elif protected %}
+    <p>Seçili nesneyi silmek, aşağıdaki korumalı ilişkili nesnelerin silinmesini gerektirir:</p>
+    <ul>
+    {% for obj in protected %}
+        <li>{{ obj }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    {% if deleted_objects %}
+        <p>Aşağıdaki tüm ilişkili öğeler silinecektir:</p>
+        <div class="related-objects-container">
+            {{ deleted_objects|unordered_list }}
+        </div>
+    {% endif %}
+    
+    <form method="post">{% csrf_token %}
+        <div>
+            <input type="hidden" name="post" value="yes">
+            {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+            {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+        </div>
+        <div class="submit-row">
+            <a href="#" onclick="window.history.back(); return false;" class="cancel-link">
+                <i class="fas fa-times"></i> Hayır, geri dön
+            </a>
+            <input type="submit" value="Evet, eminim">
+        </div>
+    </form>
+{% endif %}
+{% endblock %}
+

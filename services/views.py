@@ -15,16 +15,16 @@ from core.utils import is_admin, is_firm, check_firm_access
 def _validate_service_request_modification(request, service_request):
     """Helper: Validate if user can modify service request"""
     if request.method != 'POST':
-        return {'success': False, 'error': 'Geçersiz istek'}
+        return {'success': False, 'error': 'Geçersiz istek türü. Bu işlem için POST metodu gereklidir.'}
     
     if not is_firm(request.user):
-        return {'success': False, 'error': 'Yetkiniz yok'}
+        return {'success': False, 'error': 'Bu işlemi gerçekleştirmek için firma kullanıcısı olmalısınız.'}
     
     if not check_firm_access(request.user, service_request.firm):
-        return {'success': False, 'error': 'Bu talebe erişim yetkiniz yok'}
+        return {'success': False, 'error': 'Bu hizmet talebine erişim yetkiniz bulunmamaktadır. Sadece kendi firmanıza ait talepleri değiştirebilirsiniz.'}
     
     if service_request.status not in ['pending', 'approved']:
-        return {'success': False, 'error': 'Bu talep değiştirilemez'}
+        return {'success': False, 'error': f'Bu talep şu anda {service_request.get_status_display()} durumunda olduğu için değiştirilemez.'}
     
     return None  # Validation passed
 
@@ -35,7 +35,7 @@ def service_list(request):
         qs = Service.objects.all()
     else:
         if not hasattr(request.user, 'firm'):
-            messages.error(request, 'Firma bilgileriniz bulunamadı.')
+            messages.error(request, 'Firma bilgileriniz bulunamadı. Lütfen sistem yöneticisi ile iletişime geçin.')
             return redirect('custom_logout')
         qs = request.user.firm.services.all()
 
@@ -66,7 +66,7 @@ def service_list(request):
 def all_services(request):
     """Tüm hizmetler listesi - sadece admin için"""
     if not is_admin(request.user):
-        messages.error(request, 'Bu sayfaya erişim yetkiniz yok.')
+        messages.error(request, 'Bu sayfaya erişim yetkiniz bulunmamaktadır. Tüm hizmetler sayfası sadece yöneticiler tarafından görüntülenebilir.')
         return redirect('firm_dashboard')
     
     services = Service.objects.select_related('firm', 'assigned_admin').all()
@@ -126,7 +126,7 @@ def service_detail(request, service_id):
     
     # Access control
     if not is_admin(request.user) and not check_firm_access(request.user, service.firm):
-        messages.error(request, 'Bu hizmete erişim yetkiniz yok.')
+        messages.error(request, 'Bu hizmete erişim yetkiniz bulunmamaktadır. Sadece kendi firmanıza ait hizmetleri görüntüleyebilirsiniz.')
         return redirect('service_list')
     
     # Admin sees all documents, firm only visible ones
@@ -143,12 +143,13 @@ def service_detail(request, service_id):
 
 @login_required
 def create_service_request(request):
+    """Create a new service request - Firm users only"""
     if not is_firm(request.user):
-        messages.error(request, 'Sadece firmalar hizmet talebi oluşturabilir.')
+        messages.error(request, 'Hizmet talebi oluşturmak için firma kullanıcısı olmalısınız. Bu işlem sadece firmalar tarafından gerçekleştirilebilir.')
         return redirect('firm_dashboard')
     
     if not hasattr(request.user, 'firm'):
-        messages.error(request, 'Firma bilgileriniz bulunamadı.')
+        messages.error(request, 'Firma bilgileriniz bulunamadı. Lütfen sistem yöneticisi ile iletişime geçin.')
         return redirect('custom_logout')
     
     if request.method == 'POST':
@@ -182,7 +183,7 @@ def service_request_detail(request, request_id):
     
     # Access control - only related firm or admin can view
     if is_firm(request.user) and not check_firm_access(request.user, service_request.firm):
-        messages.error(request, 'Bu talebe erişim yetkiniz yok.')
+        messages.error(request, 'Bu hizmet talebine erişim yetkiniz bulunmamaktadır. Sadece kendi firmanıza ait talepleri görüntüleyebilirsiniz.')
         return redirect('firm_dashboard')
     
     # İlgili Service'i bul
@@ -246,7 +247,7 @@ def completed_services(request):
         services = Service.objects.select_related('firm', 'assigned_admin').filter(status='completed')
     else:
         if not hasattr(request.user, 'firm'):
-            messages.error(request, 'Firma bilgileriniz bulunamadı.')
+            messages.error(request, 'Firma bilgileriniz bulunamadı. Lütfen sistem yöneticisi ile iletişime geçin.')
             return redirect('custom_logout')
         services = request.user.firm.services.select_related('assigned_admin').filter(status='completed')
     
@@ -287,11 +288,11 @@ def completed_services(request):
 def service_request_list(request):
     """Firma kullanıcısı için hizmet talepleri listesi"""
     if not is_firm(request.user):
-        messages.error(request, 'Bu sayfaya erişim yetkiniz yok.')
+        messages.error(request, 'Bu sayfaya erişim yetkiniz bulunmamaktadır. Hizmet talepleri sayfası sadece firma kullanıcıları tarafından görüntülenebilir.')
         return redirect('admin_dashboard')
     
     if not hasattr(request.user, 'firm'):
-        messages.error(request, 'Firma bilgileriniz bulunamadı.')
+        messages.error(request, 'Firma bilgileriniz bulunamadı. Lütfen sistem yöneticisi ile iletişime geçin.')
         return redirect('custom_logout')
     
     # Firmaya ait tüm hizmet taleplerini al
@@ -316,12 +317,12 @@ def service_request_list(request):
 
 @login_required
 def update_service(request, service_id):
-    """AJAX endpoint for updating service details"""
+    """AJAX endpoint for updating service details - Admin only"""
     if request.method != 'POST':
-        return JsonResponse({'success': False, 'error': 'Geçersiz istek'})
+        return JsonResponse({'success': False, 'error': 'Geçersiz istek türü. Bu işlem için POST metodu gereklidir.'})
     
     if not is_admin(request.user):
-        return JsonResponse({'success': False, 'error': 'Yetkiniz yok'})
+        return JsonResponse({'success': False, 'error': 'Bu işlemi gerçekleştirmek için yönetici yetkisine sahip olmalısınız.'})
     
     service = get_object_or_404(Service, id=service_id)
     

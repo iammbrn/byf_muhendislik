@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -147,5 +148,10 @@
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
     {% endif %}
+    
+    <!-- Hidden CSRF token for JavaScript access -->
+    <form id="csrf-form" style="display: none;">
+        {% csrf_token %}
+    </form>
 </body>
 </html>

@@ -9,7 +9,9 @@ from core.utils import is_admin
 
 @login_required
 def firm_list(request):
+    """View list of all firms - Admin only"""
     if not is_admin(request.user):
+        messages.error(request, 'Bu sayfaya erişim yetkiniz bulunmamaktadır. Sadece yöneticiler firma listesini görüntüleyebilir.')
         return redirect('firm_dashboard')
     
     firms = Firm.objects.all().order_by('-registration_date')
@@ -17,7 +19,9 @@ def firm_list(request):
 
 @login_required
 def firm_detail(request, firm_id):
+    """View detailed firm information - Admin only"""
     if not is_admin(request.user):
+        messages.error(request, 'Bu sayfaya erişim yetkiniz bulunmamaktadır. Sadece yöneticiler firma detaylarını görüntüleyebilir.')
         return redirect('firm_dashboard')
     
     firm = get_object_or_404(Firm, id=firm_id)
@@ -40,14 +44,15 @@ class FirmProfileForm(forms.ModelForm):
 
 @login_required
 def firm_profile(request):
+    """View and update firm profile - Firm users only"""
     if request.user.user_type != 'firma':
-        messages.error(request, 'Bu sayfaya erişim yetkiniz yok.')
+        messages.error(request, 'Bu sayfaya erişim yetkiniz bulunmamaktadır. Firma profili sadece firma kullanıcıları tarafından görüntülenebilir.')
         return redirect('admin_dashboard')
 
     try:
         firm = request.user.firm
     except Firm.DoesNotExist:
-        messages.error(request, 'Firma bilgileriniz bulunamadı.')
+        messages.error(request, 'Firma bilgileriniz bulunamadı. Lütfen sistem yöneticisi ile iletişime geçin.')
         return redirect('custom_logout')
         
     if request.method == 'POST':

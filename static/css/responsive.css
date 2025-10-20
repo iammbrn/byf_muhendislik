@@ -139,6 +139,12 @@
 
 /* Mobile Portrait - Max 480px */
 @media (max-width: 480px) {
+    /* Container tighter padding on very small screens */
+    .container {
+        padding-left: var(--spacing-2);
+        padding-right: var(--spacing-2);
+    }
+    
     /* Typography */
     h1 { font-size: 1.5rem; }
     h2 { font-size: 1.25rem; }
@@ -148,6 +154,7 @@
     .btn {
         width: 100%;
         padding: var(--spacing-2) var(--spacing-3);
+        font-size: 0.9rem;
     }
     
     .btn-group {
@@ -197,6 +204,16 @@
     .hero-buttons .btn {
         width: 100%;
     }
+    
+    /* Reduce main content padding */
+    .main-content {
+        padding-top: 90px;
+    }
+    
+    /* Section padding reduction */
+    .section-padding {
+        padding: 1.5rem 0;
+    }
 }
 
 /* Tablet Portrait - Max 768px */
@@ -208,6 +225,11 @@
     
     .mobile-menu-toggle {
         display: flex;
+    }
+    
+    /* Main content padding adjustment */
+    .main-content {
+        padding-top: 100px;
     }
     
     /* Dashboard */
@@ -259,6 +281,25 @@
     .modal-content {
         margin: var(--spacing-2);
         padding: var(--spacing-3);
+    }
+    
+    /* Images - ensure they don't overflow */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Videos and iframes */
+    iframe,
+    video {
+        max-width: 100%;
+    }
+    
+    /* Tables wrapper for horizontal scroll */
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 }
 

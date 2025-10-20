@@ -33,6 +33,16 @@ def custom_login(request):
             user = authenticate(username=username, password=password)
             
             if user is not None and user.is_active:
+                # Check firm status for firma-type users
+                if user.user_type == 'firma':
+                    try:
+                        if user.firm.status != 'active':
+                            messages.error(request, 'Hesabınız pasif durumda. Lütfen yönetici ile iletişime geçin.')
+                            return render(request, 'accounts/login.html', {'form': form})
+                    except Firm.DoesNotExist:
+                        messages.error(request, 'Firma bilgileriniz bulunamadı. Lütfen yönetici ile iletişime geçin.')
+                        return render(request, 'accounts/login.html', {'form': form})
+                
                 login(request, user)
                 # Remember-me: if not selected, session expires at browser close
                 remember_me = request.POST.get('remember_me')
@@ -171,3 +181,29 @@ def admin_settings(request):
 @login_required
 def firm_settings(request):
     return _handle_settings_view(request, 'firma', 'accounts/firm_settings.html', 'firm_settings')
+
+@login_required
+def delete_account(request):
+    """
+    Handle account deletion for authenticated users.
+    Performs a safe and complete deletion of user account and all related data.
+    """
+    if request.method == 'POST':
+        user = request.user
+        username = user.username
+        
+        # Log the user out first
+        logout(request)
+        
+        # Delete the user - CASCADE will handle related objects:
+        # - UserProfile (on_delete=CASCADE)
+        # - Firm (on_delete=CASCADE) and all related firm data
+        # - Any other models with CASCADE relationships
+        user.delete()
+        
+        messages.success(request, f'Hesabınız ({username}) başarıyla silindi. İyi günler dileriz.')
+        return redirect('home')
+    
+    # If not POST, redirect to home (safety measure)
+    messages.error(request, 'Geçersiz istek.')
+    return redirect('home')

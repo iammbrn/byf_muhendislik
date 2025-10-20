@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.UserTypeMiddleware',
+    'firms.middleware.FirmStatusMiddleware',  # Check firm status on each request
     'core.middleware.CacheControlMiddleware',
     'core.middleware.SecurityHeadersMiddleware',
 ]

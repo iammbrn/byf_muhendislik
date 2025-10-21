@@ -634,93 +634,750 @@ body {
 }
 
 /* ========================================
-   RESPONSIVE
+   BUTTONS - STANDARDIZED SIZING & SPACING
    ======================================== */
 
+/* CSS Variables for button standardization */
+:root, [data-theme="light"] {
+    --admin-btn-height: 2.75rem;
+    --admin-btn-padding-y: 0.75rem;
+    --admin-btn-padding-x: 1.5rem;
+    --admin-btn-font-size: 0.9375rem;
+    --admin-btn-gap: 0.75rem;
+    --admin-btn-radius: 0.5rem;
+    --admin-btn-min-width: 7rem;
+}
+
+[data-theme="dark"] {
+    --admin-btn-height: 2.75rem;
+    --admin-btn-padding-y: 0.75rem;
+    --admin-btn-padding-x: 1.5rem;
+    --admin-btn-font-size: 0.9375rem;
+    --admin-btn-gap: 0.75rem;
+    --admin-btn-radius: 0.5rem;
+    --admin-btn-min-width: 7rem;
+}
+
+/* Universal button standardization */
+.button:not(.deletelink), 
+input[type="submit"]:not([value*="Yes, I'm sure"]):not([value*="Sil"]):not(.deletelink), 
+input[type="button"],
+button[type="submit"],
+button[type="button"],
+.submit-row input:not([value*="Yes, I'm sure"]):not([value*="Sil"]):not(.deletelink),
+.submit-row button,
+.object-tools a,
+a.button:not(.deletelink) {
+    /* Standardized dimensions */
+    min-height: var(--admin-btn-height) !important;
+    min-width: var(--admin-btn-min-width) !important;
+    padding: var(--admin-btn-padding-y) var(--admin-btn-padding-x) !important;
+    
+    /* Typography */
+    font-size: var(--admin-btn-font-size) !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    letter-spacing: 0.01em !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    
+    /* Visual styling */
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    border: 2px solid transparent !important;
+    border-radius: var(--admin-btn-radius) !important;
+    box-shadow: 0 2px 4px rgba(30, 58, 138, 0.2), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+    
+    /* Layout */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    
+    /* Interaction */
+    cursor: pointer !important;
+    transition: all 0.2s ease-in-out !important;
+    user-select: none !important;
+}
+
+/* Hover state - consistent across all buttons */
+.button:not(.deletelink):hover:not(:disabled), 
+input[type="submit"]:not([value*="Yes, I'm sure"]):not([value*="Sil"]):not(.deletelink):hover:not(:disabled),
+input[type="button"]:hover:not(:disabled),
+button[type="submit"]:hover:not(:disabled),
+button[type="button"]:hover:not(:disabled),
+.submit-row input:not([value*="Yes, I'm sure"]):not([value*="Sil"]):not(.deletelink):hover:not(:disabled),
+.submit-row button:hover:not(:disabled),
+.object-tools a:hover,
+a.button:not(.deletelink):hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    border-color: transparent !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Active state */
+.button:not(.deletelink):active:not(:disabled),
+input[type="submit"]:not([value*="Yes, I'm sure"]):not([value*="Sil"]):not(.deletelink):active:not(:disabled),
+input[type="button"]:active:not(:disabled),
+button[type="submit"]:active:not(:disabled),
+button[type="button"]:active:not(:disabled),
+.submit-row input:not([value*="Yes, I'm sure"]):not([value*="Sil"]):not(.deletelink):active:not(:disabled),
+.submit-row button:active:not(:disabled),
+.object-tools a:active,
+a.button:not(.deletelink):active {
+    transform: translateY(0) !important;
+    box-shadow: 0 1px 2px rgba(30, 58, 138, 0.2) !important;
+}
+
+/* Focus state - accessibility */
+.button:focus-visible,
+input[type="submit"]:focus-visible,
+input[type="button"]:focus-visible,
+button[type="submit"]:focus-visible,
+button[type="button"]:focus-visible,
+.submit-row input:focus-visible,
+.submit-row button:focus-visible,
+.object-tools a:focus-visible,
+a.button:focus-visible {
+    outline: 3px solid #3b82f6 !important;
+    outline-offset: 2px !important;
+}
+
+/* Disabled state */
+.button:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+button[type="submit"]:disabled,
+button[type="button"]:disabled,
+.submit-row input:disabled,
+.submit-row button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Submit row standardization */
+.submit-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--admin-btn-gap) !important;
+    padding: 1.25rem 0 !important;
+    margin-top: 1.5rem !important;
+    border-top: 2px solid var(--admin-border, #e2e8f0) !important;
+    flex-wrap: wrap !important;
+}
+
+[data-theme="dark"] .submit-row {
+    border-top-color: #334155 !important;
+}
+
+/* Cancel/Back links - consistent with buttons */
+.submit-row .cancel-link,
+.submit-row a:not(.deletelink),
+.cancel-link,
+a.cancel-link {
+    min-height: var(--admin-btn-height) !important;
+    min-width: var(--admin-btn-min-width) !important;
+    padding: var(--admin-btn-padding-y) var(--admin-btn-padding-x) !important;
+    font-size: var(--admin-btn-font-size) !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: var(--admin-btn-radius) !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.submit-row .cancel-link:hover,
+.submit-row a:not(.deletelink):hover,
+.cancel-link:hover,
+a.cancel-link:hover {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="dark"] .submit-row .cancel-link,
+[data-theme="dark"] .submit-row a:not(.deletelink),
+[data-theme="dark"] .cancel-link,
+[data-theme="dark"] a.cancel-link {
+    background: #334155 !important;
+    color: #cbd5e1 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .submit-row .cancel-link:hover,
+[data-theme="dark"] .submit-row a:not(.deletelink):hover,
+[data-theme="dark"] .cancel-link:hover,
+[data-theme="dark"] a.cancel-link:hover {
+    background: #475569 !important;
+    color: #f1f5f9 !important;
+}
+
+/* ========================================
+   RESPONSIVE - ENHANCED MOBILE FIRST
+   ======================================== */
+
+/* Tablet: 1024px and below */
 @media (max-width: 1024px) {
     #content {
-        padding: 1.5rem !important;
+        padding: clamp(1rem, 2vw, 1.5rem) !important;
     }
     
     body.change-list.filtered #content,
     .filtered #content {
         flex-direction: column !important;
+        gap: 1.5rem !important;
     }
     
     body.change-list.filtered #changelist-filter,
     .filtered #changelist-filter {
         width: 100% !important;
         max-width: none !important;
+        float: none !important;
+        margin-left: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* Object tools responsive */
+    .object-tools {
+        float: none !important;
+        margin: 0 0 1rem 0 !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+    
+    .object-tools li {
+        margin-left: 0 !important;
+        flex: 1 1 auto !important;
+    }
+    
+    .object-tools a {
+        width: 100% !important;
+        justify-content: center !important;
     }
 }
 
+/* Mobile: 768px and below */
 @media (max-width: 768px) {
+    /* Container spacing */
     #content {
-        padding: 1rem !important;
+        padding: 1rem 0.75rem !important;
     }
     
     #main,
     .main,
     .main.shifted {
-        padding: 110px 0 20px 0 !important;
+        padding: 6.25rem 0 1.25rem 0 !important;
     }
     
-    /* Toolbar responsiveness */
+    body.change-list #main,
+    body.change-list .main {
+        padding: 0 0 2rem 0 !important;
+    }
+    
+    body.change-list #content {
+        padding-top: 0.75rem !important;
+        padding-bottom: 3rem !important;
+    }
+    
+    /* Toolbar - full mobile stack */
     #toolbar {
-        padding: 1rem !important;
+        padding: 0.875rem !important;
+        margin-bottom: 1rem !important;
     }
     
     #toolbar form {
         flex-direction: column !important;
-        gap: 0.5rem !important;
+        gap: 0.625rem !important;
         max-width: 100% !important;
     }
     
     #toolbar input[type="text"] {
-        border-radius: 8px !important;
-        border-right: 2px solid #e2e8f0 !important;
+        border-radius: 0.5rem !important;
+        border: 2px solid var(--admin-border, #e2e8f0) !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
     }
     
-    #toolbar input[type="submit"] {
-        border-radius: 8px !important;
+    #toolbar input[type="submit"],
+    #toolbar button[type="submit"] {
+        border-radius: 0.5rem !important;
         width: 100% !important;
+        padding: 0.75rem 1rem !important;
+        min-width: unset !important;
     }
     
-    /* Admin actions responsiveness */
+    /* Actions bar - vertical stack */
     .actions {
-        flex-wrap: wrap !important;
-        gap: 0.5rem !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.625rem !important;
+        padding: 1rem 0.875rem !important;
     }
     
-    .actions label,
-    .actions select,
-    .actions button {
+    .actions label {
+        width: 100% !important;
+        margin: 0 0 0.25rem 0 !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .actions select {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0.75rem 1rem !important;
+    }
+    
+    .actions button,
+    .actions input[type="submit"] {
         width: 100% !important;
         margin: 0 !important;
+        padding: 0.875rem 1rem !important;
     }
     
-    /* Pagination responsiveness */
-    .pagination {
-        font-size: 0.85rem !important;
+    /* Pagination - mobile friendly */
+    .paginator {
+        padding: 1.5rem 0.5rem !important;
+        font-size: 0.8rem !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
-        gap: 0.25rem !important;
+        gap: 0.375rem !important;
     }
     
-    .pagination a,
-    .pagination span {
-        padding: 0.4rem 0.6rem !important;
+    .paginator a,
+    .paginator span {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.8rem !important;
+        min-width: 2.25rem !important;
+    }
+    
+    /* Results table - horizontal scroll */
+    .results {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        margin: 0 -0.75rem !important;
+        padding: 0 0.75rem !important;
+    }
+    
+    #result_list {
+        min-width: 37.5rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    #result_list thead th {
+        padding: 0.875rem 0.625rem !important;
         font-size: 0.8rem !important;
     }
     
-    /* Results table mobile scroll */
+    #result_list tbody td {
+        padding: 0.75rem 0.625rem !important;
+    }
+    
+    /* Object tools - full width stack */
+    .object-tools {
+        flex-direction: column !important;
+    }
+    
+    .object-tools li {
+        width: 100% !important;
+    }
+    
+    .object-tools a {
+        padding: 0.75rem 1rem !important;
+    }
+    
+    /* Submit row - stack buttons */
+    .submit-row {
+        flex-direction: column !important;
+        gap: 0.625rem !important;
+        padding: 1rem 0.875rem !important;
+    }
+    
+    .submit-row input,
+    .submit-row button,
+    .submit-row a {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0.875rem 1rem !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Forms - better spacing */
+    .form-row {
+        padding: 1.25rem 0 !important;
+    }
+    
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+        font-size: 0.9rem !important;
+        padding: 0.75rem 1rem !important;
+    }
+    
+    /* Breadcrumbs - compact */
+    .breadcrumbs {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.8rem !important;
+        margin-bottom: 1rem !important;
+        border-radius: 0 0 0.5rem 0.5rem !important;
+    }
+    
+    /* Headings - responsive sizing */
+    #content h1 {
+        font-size: clamp(1.375rem, 4vw, 1.5rem) !important;
+        margin-bottom: 1.25rem !important;
+        padding-bottom: 0.75rem !important;
+    }
+    
+    /* Filter sidebar - full width */
+    #changelist-filter {
+        max-width: none !important;
+        padding: 1.25rem !important;
+    }
+    
+    #changelist-filter h2 {
+        font-size: 0.9rem !important;
+        padding: 0.75rem 1rem !important;
+        margin: -1.25rem -1.25rem 1rem -1.25rem !important;
+    }
+    
+    #changelist-filter h3 {
+        font-size: 0.8rem !important;
+        padding: 0.625rem 0 !important;
+    }
+    
+    #changelist-filter a {
+        font-size: 0.8rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    /* Popup/Modal forms */
+    body.popup #container {
+        padding: 0.75rem !important;
+    }
+    
+    body.popup #content {
+        padding: 1rem 0.75rem !important;
+    }
+    
+    body.popup h1 {
+        font-size: clamp(1.25rem, 4vw, 1.375rem) !important;
+    }
+    
+    /* Inline forms */
+    .inline-related {
+        padding: 1rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+    
+    .inline-related h3 {
+        margin: -1rem -1rem 0.875rem -1rem !important;
+        padding: 0.875rem 1rem !important;
+        font-size: 0.875rem !important;
+    }
+    
+    /* Related widget wrapper */
+    .related-widget-wrapper {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.5rem !important;
+    }
+    
+    .related-widget-wrapper select {
+        width: 100% !important;
+    }
+    
+    .related-widget-wrapper a {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+}
+
+/* Small Mobile: 480px and below */
+@media (max-width: 480px) {
+    #content {
+        padding: 0.875rem 0.5rem !important;
+    }
+    
+    #main,
+    .main,
+    .main.shifted {
+        padding: 5.625rem 0 1.25rem 0 !important;
+    }
+    
+    body.change-list #content {
+        padding: 0.625rem 0.5rem 2.5rem 0.5rem !important;
+    }
+    
+    /* Compact spacing */
+    #toolbar {
+        padding: 0.75rem !important;
+    }
+    
+    #toolbar input[type="text"],
+    #toolbar input[type="submit"] {
+        padding: 0.625rem 0.875rem !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .actions {
+        padding: 0.875rem 0.75rem !important;
+    }
+    
+    .actions select,
+    .actions button {
+        padding: 0.625rem 0.875rem !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .paginator {
+        padding: 1rem 0.375rem !important;
+        gap: 0.25rem !important;
+    }
+    
+    .paginator a,
+    .paginator span {
+        padding: 0.375rem 0.625rem !important;
+        font-size: 0.75rem !important;
+        min-width: 2rem !important;
+    }
+    
+    #result_list {
+        min-width: 31.25rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    #result_list thead th,
+    #result_list tbody td {
+        padding: 0.625rem 0.5rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .form-row {
+        padding: 1rem 0 !important;
+    }
+    
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+        padding: 0.625rem 0.875rem !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .submit-row input,
+    .submit-row button,
+    .submit-row a {
+        padding: 0.75rem 0.875rem !important;
+        font-size: 0.875rem !important;
+    }
+    
+    #content h1 {
+        font-size: 1.375rem !important;
+    }
+    
+    .breadcrumbs {
+        padding: 0.625rem 0.875rem !important;
+        font-size: 0.75rem !important;
+    }
+    
     .results {
+        margin: 0 -0.5rem !important;
+        padding: 0 0.5rem !important;
+    }
+}
+
+/* ========================================
+   MOBILE-SPECIFIC ENHANCEMENTS
+   ======================================== */
+
+/* Error lists - mobile friendly */
+@media (max-width: 768px) {
+    .errorlist {
+        margin: 0.5rem 0 !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .errorlist li {
+        font-size: 0.85rem !important;
+        line-height: 1.5 !important;
+    }
+}
+
+/* Date/Time widgets - stack on mobile */
+@media (max-width: 768px) {
+    .datetime {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    .datetime input {
+        width: 100% !important;
+    }
+    
+    .datetimeshortcuts {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.375rem !important;
+        margin-top: 0.5rem !important;
+    }
+    
+    .datetimeshortcuts a {
+        padding: 0.5rem 0.75rem !important;
+        text-align: center !important;
+        font-size: 0.8rem !important;
+    }
+}
+
+/* Calendar picker - centered on mobile */
+@media (max-width: 768px) {
+    .calendarbox,
+    .clockbox {
+        position: fixed !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        max-width: calc(100vw - 2rem) !important;
+        max-height: calc(100vh - 2rem) !important;
+        overflow: auto !important;
+        z-index: 9999 !important;
+    }
+    
+    .calendar table {
+        font-size: 0.85rem !important;
+    }
+    
+    .calendar td,
+    .calendar th {
+        padding: 0.5rem 0.375rem !important;
+    }
+}
+
+/* File upload widgets - full width */
+@media (max-width: 768px) {
+    .file-upload,
+    .clearable-file-input {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    
+    .file-upload input[type="file"],
+    .clearable-file-input input[type="file"] {
+        width: 100% !important;
+    }
+}
+
+/* Tabular inline forms - scroll */
+@media (max-width: 768px) {
+    .tabular {
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
     }
     
-    #result_list {
-        min-width: 600px !important;
+    .tabular table {
+        min-width: 37.5rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .tabular td,
+    .tabular th {
+        padding: 0.625rem 0.5rem !important;
+    }
+}
+
+/* Aligned form labels - stack */
+@media (max-width: 768px) {
+    .aligned .form-row {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .aligned label {
+        float: none !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding: 0 0 0.375rem 0 !important;
+        margin: 0 !important;
+    }
+    
+    .aligned .form-row > div {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+}
+
+/* Help text - readable on mobile */
+@media (max-width: 768px) {
+    .help,
+    .help-text {
+        font-size: 0.75rem !important;
+        line-height: 1.5 !important;
+        margin-top: 0.375rem !important;
+    }
+}
+
+/* Touch enhancements for mobile devices */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    input[type="checkbox"],
+    input[type="radio"] {
+        min-width: 1.5rem !important;
+        min-height: 1.5rem !important;
+    }
+    
+    /* Button minimum heights */
+    .button,
+    input[type="submit"],
+    input[type="button"],
+    button {
+        min-height: 2.75rem !important;
+    }
+    
+    /* Select minimum height */
+    select {
+        min-height: 2.75rem !important;
+    }
+    
+    /* Link padding in tables */
+    #result_list tbody td a {
+        padding: 0.25rem 0 !important;
+        display: inline-block !important;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    #content {
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+    }
+    
+    .form-row {
+        padding: 0.875rem 0 !important;
+    }
+    
+    .module {
+        margin-bottom: 1rem !important;
     }
 }
 

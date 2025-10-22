@@ -196,7 +196,6 @@ def delete_account(request):
         logout(request)
         
         # Delete the user - CASCADE will handle related objects:
-        # - UserProfile (on_delete=CASCADE)
         # - Firm (on_delete=CASCADE) and all related firm data
         # - Any other models with CASCADE relationships
         user.delete()

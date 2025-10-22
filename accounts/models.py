@@ -28,17 +28,3 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
         return f"{self.username} ({self.get_user_type_display()})"
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name='Profil Resmi')
-    bio = models.TextField(blank=True, verbose_name='Hakkımda')
-    address = models.TextField(blank=True, verbose_name='Adres')
-    
-    class Meta:
-        verbose_name = 'Kullanıcı Profili'
-        verbose_name_plural = 'Kullanıcı Profilleri'
-        db_table_comment = 'Kullanıcı profil bilgileri - ek detaylar'
-    
-    def __str__(self):
-        return f"{self.user.username} Profili"

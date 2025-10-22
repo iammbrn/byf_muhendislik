@@ -1,7 +1,7 @@
 /* BYF Mühendislik - Django Admin Özel Tasarımı */
 /* Ana Site ile Tam Uyumlu Modern Admin Paneli */
 /* Modern Dark/Light Mode Desteği */
-/* VERSION 4.2 - STANDARDIZED LAYOUT */
+/* VERSION 6.0 - FINAL: Removed ALL responsive overrides, flex layout always active */
 
 /* ===================================
    TOPLINKS REMOVAL - HIGHEST PRIORITY
@@ -85,23 +85,42 @@ html, body {
 /* Changelist - TAM GENİŞLİK */
 #changelist {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
+    min-width: 0 !important; /* Allow shrinking */
     margin: 0 !important;
     padding: 0 !important;
+    box-sizing: border-box !important;
 }
 
 /* Changelist form - TAM GENİŞLİK */
-#changelist-form {
+#changelist-form,
+.changelist-form-container {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
+    min-width: 0 !important; /* Allow shrinking */
     margin: 0 !important;
+    box-sizing: border-box !important;
 }
 
 /* Results container */
 .results {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
     overflow-x: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Results, Toolbar, Paginator in filtered layout - Django standard */
+.change-list .filtered .results,
+.filtered .results {
+    width: auto !important; /* Auto width in filtered layout */
+}
+
+.change-list .filtered #toolbar,
+.filtered #toolbar,
+.change-list .filtered .paginator,
+.filtered .paginator {
+    width: auto !important; /* Auto width in filtered layout */
 }
 
 /* ===================================
@@ -289,13 +308,15 @@ body {
    =================================== */
 #result_list {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
+    min-width: 0 !important; /* CRITICAL: Remove min-width constraint */
     border: none;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
     table-layout: auto !important;
     border-collapse: collapse !important;
+    box-sizing: border-box !important;
 }
 
 /* Table headers - Modern gradient */
@@ -371,35 +392,10 @@ body {
 }
 
 /* ===================================
-   FILTERS - SIDEBAR
+   FILTERS - SIDEBAR (Using Django's original structure)
    =================================== */
-#changelist-filter {
-    background: var(--admin-surface);
-    border: 1px solid var(--admin-border);
-    border-radius: 16px;
-    padding: 1.75rem;
-    box-shadow: var(--admin-shadow-sm);
-    min-width: 260px !important;
-    max-width: 280px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
 
-/* Filtered layout - Side by side */
-.filtered #content {
-    display: flex !important;
-    gap: 1.5rem !important;
-    align-items: flex-start !important;
-}
-
-.filtered #changelist {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-}
-
-.filtered #changelist-filter {
-    flex: 0 0 280px !important;
-}
+/* Django's original flexbox structure - don't override */
 
 /* ===================================
    FORMS - MODERN INPUT DESIGN

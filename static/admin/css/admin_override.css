@@ -1,6 +1,6 @@
 /* BYF Mühendislik - Admin Panel ULTIMATE OVERRIDE */
 /* Bu dosya Django'nun TÜM CSS'lerinden SONRA yüklenir */
-/* VERSION 3.6 - TOGGLE REPOSITIONED (Header-Sticky Arası) */
+/* VERSION 6.0 - FINAL: Removed ALL responsive overrides, flex layout always active */
 
 /* ========================================
    TOPLINKS COMPLETE REMOVAL - MAXIMUM PRIORITY
@@ -63,29 +63,19 @@ body {
    MAIN WRAPPER - FIX SHIFTED CLASS
    ======================================== */
 
-/* Main - Normal ve Shifted - TAŞMAYI ÖNLE */
+/* Main - STANDARDIZED SPACING - All admin pages */
 #main,
 .main,
 .main.shifted,
 body.change-form #main,
 body.change-form .main,
-body.change-form .main.shifted {
-    width: 100% !important;
-    max-width: 100vw !important;
-    padding: 110px 0 40px 0 !important;
-    margin: 0 !important;
-    margin-left: 0 !important;
-    overflow-x: hidden !important;
-    box-sizing: border-box !important;
-}
-
-/* Main - CHANGELIST için minimal top padding */
+body.change-form .main.shifted,
 body.change-list #main,
 body.change-list .main,
 body.change-list .main.shifted {
     width: 100% !important;
     max-width: 100vw !important;
-    padding: 0 0 40px 0 !important; /* 0 top padding - spacing controlled by #content */
+    padding: 0 0 40px 0 !important; /* 0 top padding - consistent spacing controlled by #content */
     margin: 0 !important;
     margin-left: 0 !important;
     overflow-x: hidden !important;
@@ -109,18 +99,16 @@ body.change-list .main.shifted {
    CONTENT - CENTERED AND WIDE
    ======================================== */
 
-#content {
+/* Content - CENTERED AND WIDE - STANDARDIZED SPACING */
+#content,
+body.change-form #content,
+body.change-list #content {
     width: 100% !important;
     max-width: 1800px !important;
     margin: 0 auto !important;
-    padding: 2rem !important;
+    padding: 10px 2rem 2rem 2rem !important; /* 10px top - standardized spacing for all pages */
     overflow-x: hidden !important;
     box-sizing: border-box !important;
-}
-
-/* Content - BALANCED SPACING for Changelist */
-body.change-list #content {
-    padding: 10px 2rem 2rem 2rem !important; /* 10px top - equal spacing with sidebar */
 }
 
 /* Content-main - FULL WIDTH */
@@ -151,6 +139,7 @@ body.change-list #content {
 #changelist {
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important; /* Allow shrinking */
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden !important;
@@ -162,15 +151,41 @@ body.change-list #content {
 .changelist-form-container {
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important; /* Allow shrinking */
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: auto !important;
     box-sizing: border-box !important;
 }
 
+/* Changelist form container - prevent overflow in filtered layout */
+body.change-list.filtered #changelist-form,
+body.change-list.filtered .changelist-form-container,
+.filtered #changelist-form,
+.filtered .changelist-form-container {
+    flex: 1 1 auto !important;
+    min-width: 0 !important; /* CRITICAL: Allows flex item to shrink below content size */
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+}
+
 /* Results - Allow scroll only for table */
-.results {
+#changelist-form .results {
     width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Results in filtered layout - CRITICAL: width auto to fit within flex container */
+.change-list .filtered .results,
+.filtered .results,
+body.change-list.filtered .results {
+    width: auto !important; /* Django standard: auto width in filtered layout */
     max-width: 100% !important;
     overflow-x: auto !important;
     overflow-y: visible !important;
@@ -184,10 +199,11 @@ body.change-list #content {
 
 #result_list {
     width: 100% !important;
-    max-width: none !important;
-    min-width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important; /* CRITICAL: Remove min-width constraint */
     table-layout: auto !important;
     border-collapse: collapse !important;
+    box-sizing: border-box !important;
 }
 
 /* Table cells - Prevent overflow with word wrap */
@@ -259,38 +275,37 @@ body.change-list #content {
 }
 
 /* ========================================
-   FILTERED LAYOUT - Flexbox
+   FILTERED LAYOUT - FORCE FLEX ALWAYS
    ======================================== */
 
-/* Filtered content layout - standard flexbox positioning */
-body.change-list.filtered #content,
-.filtered #content {
+#changelist {
     display: flex !important;
-    gap: 1.5rem !important;
     align-items: flex-start !important;
-    flex-wrap: nowrap !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    justify-content: space-between !important;
 }
 
-body.change-list.filtered #changelist,
-.filtered #changelist {
-    flex: 1 1 0 !important; /* 0 base ile filter'a yer bırak */
+#changelist .changelist-form-container {
+    flex: 1 1 auto !important;
     min-width: 0 !important;
-    max-width: calc(100% - 280px - 1.5rem) !important; /* Filter genişliği + gap kadar çıkar */
-    overflow-x: auto !important;
-    order: 1 !important; /* Changelist solda */
 }
 
-body.change-list.filtered #changelist-filter,
-.filtered #changelist-filter {
-    flex: 0 0 280px !important;
-    min-width: 260px !important;
-    max-width: 280px !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    order: 2 !important; /* Filter sağda */
+#changelist-filter {
+    flex: 0 0 240px !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+    border-left: none;
+    margin: 0 0 0 30px;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+[data-theme="dark"] #changelist-filter {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 /* ========================================
@@ -317,13 +332,22 @@ body.change-list.filtered #changelist-filter,
 
 #toolbar {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
     margin-bottom: 1.5rem !important;
     padding: 1.5rem !important;
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 12px !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    box-sizing: border-box !important;
+}
+
+/* Toolbar and Paginator in filtered layout - CRITICAL: width auto */
+.filtered #toolbar,
+.change-list .filtered #toolbar,
+.filtered .paginator,
+.change-list .filtered .paginator {
+    width: auto !important; /* Django standard: auto width in filtered layout */
 }
 
 #toolbar form {
@@ -360,8 +384,9 @@ body.change-list.filtered #changelist-filter,
 
 .actions {
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
     overflow: visible !important;
+    box-sizing: border-box !important;
 }
 
 /* ========================================
@@ -579,8 +604,11 @@ a.cancel-link:hover {
 
 /* Tablet: 1024px and below */
 @media (max-width: 1024px) {
-    #content {
-        padding: clamp(1rem, 2vw, 1.5rem) !important;
+    /* Tablet - Maintain consistent top/bottom padding, adjust sides */
+    #content,
+    body.change-list #content,
+    body.change-form #content {
+        padding: 10px clamp(1rem, 2vw, 1.5rem) 2rem clamp(1rem, 2vw, 1.5rem) !important;
     }
     
     /* Standard elements - Tablet responsive */
@@ -596,25 +624,6 @@ a.cancel-link:hover {
     .changelist-form-container {
         width: 100% !important;
         padding: 0 !important;
-    }
-    
-    body.change-list.filtered #content,
-    .filtered #content {
-        flex-direction: column !important;
-        gap: 1.5rem !important;
-    }
-    
-    body.change-list.filtered #changelist-filter,
-    .filtered #changelist-filter,
-    #changelist-filter {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 100% !important;
-        flex: 1 1 100% !important;
-        float: none !important;
-        margin: 0 0 1.5rem 0 !important;
-        max-height: calc(100vh - 180px) !important;
-        overflow-y: auto !important;
     }
     
     /* Object tools responsive */
@@ -677,18 +686,21 @@ a.cancel-link:hover {
         justify-content: center !important;
     }
     
+    /* Mobile - Standardized padding for all pages */
     #main,
     .main,
-    .main.shifted {
-        padding: 6.25rem 0 1.25rem 0 !important;
-    }
-    
+    .main.shifted,
     body.change-list #main,
-    body.change-list .main {
+    body.change-list .main,
+    body.change-form #main,
+    body.change-form .main {
         padding: 0 0 2rem 0 !important;
     }
     
-    body.change-list #content {
+    /* Mobile - Consistent content padding */
+    #content,
+    body.change-list #content,
+    body.change-form #content {
         padding-top: 0.75rem !important;
         padding-bottom: 3rem !important;
     }
@@ -858,17 +870,6 @@ a.cancel-link:hover {
         padding: 0 !important;
     }
     
-    /* Filter sidebar - full width on mobile */
-    #changelist-filter {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 100% !important;
-        padding: 1.25rem !important;
-        margin: 0 !important;
-        max-height: calc(100vh - 150px) !important;
-        overflow-y: auto !important;
-    }
-    
     #changelist-filter h2 {
         font-size: 0.9rem !important;
         padding: 0.75rem 1rem !important;
@@ -930,17 +931,21 @@ a.cancel-link:hover {
 
 /* Small Mobile: 480px and below */
 @media (max-width: 480px) {
-    #content {
-        padding: 0.875rem 0.5rem !important;
-    }
-    
+    /* Small Mobile - Standardized padding for all pages */
     #main,
     .main,
-    .main.shifted {
-        padding: 5.625rem 0 1.25rem 0 !important;
+    .main.shifted,
+    body.change-list #main,
+    body.change-list .main,
+    body.change-form #main,
+    body.change-form .main {
+        padding: 0 0 1.25rem 0 !important;
     }
     
-    body.change-list #content {
+    /* Small Mobile - Consistent content padding */
+    #content,
+    body.change-list #content,
+    body.change-form #content {
         padding: 0.625rem 0.5rem 2.5rem 0.5rem !important;
     }
     
@@ -1291,6 +1296,7 @@ body.change-list .main.shifted {
 /* Ensure changelist content area doesn't overlap footer */
 body.change-list #content {
     padding-bottom: 4rem !important; /* Extra space to prevent sticky elements from overlapping footer */
+    /* Note: Top padding is standardized at 10px in main #content rule above */
 }
 
 /* Prevent sticky table headers from overlapping footer */
@@ -2653,29 +2659,8 @@ body.change-history .footer-content {
    FILTER SIDEBAR - MODERN DESIGN
    ======================================== */
 
-/* Changelist filter - standard sidebar positioning and sizing */
-#changelist-filter {
-    position: relative !important;
-    width: 100% !important;
-    max-width: 280px !important;
-    min-width: 260px !important;
-    flex: 0 0 280px !important;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 16px !important;
-    padding: 1.75rem !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04) !important;
-    box-sizing: border-box !important;
-    float: none !important;
-    margin: 0 !important;
-    height: fit-content !important;
-    overflow-y: auto !important;
-    max-height: calc(100vh - 200px) !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    z-index: 10 !important;
-}
+/* Filter sidebar styling - already defined in filtered layout section above */
+/* Removed duplicate rules - using filtered layout rules from line 306+ */
 
 #changelist-filter h2 {
     background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;

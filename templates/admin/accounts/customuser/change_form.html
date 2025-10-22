@@ -1,0 +1,839 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+/* Fix Django Admin Default Layout for Permissions Field */
+.form-row.field-user_permissions {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.form-row.field-user_permissions > div,
+.form-row.field-user_permissions .flex-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    float: none !important;
+}
+
+.field-user_permissions {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Modern Permissions Section Styling */
+.permissions-modern-container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    margin: 1rem 0 0 0;
+    box-sizing: border-box;
+}
+
+[data-theme="dark"] .permissions-modern-container {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.permissions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+[data-theme="dark"] .permissions-header {
+    border-bottom-color: #334155;
+}
+
+.permissions-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+[data-theme="dark"] .permissions-title {
+    color: #f1f5f9;
+}
+
+.permissions-search {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+.permissions-search input {
+    width: 100%;
+    padding: 0.625rem 2.5rem 0.625rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+}
+
+.permissions-search input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.permissions-search i {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+[data-theme="dark"] .permissions-search input {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f1f5f9;
+}
+
+[data-theme="dark"] .permissions-search input:focus {
+    background: #1e293b;
+    border-color: #3b82f6;
+}
+
+.permissions-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.permissions-btn {
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.permissions-btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.permissions-btn-primary:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+.permissions-btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.permissions-btn-secondary:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+[data-theme="dark"] .permissions-btn-secondary {
+    background: #334155;
+    color: #cbd5e1;
+    border-color: #475569;
+}
+
+[data-theme="dark"] .permissions-btn-secondary:hover {
+    background: #475569;
+    color: #f1f5f9;
+}
+
+.permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    max-height: 600px;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.permissions-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.permissions-grid::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.permissions-grid::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.permissions-grid::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+[data-theme="dark"] .permissions-grid::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+[data-theme="dark"] .permissions-grid::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+[data-theme="dark"] .permissions-grid::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+.permission-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.permission-card:hover {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+}
+
+.permission-card.selected {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+[data-theme="dark"] .permission-card {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+[data-theme="dark"] .permission-card:hover {
+    background: #1e293b;
+    border-color: #3b82f6;
+}
+
+[data-theme="dark"] .permission-card.selected {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-color: #60a5fa;
+}
+
+.permission-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.permission-checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.permission-checkbox:checked + .permission-checkbox-custom {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-color: #3b82f6;
+}
+
+.permission-checkbox:checked + .permission-checkbox-custom::before {
+    content: '✓';
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+[data-theme="dark"] .permission-checkbox-custom {
+    background: #1e293b;
+    border-color: #475569;
+}
+
+.permission-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.permission-info {
+    flex: 1;
+}
+
+.permission-name {
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+[data-theme="dark"] .permission-name {
+    color: #f1f5f9;
+}
+
+.permission-codename {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-family: 'Monaco', 'Courier New', monospace;
+    background: #f1f5f9;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+[data-theme="dark"] .permission-codename {
+    background: #334155;
+    color: #94a3b8;
+}
+
+.permission-model {
+    font-size: 0.875rem;
+    color: #475569;
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
+[data-theme="dark"] .permission-model {
+    color: #94a3b8;
+}
+
+.permissions-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.permissions-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 0.375rem 0.875rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .permissions-count {
+    background: #1e3a8a;
+    color: #93c5fd;
+}
+
+/* Hide default Django permissions widget and help text */
+.field-user_permissions .selector,
+.field-user_permissions .help,
+.field-user_permissions .helptext {
+    display: none !important;
+}
+
+/* Keep the actual select element accessible to form submission but visually hidden */
+.field-user_permissions select[name="user_permissions"] {
+    position: absolute !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    /* DO NOT use display: none - it prevents form submission */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .permissions-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 968px) {
+    .permissions-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 0.875rem;
+    }
+    
+    .permissions-modern-container {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .permissions-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .permissions-search {
+        max-width: 100%;
+    }
+    
+    .permissions-grid {
+        grid-template-columns: 1fr;
+        max-height: 400px;
+        gap: 0.75rem;
+    }
+    
+    .permissions-actions {
+        flex-direction: column;
+    }
+    
+    .permissions-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .permissions-modern-container {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .permission-card {
+        padding: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .permissions-modern-container {
+        padding: 0.875rem;
+        margin: 0.75rem 0 0 0;
+    }
+    
+    .permissions-title {
+        font-size: 1.1rem;
+    }
+    
+    .permissions-grid {
+        max-height: 350px;
+        padding: 0.25rem;
+    }
+    
+    .permission-card {
+        padding: 0.75rem;
+    }
+    
+    .permission-name {
+        font-size: 0.875rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block field_sets %}
+{% for fieldset in adminform %}
+  {% include "admin/includes/fieldset.html" %}
+  
+  {# Inject modern permissions UI after the permissions fieldset #}
+  {% if fieldset.name == "İzinler" %}
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Get the permissions field
+      const permissionsField = document.querySelector('.field-user_permissions');
+      if (!permissionsField) return;
+      
+      // Get the original select element
+      const originalSelect = permissionsField.querySelector('select[name="user_permissions"]');
+      if (!originalSelect) return;
+      
+      // CRITICAL: Ensure the select has the multiple attribute
+      // Django expects this for many-to-many fields
+      originalSelect.setAttribute('multiple', 'multiple');
+      originalSelect.setAttribute('data-permissions-widget', 'true');
+      
+      // Turkish translations with natural sentence structure
+      const modelTranslations = {
+          'log entry': 'Günlük Kaydı',
+          'permission': 'İzin',
+          'group': 'Grup',
+          'user': 'Kullanıcı',
+          'content type': 'İçerik Tipi',
+          'session': 'Oturum',
+          'custom user': 'Kullanıcı',
+          'admin user proxy': 'Yönetici',
+          'blog post': 'Blog Yazısı',
+          'site settings': 'Site Ayarları',
+          'service category': 'Hizmet Kategorisi',
+          'team member': 'Ekip Üyesi',
+          'activity log': 'Aktivite Günlüğü',
+          'contact message': 'İletişim Mesajı',
+          'provisioned credential': 'Kimlik Bilgisi',
+          'document': 'Doküman',
+          'firm': 'Firma',
+          'service': 'Hizmet',
+          'service request': 'Hizmet Talebi',
+          'captcha store': 'Captcha Deposu'
+      };
+      
+      const actionTranslations = {
+          'Can add': 'ekleyebilir',
+          'Can change': 'değiştirebilir',
+          'Can delete': 'silebilir',
+          'Can view': 'görüntüleyebilir'
+      };
+      
+      function translatePermission(permissionText) {
+          if (!permissionText) return permissionText;
+          
+          // Extract action and model from "Can add | log_entry | Can add log entry"
+          let action = '';
+          let model = '';
+          
+          // Check for action keywords
+          for (const [eng, tr] of Object.entries(actionTranslations)) {
+              if (permissionText.toLowerCase().includes(eng.toLowerCase())) {
+                  action = tr;
+                  // Remove the action part to get the model
+                  const tempText = permissionText.replace(new RegExp(eng, 'gi'), '').trim();
+                  
+                  // Translate model
+                  for (const [engModel, trModel] of Object.entries(modelTranslations)) {
+                      if (tempText.toLowerCase().includes(engModel.toLowerCase())) {
+                          model = trModel;
+                          break;
+                      }
+                  }
+                  break;
+              }
+          }
+          
+          // Return in natural Turkish format: "Model: action"
+          if (model && action) {
+              return `${model} ${action}`;
+          }
+          
+          // Fallback: just translate what we can
+          let translated = permissionText;
+          for (const [eng, tr] of Object.entries(modelTranslations)) {
+              translated = translated.replace(new RegExp(eng, 'gi'), tr);
+          }
+          for (const [eng, tr] of Object.entries(actionTranslations)) {
+              translated = translated.replace(new RegExp(eng, 'gi'), tr);
+          }
+          return translated;
+      }
+      
+      // Get all available permissions with Turkish translation
+      const allOptions = Array.from(originalSelect.options);
+      const permissions = allOptions.map(option => {
+          const parts = option.textContent.split(' | ');
+          const modelName = parts[0] || '';
+          const codename = parts[1] || '';
+          const permissionName = parts[2] || option.textContent;
+          
+          return {
+              id: option.value,
+              name: translatePermission(permissionName),
+              codename: codename,
+              model: modelTranslations[modelName.toLowerCase()] || modelName,
+              selected: option.selected,
+              originalOption: option
+          };
+      }).filter(p => p.id); // Filter out empty options
+      
+      // Create modern UI container
+      const modernContainer = document.createElement('div');
+      modernContainer.className = 'permissions-modern-container';
+      modernContainer.innerHTML = `
+          <div class="permissions-header">
+              <div>
+                  <h3 class="permissions-title">
+                      <i class="fas fa-shield-alt"></i> Kullanıcı İzinleri
+                  </h3>
+              </div>
+              <div class="permissions-search">
+                  <input type="text" id="permission-search" placeholder="İzin ara..." autocomplete="off">
+                  <i class="fas fa-search"></i>
+              </div>
+          </div>
+          
+          <div class="permissions-actions">
+              <button type="button" class="permissions-btn permissions-btn-primary" id="select-all-permissions">
+                  <i class="fas fa-check-double"></i> Tümünü Seç
+              </button>
+              <button type="button" class="permissions-btn permissions-btn-secondary" id="deselect-all-permissions">
+                  <i class="fas fa-times"></i> Tümünü Kaldır
+              </button>
+              <span class="permissions-count">
+                  <i class="fas fa-check-circle"></i>
+                  <span id="selected-count">0</span> / <span id="total-count">0</span> seçili
+              </span>
+          </div>
+          
+          <div class="permissions-grid" id="permissions-grid"></div>
+      `;
+      
+      // Insert modern UI after the original permissions field
+      permissionsField.appendChild(modernContainer);
+      
+      // Render permissions
+      function renderPermissions(filterText = '') {
+          const grid = document.getElementById('permissions-grid');
+          const filteredPermissions = permissions.filter(p => {
+              if (!filterText) return true;
+              const searchLower = filterText.toLowerCase();
+              return p.name.toLowerCase().includes(searchLower) ||
+                     p.codename.toLowerCase().includes(searchLower) ||
+                     p.model.toLowerCase().includes(searchLower);
+          });
+          
+          document.getElementById('total-count').textContent = permissions.length;
+          
+          if (filteredPermissions.length === 0) {
+              grid.innerHTML = '<div class="permissions-empty"><i class="fas fa-search" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i><br>Arama sonucu bulunamadı</div>';
+              return;
+          }
+          
+          grid.innerHTML = filteredPermissions.map(perm => `
+              <div class="permission-card ${perm.selected ? 'selected' : ''}" data-permission-id="${perm.id}">
+                  <label class="permission-label">
+                      <input type="checkbox" 
+                             class="permission-checkbox" 
+                             data-permission-id="${perm.id}"
+                             ${perm.selected ? 'checked' : ''}>
+                      <span class="permission-checkbox-custom"></span>
+                      <div class="permission-info">
+                          <div class="permission-name">${perm.name}</div>
+                          <div class="permission-codename">${perm.codename}</div>
+                          <div class="permission-model">${perm.model}</div>
+                      </div>
+                  </label>
+              </div>
+          `).join('');
+          
+          updateSelectedCount();
+      }
+      
+      function updateSelectedCount() {
+          const selectedCount = permissions.filter(p => p.selected).length;
+          document.getElementById('selected-count').textContent = selectedCount;
+      }
+      
+      // Function to sync permission state to original select
+      function syncPermissionToSelect(permId, isSelected) {
+          const permission = permissions.find(p => p.id === permId);
+          if (!permission) return;
+          
+          permission.selected = isSelected;
+          
+          // Update the original select element option (multiple approaches for reliability)
+          if (permission.originalOption) {
+              permission.originalOption.selected = isSelected;
+          }
+          
+          // Also update by finding the option again (belt and suspenders approach)
+          const option = originalSelect.querySelector(`option[value="${permId}"]`);
+          if (option) {
+              option.selected = isSelected;
+          }
+          
+          // CRITICAL: Ensure the select element itself is aware of changes
+          // Mark the select as "dirty" so Django knows to process it
+          originalSelect.setAttribute('data-modified', 'true');
+          
+          // Force the select to recognize the change
+          originalSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          
+          updateSelectedCount();
+      }
+      
+      // Function to sync ALL permissions to select (for batch operations)
+      function syncAllPermissionsToSelect() {
+          permissions.forEach(p => {
+              const option = originalSelect.querySelector(`option[value="${p.id}"]`);
+              if (option) {
+                  option.selected = p.selected;
+              }
+          });
+          originalSelect.setAttribute('data-modified', 'true');
+          originalSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      
+      // Event delegation for checkboxes
+      document.getElementById('permissions-grid').addEventListener('change', function(e) {
+          if (e.target.classList.contains('permission-checkbox')) {
+              const permId = e.target.dataset.permissionId;
+              const isChecked = e.target.checked;
+              
+              // Sync to select element
+              syncPermissionToSelect(permId, isChecked);
+              
+              // Update card appearance
+              const card = e.target.closest('.permission-card');
+              if (card) {
+                  card.classList.toggle('selected', isChecked);
+              }
+          }
+      });
+      
+      // Card click to toggle checkbox (but not if clicking on checkbox itself or label)
+      document.getElementById('permissions-grid').addEventListener('click', function(e) {
+          // Don't trigger if clicking on checkbox, label, or any input element
+          if (e.target.tagName === 'INPUT' || 
+              e.target.tagName === 'LABEL' ||
+              e.target.classList.contains('permission-checkbox') ||
+              e.target.classList.contains('permission-checkbox-custom') ||
+              e.target.classList.contains('permission-label')) {
+              return;
+          }
+          
+          const card = e.target.closest('.permission-card');
+          if (card) {
+              const checkbox = card.querySelector('.permission-checkbox');
+              if (checkbox) {
+                  checkbox.checked = !checkbox.checked;
+                  checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+          }
+      });
+      
+      // Search functionality
+      document.getElementById('permission-search').addEventListener('input', function(e) {
+          renderPermissions(e.target.value);
+      });
+      
+      // Select all
+      document.getElementById('select-all-permissions').addEventListener('click', function() {
+          permissions.forEach(p => {
+              p.selected = true;
+          });
+          
+          // Sync all permissions to the original select
+          syncAllPermissionsToSelect();
+          
+          // Re-render with current search filter
+          const searchValue = document.getElementById('permission-search').value;
+          renderPermissions(searchValue);
+      });
+      
+      // Deselect all
+      document.getElementById('deselect-all-permissions').addEventListener('click', function() {
+          permissions.forEach(p => {
+              p.selected = false;
+          });
+          
+          // Sync all permissions to the original select
+          syncAllPermissionsToSelect();
+          
+          // Re-render with current search filter
+          const searchValue = document.getElementById('permission-search').value;
+          renderPermissions(searchValue);
+      });
+      
+      // Initial render
+      renderPermissions();
+      
+      // CRITICAL FIX: Ensure form submission captures all selected permissions
+      const form = document.querySelector('form');
+      if (form) {
+          // MULTIPLE HANDLERS for maximum reliability
+          
+          // Handler 1: Click on any submit button
+          const submitButtons = form.querySelectorAll('input[type="submit"], button[type="submit"]');
+          submitButtons.forEach(btn => {
+              btn.addEventListener('click', function(e) {
+                  console.log('🔘 Submit button clicked:', this.name);
+                  syncAllPermissionsToSelect();
+              }, true);
+          });
+          
+          // Handler 2: Form submit event (capture phase)
+          form.addEventListener('submit', function(e) {
+              console.log('📝 === FORM SUBMIT EVENT ===');
+              
+              // Final sync: Make sure the original select element has all current selections
+              permissions.forEach(p => {
+                  const option = originalSelect.querySelector(`option[value="${p.id}"]`);
+                  if (option) {
+                      option.selected = p.selected;
+                  }
+              });
+              
+              // CRITICAL: Ensure the select is enabled and visible to form submission
+              originalSelect.disabled = false;
+              originalSelect.removeAttribute('disabled');
+              originalSelect.removeAttribute('aria-hidden');
+              originalSelect.style.display = 'block';
+              originalSelect.style.position = 'absolute';
+              originalSelect.style.left = '-9999px';
+              originalSelect.style.opacity = '0';
+              originalSelect.style.height = '1px';
+              originalSelect.style.width = '1px';
+              
+              // Verify the selected options
+              const selectedOptions = Array.from(originalSelect.selectedOptions);
+              console.log('✅ Permissions selected:', selectedOptions.length);
+              console.log('📋 Permission IDs:', selectedOptions.map(o => o.value).join(', '));
+              console.log('🔍 Select element name:', originalSelect.name);
+              console.log('🔍 Select element disabled:', originalSelect.disabled);
+              
+              // Double-check by manually creating FormData
+              const formData = new FormData(form);
+              const permissionsInFormData = formData.getAll('user_permissions');
+              console.log('📦 FormData user_permissions:', permissionsInFormData);
+              
+              if (permissionsInFormData.length === 0 && selectedOptions.length > 0) {
+                  console.error('❌ WARNING: Permissions selected but not in FormData!');
+                  console.log('🔧 Attempting to fix...');
+                  
+                  // Force select to be part of form
+                  if (!originalSelect.form) {
+                      console.error('❌ Select is not part of form!');
+                  }
+              }
+          }, true);
+          
+          // Handler 3: Before form data is collected (using formdata event)
+          form.addEventListener('formdata', function(e) {
+              console.log('📊 FormData event triggered');
+              syncAllPermissionsToSelect();
+              
+              // Manually ensure permissions are in the FormData
+              const selectedIds = permissions.filter(p => p.selected).map(p => p.id);
+              
+              // Remove any existing user_permissions entries
+              e.formData.delete('user_permissions');
+              
+              // Add all selected permissions
+              selectedIds.forEach(id => {
+                  e.formData.append('user_permissions', id);
+              });
+              
+              console.log('✅ FormData manually updated with', selectedIds.length, 'permissions');
+          });
+      }
+  });
+  </script>
+  {% endif %}
+{% endfor %}
+{% endblock %}
+

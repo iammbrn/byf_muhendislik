@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
-from .models import CustomUser, UserProfile
+from .models import CustomUser
 from core.admin_filters import ActiveStatusFilter, StaffStatusFilter
 
 @admin.register(CustomUser)
@@ -11,13 +11,29 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('user_type', ActiveStatusFilter, StaffStatusFilter, 'date_joined')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     readonly_fields = ('date_joined', 'last_login')
+    change_form_template = 'admin/accounts/customuser/change_form.html'
+    
+    # CRITICAL: Override filter_horizontal to use normal SelectMultiple instead of FilteredSelectMultiple
+    # This is required for our custom permissions UI to work properly
+    filter_horizontal = ()
     
     # Custom action to view inactive accounts
     actions = ['activate_users', 'deactivate_users', 'activate_firms', 'deactivate_firms']
     
-    fieldsets = UserAdmin.fieldsets + (
+    # Override fieldsets to remove groups
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Kişisel Bilgiler', {'fields': ('first_name', 'last_name', 'email')}),
+        ('İzinler', {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions'),
+            'classes': ('collapse',),
+        }),
+        ('Önemli Tarihler', {
+            'fields': ('last_login', 'date_joined'),
+            'classes': ('collapse',),
+        }),
         ('Ek Bilgiler', {
-            'fields': ('user_type', 'phone', 'email_verified')
+            'fields': ('user_type', 'phone', 'email_verified'),
         }),
     )
     
@@ -125,57 +141,66 @@ class CustomUserAdmin(UserAdmin):
     
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
-
-class UserProfileActiveFilter(admin.SimpleListFilter):
-    """Custom filter for user active status in UserProfile"""
-    title = 'Kullanıcı Durumu'
-    parameter_name = 'user_active'
-
-    def lookups(self, request, model_admin):
-        return (
-            ('1', 'Aktif'),
-            ('0', 'Pasif'),
-        )
-
-    def queryset(self, request, queryset):
-        if self.value() == '1':
-            return queryset.filter(user__is_active=True)
-        if self.value() == '0':
-            return queryset.filter(user__is_active=False)
-        return queryset
-
-
-@admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'get_user_type', 'get_user_status', 'has_avatar')
-    list_filter = ('user__user_type', UserProfileActiveFilter)
-    search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name', 'bio')
-    readonly_fields = ('user',)
     
-    def get_queryset(self, request):
-        """Optimize with select_related to avoid N+1 queries"""
-        qs = super().get_queryset(request)
-        return qs.select_related('user')
-    
-    def get_user_type(self, obj):
-        return obj.user.get_user_type_display()
-    get_user_type.short_description = 'Kullanıcı Tipi'
-    
-    def get_user_status(self, obj):
-        """Display user active status with visual indicator"""
-        if obj.user.is_active:
-            return format_html('<span style="color: #10b981; font-weight: 600;">✓ Aktif</span>')
-        return format_html('<span style="color: #ef4444; font-weight: 600;">✗ Pasif</span>')
-    get_user_status.short_description = 'Durum'
-    get_user_status.admin_order_field = 'user__is_active'
-    
-    def has_avatar(self, obj):
-        """Check if profile has avatar"""
-        if obj.avatar:
-            return format_html('<span style="color: #10b981;">✓</span>')
-        return format_html('<span style="color: #6b7280;">-</span>')
-    has_avatar.short_description = 'Avatar'
-    has_avatar.admin_order_field = 'avatar'
-    
-    def has_module_permission(self, request):
-        return request.user.is_superuser
+    def save_related(self, request, form, formsets, change):
+        """
+        CRITICAL: Override save_related to ensure user permissions are saved.
+        Django saves ManyToMany fields (like user_permissions) in save_related, NOT save_model.
+        This is because M2M relationships require the object to be saved first (to have an ID).
+        """
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        obj = form.instance
+        
+        # DEBUG: Log what we received from the form
+        logger.info(f'📝 save_related called for user: {obj.username}')
+        logger.info(f'📋 Form cleaned_data keys: {list(form.cleaned_data.keys())}')
+        
+        # Check if user_permissions is in the form data
+        if 'user_permissions' in form.cleaned_data:
+            selected_permissions = form.cleaned_data['user_permissions']
+            logger.info(f'✅ user_permissions in cleaned_data: {selected_permissions.count()} permissions')
+        else:
+            logger.warning(f'⚠️ user_permissions NOT in cleaned_data!')
+            # Check raw POST data
+            if 'user_permissions' in request.POST:
+                raw_perms = request.POST.getlist('user_permissions')
+                logger.info(f'📦 Found in POST data: {len(raw_perms)} permissions')
+            else:
+                logger.warning(f'⚠️ user_permissions NOT in POST data either!')
+        
+        # First, let Django handle the default save_related
+        super().save_related(request, form, formsets, change)
+        
+        # Then explicitly ensure user_permissions are set correctly
+        if 'user_permissions' in form.cleaned_data:
+            selected_permissions = form.cleaned_data['user_permissions']
+            
+            # Get current permissions count before change
+            current_count = obj.user_permissions.count()
+            logger.info(f'🔄 Current permissions: {current_count}, New permissions: {selected_permissions.count()}')
+            
+            # Clear existing permissions and set new ones
+            obj.user_permissions.set(selected_permissions)
+            
+            # Verify the change
+            final_count = obj.user_permissions.count()
+            logger.info(f'✅ User {obj.username} permissions saved: {final_count} permissions')
+            
+            if final_count != selected_permissions.count():
+                logger.error(f'❌ Permission count mismatch! Expected {selected_permissions.count()}, got {final_count}')
+        else:
+            # Fallback: Try to get permissions from POST data directly
+            if 'user_permissions' in request.POST:
+                from django.contrib.auth.models import Permission
+                perm_ids = request.POST.getlist('user_permissions')
+                logger.info(f'🔧 Fallback: Using POST data directly with {len(perm_ids)} permission IDs')
+                
+                try:
+                    perm_ids = [int(pid) for pid in perm_ids if pid]
+                    selected_permissions = Permission.objects.filter(id__in=perm_ids)
+                    obj.user_permissions.set(selected_permissions)
+                    logger.info(f'✅ Fallback successful: {obj.user_permissions.count()} permissions set')
+                except Exception as e:
+                    logger.error(f'❌ Fallback failed: {str(e)}')

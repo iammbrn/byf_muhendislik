@@ -1,6 +1,6 @@
 /* BYF Mühendislik - Admin Panel ULTIMATE OVERRIDE */
 /* Bu dosya Django'nun TÜM CSS'lerinden SONRA yüklenir */
-/* VERSION 6.0 - FINAL: Removed ALL responsive overrides, flex layout always active */
+/* VERSION 6.1 - MOBILE FIX: Toggle button and sidebar now work on mobile */
 
 /* ========================================
    TOPLINKS COMPLETE REMOVAL - MAXIMUM PRIORITY
@@ -659,6 +659,46 @@ a.cancel-link:hover {
 
 /* Mobile: 768px and below */
 @media (max-width: 768px) {
+    /* Toggle sidebar button - FORCE VISIBLE on mobile (override Django's display:none) */
+    .toggle-nav-sidebar,
+    #toggle-nav-sidebar {
+        display: flex !important; /* Override Django's display: none */
+        visibility: visible !important;
+        opacity: 1 !important;
+        top: 75px !important;
+        right: 15px !important;
+        width: 48px !important;
+        height: 48px !important;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+        position: fixed !important;
+    }
+    
+    /* Nav sidebar - Mobile overlay behavior */
+    #nav-sidebar {
+        display: block !important; /* Override Django's display: none */
+        position: fixed !important;
+        top: 0 !important;
+        left: -100% !important; /* Hidden by default */
+        width: 280px !important;
+        height: 100vh !important;
+        background: #ffffff !important;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3) !important;
+        z-index: 9998 !important;
+        transition: left 0.3s ease !important;
+        overflow-y: auto !important;
+        padding-top: 80px !important;
+    }
+    
+    /* Sidebar açıkken */
+    .main.shifted #nav-sidebar {
+        left: 0 !important; /* Slide in */
+    }
+    
+    [data-theme="dark"] #nav-sidebar {
+        background: #1e293b !important;
+    }
+    
     /* Container spacing */
     #content {
         padding: 1rem 0.75rem !important;
@@ -931,6 +971,28 @@ a.cancel-link:hover {
 
 /* Small Mobile: 480px and below */
 @media (max-width: 480px) {
+    /* Toggle sidebar button - smaller mobile position */
+    .toggle-nav-sidebar,
+    #toggle-nav-sidebar {
+        display: flex !important; /* Override Django's display: none */
+        visibility: visible !important;
+        opacity: 1 !important;
+        top: 70px !important;
+        right: 10px !important;
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 1.2rem !important;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+        position: fixed !important;
+    }
+    
+    /* Nav sidebar - smaller mobile */
+    #nav-sidebar {
+        display: block !important;
+        width: 260px !important;
+    }
+    
     /* Small Mobile - Standardized padding for all pages */
     #main,
     .main,
@@ -1219,7 +1281,8 @@ a.cancel-link:hover {
 }
 
 /* Toggle sidebar button - visible and sticky */
-.toggle-nav-sidebar {
+.toggle-nav-sidebar,
+#toggle-nav-sidebar {
     position: fixed !important;
     top: 85px !important; /* Header sonrası, sticky öncesi */
     right: 20px !important; /* Sağ tarafta */

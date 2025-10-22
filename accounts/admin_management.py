@@ -184,6 +184,66 @@ class AdminUserManagementAdmin(admin.ModelAdmin):
             # Save first
             super().save_model(request, obj, form, change)
             
+            # Assign default permissions to new admin users (non-superusers)
+            if not obj.is_superuser:
+                from django.contrib.auth.models import Permission
+                from django.contrib.contenttypes.models import ContentType
+                
+                # Define default permissions for new admins
+                default_permissions = []
+                
+                # Firm permissions (view, add, change)
+                try:
+                    from firms.models import Firm
+                    firm_ct = ContentType.objects.get_for_model(Firm)
+                    firm_perms = Permission.objects.filter(
+                        content_type=firm_ct,
+                        codename__in=['view_firm', 'add_firm', 'change_firm']
+                    )
+                    default_permissions.extend(list(firm_perms))
+                except Exception:
+                    pass
+                
+                # Service permissions (view, add, change)
+                try:
+                    from services.models import Service
+                    service_ct = ContentType.objects.get_for_model(Service)
+                    service_perms = Permission.objects.filter(
+                        content_type=service_ct,
+                        codename__in=['view_service', 'add_service', 'change_service']
+                    )
+                    default_permissions.extend(list(service_perms))
+                except Exception:
+                    pass
+                
+                # Document permissions (view, add, change)
+                try:
+                    from documents.models import Document
+                    document_ct = ContentType.objects.get_for_model(Document)
+                    document_perms = Permission.objects.filter(
+                        content_type=document_ct,
+                        codename__in=['view_document', 'add_document', 'change_document']
+                    )
+                    default_permissions.extend(list(document_perms))
+                except Exception:
+                    pass
+                
+                # ContactMessage permissions (view, change for Pending Messages)
+                try:
+                    from core.models import ContactMessage
+                    contactmessage_ct = ContentType.objects.get_for_model(ContactMessage)
+                    contactmessage_perms = Permission.objects.filter(
+                        content_type=contactmessage_ct,
+                        codename__in=['view_contactmessage', 'change_contactmessage']
+                    )
+                    default_permissions.extend(list(contactmessage_perms))
+                except Exception:
+                    pass
+                
+                # Assign permissions
+                if default_permissions:
+                    obj.user_permissions.add(*default_permissions)
+            
             # Store credentials
             ProvisionedCredential.objects.create(
                 user=obj,

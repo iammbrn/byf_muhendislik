@@ -121,6 +121,29 @@ class ContactMessageAdmin(admin.ModelAdmin):
         self.message_user(request, f'{updated} mesaj arşivlendi.')
     archive_messages.short_description = '📦 Seçili mesajları arşivle'
     
+    def has_module_permission(self, request):
+        """Allow staff users with permissions to access this module"""
+        return request.user.is_superuser or (request.user.is_staff and (
+            request.user.has_perm('core.view_contactmessage') or
+            request.user.has_perm('core.change_contactmessage')
+        ))
+    
+    def has_view_permission(self, request, obj=None):
+        """Allow viewing for users with view or change permission"""
+        return request.user.is_superuser or request.user.has_perm('core.view_contactmessage') or request.user.has_perm('core.change_contactmessage')
+    
+    def has_add_permission(self, request):
+        """Contact messages cannot be added via admin"""
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        """Allow editing for users with change permission"""
+        return request.user.is_superuser or request.user.has_perm('core.change_contactmessage')
+    
+    def has_delete_permission(self, request, obj=None):
+        """Allow deletion only for superusers"""
+        return request.user.is_superuser
+    
     def save_model(self, request, obj, form, change):
         if change and 'status' in form.changed_data and obj.status == 'replied':
             obj.responded_at = timezone.now()

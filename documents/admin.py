@@ -32,3 +32,27 @@ class DocumentAdmin(admin.ModelAdmin):
         if not obj.uploaded_by_id:
             obj.uploaded_by = request.user
         super().save_model(request, obj, form, change)
+    
+    def has_module_permission(self, request):
+        """Allow staff users with permissions to access this module"""
+        return request.user.is_superuser or (request.user.is_staff and (
+            request.user.has_perm('documents.view_document') or
+            request.user.has_perm('documents.add_document') or
+            request.user.has_perm('documents.change_document')
+        ))
+    
+    def has_view_permission(self, request, obj=None):
+        """Allow viewing for users with view or change permission"""
+        return request.user.is_superuser or request.user.has_perm('documents.view_document') or request.user.has_perm('documents.change_document')
+    
+    def has_add_permission(self, request):
+        """Allow adding for users with add permission"""
+        return request.user.is_superuser or request.user.has_perm('documents.add_document')
+    
+    def has_change_permission(self, request, obj=None):
+        """Allow editing for users with change permission"""
+        return request.user.is_superuser or request.user.has_perm('documents.change_document')
+    
+    def has_delete_permission(self, request, obj=None):
+        """Allow deletion only for superusers"""
+        return request.user.is_superuser

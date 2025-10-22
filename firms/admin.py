@@ -173,6 +173,30 @@ class FirmAdmin(admin.ModelAdmin):
         self.message_user(request, f'{updated} firma pasif hale getirildi.')
         log_activity(request.user, 'update', f'Toplu pasifleştirme: {updated} firma')
     set_inactive.short_description = '✗ Seçili firmaları pasif yap'
+    
+    def has_module_permission(self, request):
+        """Allow staff users with permissions to access this module"""
+        return request.user.is_superuser or (request.user.is_staff and (
+            request.user.has_perm('firms.view_firm') or
+            request.user.has_perm('firms.add_firm') or
+            request.user.has_perm('firms.change_firm')
+        ))
+    
+    def has_view_permission(self, request, obj=None):
+        """Allow viewing for users with view or change permission"""
+        return request.user.is_superuser or request.user.has_perm('firms.view_firm') or request.user.has_perm('firms.change_firm')
+    
+    def has_add_permission(self, request):
+        """Allow adding for users with add permission"""
+        return request.user.is_superuser or request.user.has_perm('firms.add_firm')
+    
+    def has_change_permission(self, request, obj=None):
+        """Allow editing for users with change permission"""
+        return request.user.is_superuser or request.user.has_perm('firms.change_firm')
+    
+    def has_delete_permission(self, request, obj=None):
+        """Allow deletion only for superusers"""
+        return request.user.is_superuser
 
 @admin.register(FirmServiceHistory)
 class FirmServiceHistoryAdmin(admin.ModelAdmin):

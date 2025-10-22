@@ -28,6 +28,30 @@ class ServiceAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         """Show only completed services"""
         return super().get_queryset(request).filter(status='completed').select_related('firm', 'assigned_admin')
+    
+    def has_module_permission(self, request):
+        """Allow staff users with permissions to access this module"""
+        return request.user.is_superuser or (request.user.is_staff and (
+            request.user.has_perm('services.view_service') or
+            request.user.has_perm('services.add_service') or
+            request.user.has_perm('services.change_service')
+        ))
+    
+    def has_view_permission(self, request, obj=None):
+        """Allow viewing for users with view or change permission"""
+        return request.user.is_superuser or request.user.has_perm('services.view_service') or request.user.has_perm('services.change_service')
+    
+    def has_add_permission(self, request):
+        """Allow adding for users with add permission"""
+        return request.user.is_superuser or request.user.has_perm('services.add_service')
+    
+    def has_change_permission(self, request, obj=None):
+        """Allow editing for users with change permission"""
+        return request.user.is_superuser or request.user.has_perm('services.change_service')
+    
+    def has_delete_permission(self, request, obj=None):
+        """Allow deletion only for superusers"""
+        return request.user.is_superuser
 
 @admin.register(ServiceRequest)
 class ServiceRequestAdmin(admin.ModelAdmin):

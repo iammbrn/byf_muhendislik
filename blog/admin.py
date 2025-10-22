@@ -7,7 +7,6 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'category', 'status', 'published_at', 'views')
     list_filter = (BlogStatusFilter, 'category', 'author')
     search_fields = ('title', 'content', 'excerpt', 'slug')
-    prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ('created_at', 'updated_at', 'views', 'unique_id', 'slug')
     date_hierarchy = 'published_at'  # Date filter at top - removed from list_filter to avoid duplication
     list_per_page = 20

@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Hizmet Talebi Oluştur - BYF Mühendislik{% endblock %}
+{% block title %}{% if is_edit_mode %}Hizmet Talebini Düzenle{% else %}Hizmet Talebi Oluştur{% endif %} - BYF Mühendislik{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="page-header">
-        <h1>Hizmet Talebi Oluştur</h1>
-        <p>İhtiyacınızı detaylandırın, en kısa sürede size dönüş yapalım</p>
+        <h1>{% if is_edit_mode %}Hizmet Talebini Düzenle{% else %}Hizmet Talebi Oluştur{% endif %}</h1>
+        <p>{% if is_edit_mode %}Talebinizi güncelleyin{% else %}İhtiyacınızı detaylandırın, en kısa sürede size dönüş yapalım{% endif %}</p>
     </div>
 
     <div class="form-card">
         <form method="post">
             {% csrf_token %}
+            {% if is_edit_mode %}
+            <input type="hidden" name="edit_id" value="{{ service_request.id }}">
+            {% endif %}
 
             <div class="form-group">
                 <label for="id_service_type">Hizmet Türü</label>
@@ -56,10 +59,10 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-paper-plane"></i>
-                    Talebi Gönder
+                    <i class="fas fa-{% if is_edit_mode %}save{% else %}paper-plane{% endif %}"></i>
+                    {% if is_edit_mode %}Güncelle{% else %}Talebi Gönder{% endif %}
                 </button>
-                <a href="{% url 'service_list' %}" class="btn btn-outline">İptal</a>
+                <a href="{% url 'service_request_list' %}" class="btn btn-outline">İptal</a>
             </div>
         </form>
     </div>

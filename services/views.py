@@ -143,7 +143,7 @@ def service_detail(request, service_id):
 
 @login_required
 def create_service_request(request):
-    """Create a new service request - Firm users only"""
+    """Create or edit service request - Firm users only"""
     if not is_firm(request.user):
         messages.error(request, 'Hizmet talebi oluşturmak için firma kullanıcısı olmalısınız. Bu işlem sadece firmalar tarafından gerçekleştirilebilir.')
         return redirect('firm_dashboard')
@@ -152,29 +152,59 @@ def create_service_request(request):
         messages.error(request, 'Firma bilgileriniz bulunamadı. Lütfen sistem yöneticisi ile iletişime geçin.')
         return redirect('custom_logout')
     
+    # Check if editing existing request
+    edit_id = request.GET.get('edit') or request.POST.get('edit_id')
+    service_request_instance = None
+    is_edit_mode = False
+    
+    if edit_id:
+        service_request_instance = get_object_or_404(ServiceRequest, id=edit_id)
+        
+        # Validate access
+        if not check_firm_access(request.user, service_request_instance.firm):
+            messages.error(request, 'Bu hizmet talebine erişim yetkiniz bulunmamaktadır. Sadece kendi firmanıza ait talepleri düzenleyebilirsiniz.')
+            return redirect('service_request_list')
+        
+        # Only pending requests can be edited
+        if service_request_instance.status != 'pending':
+            messages.error(request, f'Bu talep {service_request_instance.get_status_display()} durumunda olduğu için düzenlenemez. Sadece "Bekliyor" durumundaki talepler düzenlenebilir.')
+            return redirect('service_request_detail', request_id=service_request_instance.id)
+        
+        is_edit_mode = True
+    
     if request.method == 'POST':
-        form = ServiceRequestForm(request.POST)
+        form = ServiceRequestForm(request.POST, instance=service_request_instance)
         if form.is_valid():
             service_request = form.save(commit=False)
             service_request.firm = request.user.firm
             service_request.save()
-            # Notify admin via email (basic)
-            try:
-                send_mail(
-                    subject=f"Yeni Hizmet Talebi: {service_request.title} ({service_request.tracking_code})",
-                    message=f"Firma: {service_request.firm.name}\nTür: {service_request.get_service_type_display()}\nTakip Kodu: {service_request.tracking_code}",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[settings.EMAIL_HOST_USER or settings.DEFAULT_FROM_EMAIL],
-                    fail_silently=True,
-                )
-            except Exception:
-                pass
-            messages.success(request, 'Hizmet talebiniz başarıyla oluşturuldu.')
-            return redirect('firm_dashboard')
+            
+            if is_edit_mode:
+                messages.success(request, 'Hizmet talebiniz başarıyla güncellendi.')
+            else:
+                # Notify admin via email for new requests only
+                try:
+                    send_mail(
+                        subject=f"Yeni Hizmet Talebi: {service_request.title} ({service_request.tracking_code})",
+                        message=f"Firma: {service_request.firm.name}\nTür: {service_request.get_service_type_display()}\nTakip Kodu: {service_request.tracking_code}",
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[settings.EMAIL_HOST_USER or settings.DEFAULT_FROM_EMAIL],
+                        fail_silently=True,
+                    )
+                except Exception:
+                    pass
+                messages.success(request, 'Hizmet talebiniz başarıyla oluşturuldu.')
+            
+            return redirect('service_request_list')
     else:
-        form = ServiceRequestForm()
+        form = ServiceRequestForm(instance=service_request_instance)
     
-    return render(request, 'services/create_request.html', {'form': form})
+    context = {
+        'form': form,
+        'is_edit_mode': is_edit_mode,
+        'service_request': service_request_instance,
+    }
+    return render(request, 'services/create_request.html', context)
 
 
 @login_required
@@ -219,7 +249,7 @@ def cancel_service_request(request, request_id):
     if error:
         return JsonResponse(error)
     
-    service_request.status = 'rejected'
+    service_request.status = 'cancelled'  # İptal Edildi (firma tarafından)
     service_request.save()
     
     return JsonResponse({'success': True, 'message': 'Talep iptal edildi'})

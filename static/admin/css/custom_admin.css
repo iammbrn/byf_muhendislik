@@ -1,7 +1,36 @@
 /* BYF Mühendislik - Django Admin Özel Tasarımı */
 /* Ana Site ile Tam Uyumlu Modern Admin Paneli */
 /* Modern Dark/Light Mode Desteği */
-/* VERSION 4.0 - ULTIMATE FIX - KESIN ÇÖZÜM */
+/* VERSION 4.2 - STANDARDIZED LAYOUT */
+
+/* ===================================
+   TOPLINKS REMOVAL - HIGHEST PRIORITY
+   =================================== */
+
+/* Hide all toplinks section variations */
+.toplinks,
+div.toplinks,
+#user-tools,
+.user-tools,
+div#user-tools,
+#header #user-tools,
+#header .toplinks,
+.header-toplinks,
+[class*="toplinks"],
+[id*="user-tools"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    pointer-events: none !important;
+}
 
 /* ===================================
    CRITICAL OVERRIDES - EN YÜKSEK ÖNCELİK
@@ -347,11 +376,13 @@ body {
 #changelist-filter {
     background: var(--admin-surface);
     border: 1px solid var(--admin-border);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 16px;
+    padding: 1.75rem;
     box-shadow: var(--admin-shadow-sm);
-    min-width: 250px !important;
+    min-width: 260px !important;
     max-width: 280px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 /* Filtered layout - Side by side */

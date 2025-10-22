@@ -4,6 +4,112 @@
 
 {% block title %}{{ page_title }} - BYF Mühendislik{% endblock %}
 
+{% block extra_js %}
+<script>
+// Event listeners for delete buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-request-btn');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const requestId = this.dataset.requestId;
+            const requestTitle = this.dataset.requestTitle;
+            showDeleteModal(requestId, requestTitle);
+        });
+    });
+});
+
+function showDeleteModal(requestId, requestTitle) {
+    const modal = document.getElementById('deleteModal');
+    const modalTitle = document.getElementById('deleteModalTitle');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    
+    modalTitle.textContent = requestTitle;
+    modal.style.display = 'flex';
+    
+    confirmBtn.onclick = function() {
+        performDeletion(requestId);
+    };
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'none';
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function performDeletion(requestId) {
+    const csrfToken = getCookie('csrftoken');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Siliniyor...';
+    
+    fetch('/hizmetler/talep/' + requestId + '/sil/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Talep başarıyla silindi.', 'success');
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showNotification('Hata: ' + (data.error || 'Bilinmeyen hata'), 'error');
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<i class="fas fa-check"></i> Evet, Sil';
+        }
+    })
+    .catch(error => {
+        showNotification('İşlem sırasında bir hata oluştu.', 'error');
+        console.error('Error:', error);
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = '<i class="fas fa-check"></i> Evet, Sil';
+    });
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        ${message}
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => notification.classList.add('show'), 100);
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target === modal) {
+        closeDeleteModal();
+    }
+}
+</script>
+{% endblock %}
+
 {% block extra_css %}
 <style>
 .page-header {
@@ -160,6 +266,11 @@
     color: #721c24;
 }
 
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
 .status-in_progress { 
     background: #cce7ff; 
     color: #004085; 
@@ -181,6 +292,11 @@
 }
 
 [data-theme="dark"] .status-rejected {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+[data-theme="dark"] .status-cancelled {
     background: rgba(239, 68, 68, 0.2);
     color: #f87171;
 }
@@ -253,6 +369,154 @@
     color: var(--gray-text);
 }
 
+/* Modern Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--dark-text);
+    font-size: 1.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--gray-text);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--danger-color);
+}
+
+.modal-body {
+    margin-bottom: 2rem;
+}
+
+.modal-body p {
+    color: var(--gray-text);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.modal-request-title {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.modal-footer .btn {
+    min-width: 120px;
+}
+
+[data-theme="dark"] .modal-content {
+    background: #1e293b;
+}
+
+[data-theme="dark"] .modal-header h3 {
+    color: #f1f5f9;
+}
+
+[data-theme="dark"] .modal-body p {
+    color: #cbd5e1;
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--white);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10001;
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.notification-error {
+    border-left: 4px solid var(--danger-color);
+}
+
+.notification-success i {
+    color: var(--success-color);
+    font-size: 1.25rem;
+}
+
+.notification-error i {
+    color: var(--danger-color);
+    font-size: 1.25rem;
+}
+
+[data-theme="dark"] .notification {
+    background: #1e293b;
+    color: #f1f5f9;
+}
+
 @media (max-width: 768px) {
     .filters-grid {
         grid-template-columns: 1fr;
@@ -264,6 +528,30 @@
 
     .request-actions {
         flex-direction: column;
+    }
+    
+    .request-actions .btn {
+        width: 100%;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
+    
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: calc(100% - 20px);
     }
 }
 </style>
@@ -289,6 +577,8 @@
                     <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Onaylandı</option>
                     <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>Devam Ediyor</option>
                     <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Tamamlandı</option>
+                    <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>İptal Edildi</option>
+                    <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Reddedildi</option>
                 </select>
             </div>
             <div>
@@ -354,6 +644,20 @@
                         Hizmeti Görüntüle
                     </a>
                     {% endif %}
+                    {% if item.request.status == 'pending' %}
+                    <a href="{% url 'create_service_request' %}?edit={{ item.request.id }}" class="btn btn-outline">
+                        <i class="fas fa-edit"></i>
+                        Düzenle
+                    </a>
+                    {% endif %}
+                    {% if item.request.status == 'pending' or item.request.status == 'approved' %}
+                    <button class="btn btn-danger delete-request-btn" 
+                            data-request-id="{{ item.request.id }}" 
+                            data-request-title="{{ item.request.title }}">
+                        <i class="fas fa-trash"></i>
+                        Sil
+                    </button>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -368,6 +672,34 @@
             </a>
         </div>
         {% endfor %}
+    </div>
+</div>
+
+<!-- Modern Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-trash-alt" style="color: var(--danger-color);"></i> Talebi Sil</h3>
+            <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Bu talebi kalıcı olarak silmek istediğinizden emin misiniz?</p>
+            <p class="modal-request-title" id="deleteModalTitle"></p>
+            <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--danger-color); font-weight: 600;">
+                <i class="fas fa-exclamation-triangle"></i> 
+                Bu işlem geri alınamaz!
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeDeleteModal()">
+                <i class="fas fa-times"></i>
+                Vazgeç
+            </button>
+            <button class="btn btn-danger" id="confirmDeleteBtn">
+                <i class="fas fa-check"></i>
+                Evet, Sil
+            </button>
+        </div>
     </div>
 </div>
 {% endblock %}

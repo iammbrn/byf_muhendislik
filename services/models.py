@@ -74,6 +74,7 @@ class ServiceRequest(models.Model):
         ('pending', 'Bekliyor'),
         ('approved', 'Onaylandı'),
         ('rejected', 'Reddedildi'),
+        ('cancelled', 'İptal Edildi'),
         ('in_progress', 'Devam Ediyor'),
         ('completed', 'Tamamlandı'),
     )

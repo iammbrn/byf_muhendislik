@@ -5,21 +5,47 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<!-- Ana sayfa CSS'leri - ULTIMATE FIX V5 -->
-<link rel="stylesheet" href="{% static 'css/style.css' %}?v=5">
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=5">
-<link rel="stylesheet" href="{% static 'css/responsive.css' %}?v=5">
-<link rel="stylesheet" href="{% static 'css/dark-mode-fixes.css' %}?v=5">
-<link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}?v=5">
+<!-- Ana sayfa CSS'leri - FOOTER SYNC V10 -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}?v=10">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=10">
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}?v=10">
+<link rel="stylesheet" href="{% static 'css/dark-mode-fixes.css' %}?v=10">
+<link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}?v=10">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <!-- FINAL OVERRIDE - Django CSS'lerinden sonra yükleniyor -->
-    <link rel="stylesheet" href="{% static 'admin/css/admin_override.css' %}?v=9">
+    <link rel="stylesheet" href="{% static 'admin/css/admin_override.css' %}?v=31">
 <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}?v=5">
 
 <style>
     /* Django admin default yapısını gizle/temizle */
     #header {
         display: none !important;
+    }
+    
+    /* TOPLINKS REMOVAL - Complete hiding of all toplinks variations */
+    .toplinks,
+    div.toplinks,
+    #user-tools,
+    .user-tools,
+    div#user-tools,
+    #header #user-tools,
+    #header .toplinks,
+    .header-toplinks,
+    [class*="toplinks"],
+    [id*="user-tools"],
+    #branding + * {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        pointer-events: none !important;
     }
     
     /* Body - Ana sayfa yapısı */
@@ -37,6 +63,7 @@
         margin: 0 !important;
         max-width: none !important;
         width: 100% !important;
+        flex: 1 !important; /* Footer'ı alta itmek için - ana sayfa ile aynı */
     }
     
     /* ===================================
@@ -668,13 +695,7 @@
         background: rgba(59, 130, 246, 0.1) !important;
     }
     
-    /* Sidebar toggle button - Fixed position */
-    .toggle-nav-sidebar {
-        position: fixed !important;
-        top: 10px !important;
-        left: 0 !important;
-        z-index: 1000 !important;
-    }
+    /* Sidebar toggle button - admin_override.css'teki kuralları kullan */
     
     /* Sidebar açıkken main content KAYDIRMAZ - OVERRIDE */
     body .main.shifted,
@@ -910,236 +931,7 @@
         flex: 0 0 auto !important;
     }
     
-    /* Main footer - Dashboard ile aynı tasarım - FULL WIDTH EDGE TO EDGE */
-    .main-footer {
-        background: var(--gradient-dark) !important;
-        color: white !important;
-        width: 100vw !important; /* Full viewport width */
-        max-width: 100vw !important; /* Full viewport width */
-        position: relative !important;
-        left: 50% !important; /* Center from parent */
-        right: 50% !important;
-        margin-left: -50vw !important; /* Pull back to edge */
-        margin-right: -50vw !important; /* Pull back to edge */
-        margin-top: 3rem !important;
-        margin-bottom: 0 !important;
-        padding: 0 !important; /* No horizontal padding on footer itself */
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        clear: both !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* Footer top accent line */
-    .main-footer::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: var(--gradient-secondary);
-    }
-    
-    /* Footer container - No constraints for full width */
-    .main-footer .container {
-        max-width: 1400px !important; /* Content max-width inside footer */
-        margin: 0 auto !important; /* Center content */
-        padding: 0 20px !important;
-    }
-    
-    /* Footer content grid */
-    .main-footer .footer-content {
-        display: grid !important;
-        grid-template-columns: 2fr 1fr 1fr 1.5fr !important;
-        gap: 3rem !important;
-        padding: 3rem 0 !important;
-    }
-    
-    /* Footer section headings */
-    .main-footer .footer-section h3 {
-        color: var(--secondary-color) !important;
-        margin-bottom: 1.5rem !important;
-        font-size: 1.2rem !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Footer links */
-    .main-footer .footer-links {
-        list-style: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    
-    .main-footer .footer-links li {
-        margin-bottom: 0.75rem !important;
-    }
-    
-    .main-footer .footer-links a {
-        color: #bdc3c7 !important;
-        text-decoration: none !important;
-        transition: color 0.3s ease !important;
-    }
-    
-    .main-footer .footer-links a:hover {
-        color: var(--secondary-color) !important;
-        padding-left: 0.5rem !important;
-    }
-    
-    /* Footer description */
-    .main-footer .footer-description {
-        line-height: 1.6 !important;
-        margin-bottom: 1.5rem !important;
-        color: #bdc3c7 !important;
-    }
-    
-    /* Social links */
-    .main-footer .social-links {
-        display: flex !important;
-        gap: 1rem !important;
-    }
-    
-    .main-footer .social-link {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 42px !important;
-        height: 42px !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        border-radius: 50% !important;
-        color: white !important;
-        text-decoration: none !important;
-        transition: all 0.3s ease !important;
-        border: 2px solid transparent !important;
-    }
-    
-    .main-footer .social-link:hover {
-        background: var(--gradient-secondary) !important;
-        transform: translateY(-3px) !important;
-        border-color: var(--secondary-color) !important;
-        box-shadow: var(--shadow-secondary) !important;
-    }
-    
-    /* Contact info */
-    .main-footer .contact-info {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 1rem !important;
-    }
-    
-    .main-footer .contact-item {
-        display: flex !important;
-        align-items: flex-start !important;
-        gap: 0.75rem !important;
-        padding: 0.5rem !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border-radius: 8px !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .main-footer .contact-item:hover {
-        background: rgba(255, 255, 255, 0.08) !important;
-        transform: translateX(5px) !important;
-    }
-    
-    .main-footer .contact-item i {
-        color: var(--secondary-color) !important;
-        margin-top: 0.2rem !important;
-        width: 18px !important;
-        font-size: 1.1rem !important;
-    }
-    
-    .main-footer .contact-item a,
-    .main-footer .contact-item span {
-        color: #e2e8f0 !important;
-        text-decoration: none !important;
-        transition: color 0.3s ease !important;
-        flex: 1 !important;
-    }
-    
-    .main-footer .contact-item a:hover {
-        color: var(--secondary-color) !important;
-    }
-    
-    /* Footer bottom */
-    .main-footer .footer-bottom {
-        border-top: 1px solid #34495e !important;
-        padding: 1.5rem 0 !important;
-    }
-    
-    .main-footer .footer-bottom-content {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-    }
-    
-    .main-footer .copyright {
-        color: #bdc3c7 !important;
-    }
-    
-    .main-footer .footer-bottom-links {
-        display: flex !important;
-        gap: 2rem !important;
-    }
-    
-    .main-footer .footer-bottom-links a {
-        color: #bdc3c7 !important;
-        text-decoration: none !important;
-        font-size: 0.9rem !important;
-        transition: color 0.3s ease !important;
-    }
-    
-    .main-footer .footer-bottom-links a:hover {
-        color: #3498db !important;
-    }
-    
-    /* Footer logo */
-    .main-footer .footer-logo {
-        margin-bottom: 1.5rem !important;
-    }
-    
-    .main-footer .footer-logo-link {
-        display: flex !important;
-        align-items: center !important;
-        gap: 1rem !important;
-        text-decoration: none !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .main-footer .footer-logo-link:hover {
-        transform: translateX(3px) !important;
-    }
-    
-    .main-footer .footer-logo-img {
-        height: 55px !important;
-        width: auto !important;
-        object-fit: contain !important;
-    }
-    
-    .main-footer .footer-logo-text {
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.75rem !important;
-        line-height: 1 !important;
-    }
-    
-    .main-footer .footer-logo-name {
-        font-size: 1.85rem !important;
-        font-weight: 800 !important;
-        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
-        letter-spacing: 1.5px !important;
-    }
-    
-    .main-footer .footer-logo-tagline {
-        font-size: 1.85rem !important;
-        font-weight: 800 !important;
-        color: var(--secondary-color) !important;
-        letter-spacing: 0.5px !important;
-    }
+    /* Footer styles - footer.html inline CSS kullanılır, override YOK */
     
     /* Admin content - Footer için boşluk bırak */
     .admin-main-content {
@@ -1404,53 +1196,6 @@
             clear: both !important;
         }
         
-        /* Footer - Mobile responsive */
-        .main-footer .footer-content {
-            grid-template-columns: 1fr !important;
-            gap: 2rem !important;
-        }
-        
-        .main-footer .footer-bottom-content {
-            flex-direction: column !important;
-            gap: 1rem !important;
-            text-align: center !important;
-        }
-        
-        .main-footer .footer-bottom-links {
-            justify-content: center !important;
-        }
-        
-        .main-footer .footer-logo-img {
-            height: 45px !important;
-        }
-        
-        .main-footer .footer-logo-name {
-            font-size: 1.4rem !important;
-        }
-        
-        .main-footer .footer-logo-tagline {
-            font-size: 1.4rem !important;
-        }
-    }
-    
-    @media (min-width: 769px) and (max-width: 968px) {
-        /* Footer - Tablet responsive */
-        .main-footer .footer-content {
-            grid-template-columns: 1fr 1fr !important;
-            gap: 2rem !important;
-        }
-        
-        .main-footer .footer-logo-img {
-            height: 48px !important;
-        }
-        
-        .main-footer .footer-logo-name {
-            font-size: 1.6rem !important;
-        }
-        
-        .main-footer .footer-logo-tagline {
-            font-size: 1.6rem !important;
-        }
     }
     
     @media (max-width: 480px) {
@@ -1592,6 +1337,6 @@
 {% endblock %}
 
 {% block footer %}
-<!-- Ana sayfa footer'ı - TAM AYNI -->
+<!-- Ana site footer'ı -->
 {% include 'includes/footer.html' %}
 {% endblock %}

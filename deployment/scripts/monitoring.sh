@@ -20,7 +20,7 @@ echo ""
 echo -e "${BLUE}💻 Sistem Bilgileri${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Hostname: $(hostname)"
-echo "IP Adresi: $(curl -s ifconfig.me)"
+echo "IPv4: $(curl -s -4 ifconfig.me 2>/dev/null || hostname -I | awk '{print $1}')"
 echo "Uptime: $(uptime -p)"
 echo "OS: $(lsb_release -d | cut -f2)"
 echo ""
@@ -31,8 +31,8 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{printf "%.1f", 100 - $1}')
 echo "CPU Kullanımı: ${CPU_USAGE}%"
 
-free -h | awk 'NR==2{
-    printf "RAM Kullanımı: %s / %s (%.0f%%)\n", $3, $2, $3*100/$2
+free -m | awk 'NR==2{
+    printf "RAM Kullanımı: %dMB / %dMB (%.0f%%)\n", $3, $2, ($3/$2)*100
 }'
 echo ""
 

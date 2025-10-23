@@ -37,10 +37,6 @@ if [ "$DNS_READY" != "y" ]; then
     exit 0
 fi
 
-echo -e "\n${BLUE}📦 Certbot yükleniyor...${NC}"
-apt-get update
-apt-get install -y certbot python3-certbot-nginx
-
 echo -e "\n${BLUE}🔒 SSL sertifikası alınıyor...${NC}"
 certbot --nginx \
     -d "$DOMAIN_NAME" \
@@ -53,23 +49,13 @@ certbot --nginx \
 echo -e "\n${BLUE}🔄 Otomatik yenileme test ediliyor...${NC}"
 certbot renew --dry-run
 
-echo -e "\n${BLUE}⏰ Otomatik yenileme cron job'ı ekleniyor...${NC}"
-# Certbot otomatik yenileme systemd timer'ı etkinleştir
-systemctl enable certbot.timer
-systemctl start certbot.timer
+systemctl enable certbot.timer 2>/dev/null || true
+systemctl start certbot.timer 2>/dev/null || true
 
 echo -e "\n${GREEN}========================================${NC}"
 echo -e "${GREEN}✅ SSL Sertifikası başarıyla kuruldu!${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
-echo -e "${BLUE}📋 Sertifika Bilgileri:${NC}"
-certbot certificates
-echo ""
-echo -e "${BLUE}🔐 Test edin:${NC}"
-echo -e "   ${GREEN}https://$DOMAIN_NAME${NC}"
-echo -e "   ${GREEN}https://www.ssllabs.com/ssltest/analyze.html?d=$DOMAIN_NAME${NC}"
-echo ""
-echo -e "${BLUE}📅 Yenileme durumu:${NC}"
-echo -e "   ${GREEN}systemctl status certbot.timer${NC}"
+echo -e "${BLUE}Test:${NC} ${GREEN}https://$DOMAIN_NAME${NC}"
 
 

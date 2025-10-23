@@ -37,7 +37,7 @@ CREATE TRIGGER update_service_request_updated_at
 -- Blog updated_at tetikleyicisi
 --
 CREATE TRIGGER update_blog_updated_at 
-    BEFORE UPDATE ON blog_post 
+    BEFORE UPDATE ON blog_blogpost 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 --
@@ -47,30 +47,6 @@ CREATE TRIGGER update_sitesettings_updated_at
     BEFORE UPDATE ON core_sitesettings 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
---
--- Hizmet tamamlandığında otomatik geçmiş kaydı oluşturma
---
-CREATE OR REPLACE FUNCTION create_service_history()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.status = 'completed' AND OLD.status != 'completed' THEN
-        INSERT INTO firms_firmservicehistory 
-        (firm_id, service_type, description, service_date, completion_date)
-        VALUES (
-            NEW.firm_id, 
-            (SELECT name FROM services_service WHERE id = NEW.id),
-            NEW.description,
-            COALESCE(NEW.start_date, CURRENT_DATE),
-            COALESCE(NEW.completion_date, CURRENT_DATE)
-        );
-    END IF;
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
-
-CREATE TRIGGER service_completed_history 
-    AFTER UPDATE ON services_service 
-    FOR EACH ROW EXECUTE FUNCTION create_service_history();
 
 --
 -- Blog yayınlandığında published_at otomatik ayarlama
@@ -88,16 +64,16 @@ END;
 $$ language 'plpgsql';
 
 CREATE TRIGGER set_blog_published_date 
-    BEFORE UPDATE ON blog_post 
+    BEFORE UPDATE ON blog_blogpost 
     FOR EACH ROW EXECUTE FUNCTION set_blog_published_at();
 
 --
--- Firma oluşturulduğunda kullanıcı tipini kontrol et
+-- Firma user tipini kontrol et
 --
 CREATE OR REPLACE FUNCTION check_firm_user_type()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF (SELECT user_type FROM accounts_customuser WHERE id = NEW.user_id) != 'firma' THEN
+    IF NEW.user_id IS NOT NULL AND (SELECT user_type FROM accounts_customuser WHERE id = NEW.user_id) != 'firma' THEN
         RAISE EXCEPTION 'Sadece firma tipindeki kullanıcılar için firma kaydı oluşturulabilir';
     END IF;
     RETURN NEW;
@@ -105,22 +81,6 @@ END;
 $$ language 'plpgsql';
 
 CREATE TRIGGER enforce_firm_user_type 
-    BEFORE INSERT ON firms_firm 
-    FOR EACH ROW EXECUTE FUNCTION check_firm_user_type();
-
---
--- Doküman yükleme tarihi kontrolü
---
-CREATE OR REPLACE FUNCTION set_document_upload_date()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.upload_date IS NULL THEN
-        NEW.upload_date = CURRENT_TIMESTAMP;
-    END IF;
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
-
-CREATE TRIGGER set_document_upload_date 
-    BEFORE INSERT ON documents_document 
-    FOR EACH ROW EXECUTE FUNCTION set_document_upload_date();
+    BEFORE INSERT OR UPDATE ON firms_firm 
+    FOR EACH ROW WHEN (NEW.user_id IS NOT NULL)
+    EXECUTE FUNCTION check_firm_user_type();

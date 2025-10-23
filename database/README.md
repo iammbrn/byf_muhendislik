@@ -1,10 +1,12 @@
-# BYF Mühendislik Veritabanı
+# Database
 
-Bu dizin BYF Mühendislik projesinin veritabanı yapılandırmasını içerir.
+Django migrations kullanılıyor. Manuel SQL migration gerekmez.
 
-## Hızlı Başlangıç
+## Dosyalar
 
-### 1. Veritabanı Kurulumu
-```bash
-chmod +x database/setup_database.sh
-./database/setup_database.sh
+- **init.sql** - Database kurulum (opsiyonel)
+- **schema.sql** - Tablo yapısı referansı
+- **indexes.sql** - Index'ler (Django migration'lardan sonra)
+- **triggers.sql** - Trigger'lar (Django migration'lardan sonra)
+- **views.sql** - View'lar (Django migration'lardan sonra)
+

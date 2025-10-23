@@ -28,7 +28,7 @@ echo ""
 # 2. CPU ve RAM
 echo -e "${BLUE}⚡ CPU ve RAM${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
+CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{printf "%.1f", 100 - $1}')
 echo "CPU Kullanımı: ${CPU_USAGE}%"
 
 free -h | awk 'NR==2{
@@ -128,7 +128,7 @@ if [ -d "/etc/letsencrypt/live" ]; then
 fi
 
 # Nginx connections
-NGINX_CONN=$(netstat -an | grep :80 | grep ESTABLISHED | wc -l)
+NGINX_CONN=$(ss -tan | grep :80 | grep ESTAB | wc -l 2>/dev/null || echo "0")
 echo "  Aktif Bağlantı: $NGINX_CONN"
 echo ""
 

@@ -127,9 +127,8 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-# WhiteNoise Configuration for better caching
-WHITENOISE_MAX_AGE = 31536000  # 1 year cache for static files
-WHITENOISE_IMMUTABLE_FILE_TEST = lambda path, url: True  # All static files are immutable
+# WhiteNoise Configuration
+WHITENOISE_MAX_AGE = 31536000
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -180,9 +179,9 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
 # Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.hostinger.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
@@ -201,7 +200,6 @@ if REDIS_URL:
             'LOCATION': REDIS_URL,
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-                'PARSER_CLASS': 'redis.connection.HiredisParser',
                 'CONNECTION_POOL_CLASS_KWARGS': {
                     'max_connections': 50,
                     'retry_on_timeout': True,
@@ -209,7 +207,7 @@ if REDIS_URL:
                 'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
             },
             'KEY_PREFIX': 'byf',
-            'TIMEOUT': 3600,  # 1 hour default
+            'TIMEOUT': 3600,
         }
     }
     SESSION_ENGINE = 'django.contrib.sessions.backends.cache'

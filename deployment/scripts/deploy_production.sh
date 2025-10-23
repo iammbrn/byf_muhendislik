@@ -36,11 +36,8 @@ read -p "Deploy edilecek branch (varsayılan: main): " DEPLOY_BRANCH
 DEPLOY_BRANCH=${DEPLOY_BRANCH:-main}
 
 # Backup al
-echo -e "\n${BLUE}💾 Deployment öncesi backup alınıyor...${NC}"
-bash /opt/byf_muhendislik/deployment/scripts/backup_production.sh
-
-# Maintenance mode aç (opsiyonel - özel bir view gerekir)
-echo -e "\n${BLUE}🛠️  Maintenance modu...${NC}"
+echo -e "\n${BLUE}💾 Backup alınıyor...${NC}"
+bash "$PROJECT_DIR/deployment/scripts/backup_production.sh"
 
 # Git pull
 echo -e "\n${BLUE}📥 Kod güncelleniyor (branch: $DEPLOY_BRANCH)...${NC}"
@@ -57,8 +54,8 @@ source "$PROJECT_DIR/venv/bin/activate"
 # Dependencies güncelle
 echo -e "\n${BLUE}📚 Python bağımlılıkları güncelleniyor...${NC}"
 cd "$BACKEND_DIR"
-pip install -q --upgrade pip
-pip install -q -r requirements.txt
+pip install --upgrade pip > /dev/null 2>&1
+pip install -r requirements.txt > /dev/null 2>&1
 echo -e "${GREEN}✅ Bağımlılıklar güncellendi${NC}"
 
 # Database migration

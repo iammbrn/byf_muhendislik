@@ -48,8 +48,10 @@ fi
 
 # 3. Eski backup'ları temizle
 echo -e "\n${BLUE}🧹 Eski backup'lar temizleniyor (${RETENTION_DAYS} günden eski)...${NC}"
-DELETED_DB=$(find "$BACKUP_DIR/database" -name "*.gz" -mtime +${RETENTION_DAYS} -delete -print | wc -l)
-DELETED_MEDIA=$(find "$BACKUP_DIR/media" -name "*.tar.gz" -mtime +${RETENTION_DAYS} -delete -print | wc -l)
+DELETED_DB=$(find "$BACKUP_DIR/database" -name "*.gz" -type f -mtime +${RETENTION_DAYS} | wc -l)
+find "$BACKUP_DIR/database" -name "*.gz" -type f -mtime +${RETENTION_DAYS} -delete
+DELETED_MEDIA=$(find "$BACKUP_DIR/media" -name "*.tar.gz" -type f -mtime +${RETENTION_DAYS} | wc -l)
+find "$BACKUP_DIR/media" -name "*.tar.gz" -type f -mtime +${RETENTION_DAYS} -delete
 echo -e "${GREEN}✅ Silinen backup sayısı: DB=$DELETED_DB, Media=$DELETED_MEDIA${NC}"
 
 # 4. Backup özeti

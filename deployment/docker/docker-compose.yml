@@ -5,42 +5,66 @@ services:
     build: 
       context: ../..
       dockerfile: deployment/docker/Dockerfile
-    command: gunicorn byf_muhendislik.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - static_volume:/app/backend/staticfiles
+      - media_volume:/app/backend/media
     expose:
       - 8000
+    env_file:
+      - ../../backend/.env
     environment:
       - DEBUG=False
-      - DATABASE_URL=postgres://byf_user:byf_password@db:5432/byf_muhendislik
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=byf_muhendislik
+      - DB_USER=byf_user
+      - DB_PASSWORD=${DB_PASSWORD:-byf_password}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   db:
-    image: postgres:13
+    image: postgres:15-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=byf_muhendislik
       - POSTGRES_USER=byf_user
-      - POSTGRES_PASSWORD=byf_password
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-byf_password}
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U byf_user -d byf_muhendislik"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nginx:
-    image: nginx:1.21
+    image: nginx:1.25-alpine
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - static_volume:/app/backend/staticfiles
+      - media_volume:/app/backend/media
       - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ../nginx/ssl:/etc/nginx/ssl
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - web
     restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
 volumes:
   postgres_data:

@@ -1,33 +1,26 @@
-# BYF Mühendislik - Django Uygulama Dockerfile
-FROM python:3.9-slim
+FROM python:3.11-slim
 
-# Environment değişkenleri
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on
 
-# Çalışma dizini
-WORKDIR /app
+WORKDIR /app/backend
 
-# Sistem bağımlılıkları
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
-    postgresql-dev \
+    libpq-dev \
+    build-essential \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Python bağımlılıkları
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Uygulama dosyaları
-COPY . .
+COPY backend/ .
 
-# Static dosyaları topla
-RUN python manage.py collectstatic --noinput
+RUN mkdir -p staticfiles media
 
-# Port
 EXPOSE 8000
 
-# Gunicorn ile çalıştır
-CMD ["gunicorn", "byf_muhendislik.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "byf_muhendislik.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60"]

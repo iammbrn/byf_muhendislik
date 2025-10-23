@@ -13,7 +13,7 @@ SELECT
      AND completion_date >= CURRENT_DATE - INTERVAL '30 days') as completed_this_month,
     (SELECT COUNT(*) FROM documents_document 
      WHERE upload_date >= CURRENT_DATE - INTERVAL '7 days') as documents_this_week,
-    (SELECT COUNT(*) FROM blog_post WHERE status = 'published') as published_posts;
+    (SELECT COUNT(*) FROM blog_blogpost WHERE status = 'published') as published_posts;
 
 --
 -- Firma dashboard view'ı

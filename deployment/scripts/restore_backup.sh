@@ -97,6 +97,6 @@ echo -e "\n${GREEN}========================================${NC}"
 echo -e "${GREEN}✅ Restore işlemi tamamlandı!${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo -e "\n${BLUE}🔍 Siteyi kontrol edin:${NC}"
-echo -e "   ${GREEN}https://yourdomain.com${NC}"
+echo -e "   Tarayıcınızdan sitenizi açın"
 
 

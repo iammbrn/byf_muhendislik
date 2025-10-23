@@ -34,5 +34,5 @@ Elektriksel periyodik kontrol hizmeti ve Trafo müşavirlik konularında hizmet 
 
 1. **Repository'yi klonla**:
    ```bash
-   git clone https://github.com/iammbrn/byfmuhendislik.git
-   cd byfmuhendislik
+   git clone https://github.com/iammbrn/byf_muhendislik.git
+   cd byf_muhendislik

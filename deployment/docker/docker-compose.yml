@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  web:
+    build: 
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    command: gunicorn byf_muhendislik.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    expose:
+      - 8000
+    environment:
+      - DEBUG=False
+      - DATABASE_URL=postgres://byf_user:byf_password@db:5432/byf_muhendislik
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=byf_muhendislik
+      - POSTGRES_USER=byf_user
+      - POSTGRES_PASSWORD=byf_password
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.21
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../nginx/ssl:/etc/nginx/ssl
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

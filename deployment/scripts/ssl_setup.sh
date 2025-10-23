@@ -38,13 +38,16 @@ if [ "$DNS_READY" != "y" ]; then
 fi
 
 echo -e "\n${BLUE}🔒 SSL sertifikası alınıyor...${NC}"
+
+# Certbot Nginx config'i otomatik güncelleyecek
 certbot --nginx \
     -d "$DOMAIN_NAME" \
     -d "www.$DOMAIN_NAME" \
     --non-interactive \
     --agree-tos \
     -m "$ADMIN_EMAIL" \
-    --redirect
+    --redirect \
+    --staple-ocsp
 
 echo -e "\n${BLUE}🔄 Otomatik yenileme test ediliyor...${NC}"
 certbot renew --dry-run

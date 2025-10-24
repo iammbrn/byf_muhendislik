@@ -156,6 +156,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     list_filter = (ActiveStatusFilter, 'created_at')
     search_fields = ('title', 'subtitle', 'description')
     prepopulated_fields = {'slug': ('title',)}
+    list_editable = ('order', 'is_active')
     fieldsets = (
         ('Temel Bilgiler', {
             'fields': ('title', 'slug', 'icon', 'subtitle', 'is_active', 'order')
@@ -166,13 +167,9 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
         ('Süreç & Standartlar', {
             'fields': ('process_steps', 'standards'),
             'classes': ('collapse',),
-            'description': 'Süreç Adımları formatı: [{"title": "İlk Görüşme", "description": "Müşteri ile detaylı görüşme yapılır"}, {"title": "Keşif", "description": "Saha incelemesi gerçekleştirilir"}]'
+            'description': 'Süreç Adımları JSON formatı: [{"title": "Adım", "description": "Açıklama"}]'
         }),
     )
-    
-    class Media:
-        # CSS already loaded globally via base_site.html - no need to duplicate
-        js = ('admin/js/json_editor.js',)
 
 
 @admin.register(TeamMember)

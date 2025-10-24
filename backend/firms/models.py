@@ -65,15 +65,27 @@ class Firm(models.Model):
     def delete(self, *args, **kwargs):
         """
         Override delete to also remove associated user.
-        When a firm is deleted, the associated user should also be deleted
-        to maintain data consistency.
+        When a firm is deleted, the associated user should also be deleted.
+        The OneToOneField with CASCADE will automatically delete the user,
+        but we need to handle it manually here to maintain proper order.
         """
         user = self.user
-        # Delete the firm first
-        result = super().delete(*args, **kwargs)
-        # Then delete the associated user if it exists
+        # First, disconnect the user to prevent CASCADE issues
         if user:
-            user.delete()
+            self.user = None
+            # Don't call save() here, just clear the reference
+        
+        # Delete the firm (CASCADE will be bypassed since user=None)
+        result = super().delete(*args, **kwargs)
+        
+        # Now manually delete the user
+        if user:
+            try:
+                user.delete()
+            except Exception:
+                # User might already be deleted, ignore
+                pass
+        
         return result
     
     def clean(self):

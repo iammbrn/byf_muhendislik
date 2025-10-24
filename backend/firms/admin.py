@@ -131,32 +131,29 @@ class FirmAdmin(admin.ModelAdmin):
     
     def delete_model(self, request, obj):
         """
-        Override to ensure associated user is deleted when a firm is deleted.
-        This is called when deleting a single firm via admin.
+        Override to log firm deletion activity.
+        The user is deleted via the model's delete() method.
         """
         user = obj.user
         firm_name = obj.name
+        username = user.username if user else 'Yok'
+        
+        # Model's delete() will handle user deletion
         super().delete_model(request, obj)
-        if user:
-            username = user.username
-            user.delete()
-            log_activity(request.user, 'delete', f'Firma ve kullanıcı silindi: {firm_name} -> {username}')
+        
+        log_activity(request.user, 'delete', f'Firma ve kullanıcı silindi: {firm_name} -> {username}')
     
     def delete_queryset(self, request, queryset):
         """
         Override to ensure associated users are deleted when firms are bulk deleted.
         This is called when using 'delete selected' action on multiple firms.
         """
-        # Collect user IDs before deletion
-        users_to_delete = []
-        for firm in queryset:
-            if firm.user:
-                users_to_delete.append(firm.user)
-        
-        # Delete firms (this will call the model's delete method for each)
+        # Count firms and collect user info for logging
         count = queryset.count()
+        
+        # Delete firms one by one to trigger custom delete() method
         for firm in queryset:
-            firm.delete()  # This will trigger the custom delete() method
+            firm.delete()  # Model's delete() will handle user deletion properly
         
         log_activity(request.user, 'delete', f'Toplu silme: {count} firma ve ilişkili kullanıcılar silindi')
     

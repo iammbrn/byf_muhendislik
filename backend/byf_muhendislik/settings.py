@@ -172,6 +172,14 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 RATELIMIT_IP_META_KEY = 'HTTP_X_REAL_IP'
 RATELIMIT_USE_CACHE = 'default'
 
+# Captcha
+CAPTCHA_IMAGE_SIZE = (150, 50)
+CAPTCHA_FONT_SIZE = 30
+CAPTCHA_BACKGROUND_COLOR = '#ffffff'
+CAPTCHA_FOREGROUND_COLOR = '#0056b3'
+CAPTCHA_LETTER_ROTATION = (-30, 30)
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
+
 # Login/Logout URLs
 LOGIN_URL = '/hesap/giris/'
 LOGIN_REDIRECT_URL = '/hesap/dashboard/'

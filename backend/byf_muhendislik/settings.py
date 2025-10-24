@@ -168,6 +168,10 @@ REST_FRAMEWORK = {
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+# Ratelimit (Nginx proxy için)
+RATELIMIT_IP_META_KEY = 'HTTP_X_REAL_IP'
+RATELIMIT_USE_CACHE = 'default'
+
 # Login/Logout URLs
 LOGIN_URL = '/hesap/giris/'
 LOGIN_REDIRECT_URL = '/hesap/dashboard/'

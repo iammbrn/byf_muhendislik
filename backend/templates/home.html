@@ -67,6 +67,7 @@
             <h2>Hizmetlerimiz</h2>
             <p>Profesyonel mühendislik hizmetlerimizle yanınızdayız</p>
         </div>
+        {% if service_categories %}
         <div class="services-grid">
             {% for service in service_categories %}
             <div class="service-card">
@@ -80,20 +81,9 @@
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
-            {% empty %}
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h3>Elektriksel Periyodik Kontrol</h3>
-                <p>Elektrik tesisatlarının periyodik kontrol ve ölçüm hizmetleri.</p>
-                <a href="{% url 'services_list' %}" class="btn btn-link">
-                    Detaylı Bilgi
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
             {% endfor %}
         </div>
+        {% endif %}
     </div>
 </section>
 

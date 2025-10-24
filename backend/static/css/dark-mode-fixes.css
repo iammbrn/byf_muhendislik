@@ -1947,7 +1947,7 @@ body.dark-mode #content h6,
     color: #f1f5f9 !important;
 }
 
-/* Admin Text Elements - Dashboard Gray Text */
+/* Admin Text Elements - Dashboard Gray Text - Improved Contrast */
 body.dark-mode #content p,
 body.dark-mode #content span:not(.select2-selection__arrow),
 body.dark-mode #content div:not(.button):not(.select2-container),
@@ -1956,7 +1956,7 @@ body.dark-mode #content li,
 [data-theme="dark"] #content span:not(.select2-selection__arrow),
 [data-theme="dark"] #content div:not(.button):not(.select2-container),
 [data-theme="dark"] #content li {
-    color: #94a3b8 !important;
+    color: #cbd5e1 !important;
 }
 
 /* Admin Labels - Dashboard White Text */
@@ -1997,8 +1997,9 @@ body.dark-mode .module caption,
 [data-theme="dark"] .module h2,
 [data-theme="dark"] .module h3,
 [data-theme="dark"] .module caption {
-    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
-    color: #0f172a !important;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: #ffffff !important;
+    border-bottom: none !important;
 }
 
 /* Admin Table - Dashboard Style */
@@ -2009,14 +2010,14 @@ body.dark-mode table,
 
 body.dark-mode thead th,
 [data-theme="dark"] thead th {
-    background: linear-gradient(135deg, #0f172a 0%, #1a202e 100%) !important;
-    color: #f1f5f9 !important;
-    border-bottom-color: #f59e0b !important;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: #ffffff !important;
+    border-bottom-color: transparent !important;
 }
 
 body.dark-mode tbody td,
 [data-theme="dark"] tbody td {
-    color: #94a3b8 !important;
+    color: #cbd5e1 !important;
     border-bottom-color: #334155 !important;
 }
 
@@ -2112,8 +2113,9 @@ body.dark-mode select option,
 
 body.dark-mode select option:checked,
 [data-theme="dark"] select option:checked {
-    background: #334155 !important;
-    color: #fbbf24 !important;
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
 }
 
 /* Admin Breadcrumbs Dark Mode */
@@ -2203,12 +2205,12 @@ body.dark-mode #changelist-filter h2,
 body.dark-mode #changelist-filter h3,
 [data-theme="dark"] #changelist-filter h2,
 [data-theme="dark"] #changelist-filter h3 {
-    color: #0f172a !important;
-    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
-    border-bottom-color: rgba(15, 23, 42, 0.2) !important;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    border-bottom-color: transparent !important;
     padding: 12px 16px !important;
     margin: -20px -20px 20px -20px !important;
-    border-radius: 0 !important;
+    border-radius: 12px 12px 0 0 !important;
 }
 
 body.dark-mode #changelist-filter details,
@@ -2237,7 +2239,7 @@ body.dark-mode #changelist-filter li,
 
 body.dark-mode #changelist-filter a,
 [data-theme="dark"] #changelist-filter a {
-    color: #94a3b8 !important;
+    color: #cbd5e1 !important;
 }
 
 body.dark-mode #changelist-filter a:hover,
@@ -2761,8 +2763,8 @@ body.dark-mode #content-related h2,
 body.dark-mode #content-related h3,
 [data-theme="dark"] #content-related h2,
 [data-theme="dark"] #content-related h3 {
-    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
-    color: #0f172a !important;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: #ffffff !important;
 }
 
 body.dark-mode #content-related .actionlist,

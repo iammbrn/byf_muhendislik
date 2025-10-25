@@ -933,6 +933,65 @@
     
     /* Footer styles - footer.html inline CSS kullanılır, override YOK */
     
+    /* FOOTER-LINKS FIX - Ensure transparent background in admin pages (Light & Dark Mode) */
+    body.delete-confirmation .main-footer .footer-section,
+    body.delete-confirmation .main-footer .footer-content,
+    body.delete-confirmation .main-footer .footer-links,
+    body.delete-confirmation .main-footer .footer-links li,
+    body.delete-confirmation .main-footer .footer-links a,
+    body.delete-confirmation .main-footer .footer-bottom,
+    body.delete-confirmation .main-footer .footer-bottom-content,
+    body.delete-confirmation .main-footer .footer-bottom-links,
+    body.delete-confirmation .main-footer .footer-bottom-links a,
+    body.delete-selected .main-footer .footer-section,
+    body.delete-selected .main-footer .footer-content,
+    body.delete-selected .main-footer .footer-links,
+    body.delete-selected .main-footer .footer-links li,
+    body.delete-selected .main-footer .footer-links a,
+    body.delete-selected .main-footer .footer-bottom,
+    body.delete-selected .main-footer .footer-bottom-content,
+    body.delete-selected .main-footer .footer-bottom-links,
+    body.delete-selected .main-footer .footer-bottom-links a,
+    body.change-history .main-footer .footer-section,
+    body.change-history .main-footer .footer-content,
+    body.change-history .main-footer .footer-links,
+    body.change-history .main-footer .footer-links li,
+    body.change-history .main-footer .footer-links a,
+    body.change-history .main-footer .footer-bottom,
+    body.change-history .main-footer .footer-bottom-content,
+    body.change-history .main-footer .footer-bottom-links,
+    body.change-history .main-footer .footer-bottom-links a,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-section,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-content,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links li,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links a,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-content,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-links,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-links a,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-section,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-content,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-links,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-links li,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-links a,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-bottom,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-bottom-content,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-bottom-links,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-bottom-links a,
+    [data-theme="dark"] body.change-history .main-footer .footer-section,
+    [data-theme="dark"] body.change-history .main-footer .footer-content,
+    [data-theme="dark"] body.change-history .main-footer .footer-links,
+    [data-theme="dark"] body.change-history .main-footer .footer-links li,
+    [data-theme="dark"] body.change-history .main-footer .footer-links a,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom-content,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom-links,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom-links a {
+        background: none !important;
+        background-color: transparent !important;
+    }
+    
     /* Admin content - Footer için boşluk bırak */
     .admin-main-content {
         min-height: calc(100vh - 400px) !important;

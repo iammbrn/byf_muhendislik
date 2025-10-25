@@ -108,10 +108,13 @@
                         <h2>{{ service.title }}</h2>
                         <p>{{ service.subtitle }}</p>
                     </div>
+                    <div class="service-toggle-btn" onclick="toggleService('{{ service.slug }}')">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
                 </div>
 
-                <!-- Service Content -->
-                <div class="service-content-modern">
+                <!-- Service Content - Collapsible -->
+                <div class="service-content-modern" id="content-{{ service.slug }}">
                     <div class="service-description">
                         <h3>Hizmet Kapsamımız</h3>
                         <p>{{ service.description }}</p>
@@ -360,9 +363,67 @@
     font-weight: 500;
 }
 
-/* Service Content - Compact Modern Design */
+/* Service Card Header - Modern Hero Layout with Toggle */
+.service-card-header-modern {
+    position: relative;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.service-card-header-modern:hover {
+    transform: translateY(-2px);
+}
+
+/* Service Toggle Button */
+.service-toggle-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    z-index: 3;
+}
+
+.service-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.service-toggle-btn i {
+    font-size: 1.2rem;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.service-toggle-btn.active i {
+    transform: rotate(180deg);
+}
+
+/* Service Content - Collapsible */
 .service-content-modern {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    opacity: 0;
+}
+
+.service-content-modern.active {
     padding: 2rem;
+    max-height: 2000px;
+    opacity: 1;
 }
 
 .service-content-modern h3 {
@@ -668,7 +729,7 @@
         font-size: 2rem;
     }
     
-    .service-content-modern {
+    .service-content-modern.active {
         padding: 1.75rem;
     }
     
@@ -679,6 +740,13 @@
     
     .service-icon-modern i {
         font-size: 2rem;
+    }
+    
+    .service-toggle-btn {
+        width: 45px;
+        height: 45px;
+        top: 1.25rem;
+        right: 1.25rem;
     }
 }
 
@@ -703,7 +771,7 @@
         font-size: 1rem;
     }
     
-    .service-content-modern {
+    .service-content-modern.active {
         padding: 1.5rem;
     }
     
@@ -718,6 +786,17 @@
     
     .standards-list {
         grid-template-columns: 1fr;
+    }
+    
+    .service-toggle-btn {
+        width: 40px;
+        height: 40px;
+        top: 1rem;
+        right: 1rem;
+    }
+    
+    .service-toggle-btn i {
+        font-size: 1rem;
     }
     
     .cta-content h2 {
@@ -748,7 +827,7 @@
         font-size: 1.6rem;
     }
     
-    .service-content-modern {
+    .service-content-modern.active {
         padding: 1rem;
     }
     
@@ -776,6 +855,17 @@
     
     .service-standards {
         padding: 1rem;
+    }
+    
+    .service-toggle-btn {
+        width: 35px;
+        height: 35px;
+        top: 0.75rem;
+        right: 0.75rem;
+    }
+    
+    .service-toggle-btn i {
+        font-size: 0.9rem;
     }
 }
 
@@ -839,5 +929,35 @@
     color: var(--white);
 }
 </style>
+
+<script>
+function toggleService(serviceSlug) {
+    const content = document.getElementById('content-' + serviceSlug);
+    const toggleBtn = content.previousElementSibling.querySelector('.service-toggle-btn');
+    
+    if (content.classList.contains('active')) {
+        // Close
+        content.classList.remove('active');
+        toggleBtn.classList.remove('active');
+    } else {
+        // Open
+        content.classList.add('active');
+        toggleBtn.classList.add('active');
+    }
+}
+
+// Close all services on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const allContents = document.querySelectorAll('.service-content-modern');
+    allContents.forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    const allToggleBtns = document.querySelectorAll('.service-toggle-btn');
+    allToggleBtns.forEach(btn => {
+        btn.classList.remove('active');
+    });
+});
+</script>
 {% endblock %}
 

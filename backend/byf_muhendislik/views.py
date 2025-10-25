@@ -13,9 +13,8 @@ def home(request):
         'title', 'slug', 'excerpt', 'published_at', 'featured_image', 'author__username', 'author__first_name', 'author__last_name'
     )[:3]
     
-    service_categories = ServiceCategory.objects.filter(is_active=True).only(
-        'title', 'slug', 'icon', 'subtitle', 'image'
-    ).order_by('order', 'title')
+    # Service categories - full object to support both old (icon-only) and new (image) designs
+    service_categories = ServiceCategory.objects.filter(is_active=True).order_by('order', 'title')
     
     return render(request, 'home.html', {
         'recent_posts': recent_posts,

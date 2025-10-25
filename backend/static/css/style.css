@@ -1008,50 +1008,6 @@ textarea.form-control {
     flex: 1;
 }
 
-/* Service Card Button - Unified with Standard Buttons */
-.service-card-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.625rem;
-    padding: 0.875rem 1.75rem;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    border-radius: var(--border-radius-lg);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    white-space: nowrap;
-    box-shadow: var(--shadow-md);
-    letter-spacing: 0.02em;
-    align-self: flex-start;
-    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%);
-    color: var(--white);
-}
-
-.service-card-btn:hover {
-    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-    color: var(--white);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-}
-
-.service-card-btn:active {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-.service-card-btn i {
-    font-size: 1.1rem;
-    transition: transform 0.3s ease;
-    color: var(--white);
-}
-
-.service-card-btn:hover i {
-    transform: scale(1.15);
-}
 
 /* Dark Mode Service Cards */
 [data-theme="dark"] .service-card {

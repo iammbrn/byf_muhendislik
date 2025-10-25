@@ -16,6 +16,17 @@ class SiteSettings(models.Model):
         verbose_name='Ana Sayfa Hero Görseli',
         help_text='Önerilen boyut: 1920x1080px veya 16:9 oran'
     )
+    hero_title = models.CharField(
+        max_length=200, 
+        default='Profesyonel Mühendislik Çözümleri',
+        verbose_name='Ana Sayfa Hero Başlığı',
+        help_text='Ana sayfa hero bölümündeki ana başlık'
+    )
+    hero_subtitle = models.TextField(
+        default='BYF Mühendislik olarak, elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi alanlarında uzman çözümler sunuyoruz. Kalite, güvenlik ve müşteri memnuniyeti önceliğimizdir.',
+        verbose_name='Ana Sayfa Hero Alt Başlığı',
+        help_text='Ana sayfa hero bölümündeki açıklama metni'
+    )
     about_image = models.ImageField(
         upload_to='site/', 
         blank=True, 

@@ -34,10 +34,9 @@
 <section class="hero">
     <div class="container">
         <div class="hero-content">
-            <h1 class="hero-title">Profesyonel <span class="highlight">Mühendislik</span> Çözümleri</h1>
+            <h1 class="hero-title">{{ site_settings.hero_title|default:"Profesyonel Mühendislik Çözümleri" }}</h1>
             <p class="hero-subtitle">
-                BYF Mühendislik olarak, elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi 
-                alanlarında uzman çözümler sunuyoruz. Kalite, güvenlik ve müşteri memnuniyeti önceliğimizdir.
+                {{ site_settings.hero_subtitle|default:"BYF Mühendislik olarak, elektriksel periyodik kontrol, trafo müşavirlik ve elektrik proje çizimi alanlarında uzman çözümler sunuyoruz. Kalite, güvenlik ve müşteri memnuniyeti önceliğimizdir." }}
             </p>
             <div class="hero-buttons">
                 <a href="{% url 'services_list' %}" class="btn btn-primary btn-lg">

@@ -5,7 +5,7 @@ from django.conf import settings
 from django_ratelimit.decorators import ratelimit
 
 from blog.models import BlogPost
-from core.models import ContactMessage, ServiceCategory, TeamMember
+from core.models import ContactMessage, ServiceCategory, TeamMember, SiteSettings
 
 def home(request):
     # Optimized queries with only() to fetch only needed fields
@@ -16,9 +16,13 @@ def home(request):
     # Service categories - full object to support both old (icon-only) and new (image) designs
     service_categories = ServiceCategory.objects.filter(is_active=True).order_by('order', 'title')
     
+    # Site settings for hero content
+    site_settings = SiteSettings.objects.first()
+    
     return render(request, 'home.html', {
         'recent_posts': recent_posts,
         'service_categories': service_categories,
+        'site_settings': site_settings,
     })
 
 def about(request):

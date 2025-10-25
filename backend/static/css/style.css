@@ -1008,35 +1008,49 @@ textarea.form-control {
     flex: 1;
 }
 
-/* Service Card Button */
+/* Service Card Button - Unified with Standard Buttons */
 .service-card-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
     font-weight: 600;
-    font-size: 0.9rem;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
     transition: all 0.3s ease;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    letter-spacing: 0.02em;
     align-self: flex-start;
-    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
+    background: linear-gradient(135deg, #0056b3 0%, #3b82f6 100%);
+    color: var(--white);
 }
 
 .service-card-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, #fbbf24 100%);
-    transform: translateX(3px);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+}
+
+.service-card-btn:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 
 .service-card-btn i {
+    font-size: 1.1rem;
     transition: transform 0.3s ease;
+    color: var(--white);
 }
 
 .service-card-btn:hover i {
-    transform: translateX(3px);
+    transform: scale(1.15);
 }
 
 /* Dark Mode Service Cards */

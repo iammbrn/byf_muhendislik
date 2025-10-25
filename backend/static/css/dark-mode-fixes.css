@@ -328,8 +328,6 @@ body.dark-mode .action-btn:hover,
 /* Paragraf ve açıklama metinleri */
 body.dark-mode p,
 body.dark-mode .team-bio,
-body.dark-mode .service-detail,
-body.dark-mode .service-detail p,
 body.dark-mode .empty-state,
 body.dark-mode .empty-state p {
     color: #e2e8f0 !important;
@@ -528,36 +526,6 @@ body.dark-mode .team-card .team-bio {
     color: #e2e8f0 !important;
 }
 
-/* Service Detail - Hizmet detayları */
-body.dark-mode .service-detail {
-    background: #1e293b !important;
-    border-color: #334155 !important;
-}
-
-body.dark-mode .service-detail h2,
-body.dark-mode .service-detail h3,
-body.dark-mode .service-detail h4 {
-    color: #f1f5f9 !important;
-}
-
-body.dark-mode .service-detail p,
-body.dark-mode .service-detail li {
-    color: #e2e8f0 !important;
-}
-
-body.dark-mode .service-header {
-    background: #0f172a !important;
-    border-color: #334155 !important;
-}
-
-body.dark-mode .service-icon {
-    background: rgba(245, 158, 11, 0.1) !important;
-    color: #f59e0b !important;
-}
-
-body.dark-mode .service-icon i {
-    color: #f59e0b !important;
-}
 
 body.dark-mode .service-content {
     background: #1e293b !important;
@@ -2923,17 +2891,6 @@ body.dark-mode .team-card,
     box-shadow: var(--shadow-md);
 }
 
-/* Service Detail Pages */
-body.dark-mode .service-detail,
-[data-theme="dark"] .service-detail {
-    background: var(--white) !important;
-    box-shadow: var(--shadow-lg);
-}
-
-body.dark-mode .service-header,
-[data-theme="dark"] .service-header {
-    background: transparent !important;
-}
 
 body.dark-mode .service-standards,
 [data-theme="dark"] .service-standards {
@@ -3065,11 +3022,6 @@ body.dark-mode section.bg-light,
     background-color: var(--light-bg) !important;
 }
 
-/* Service Icon */
-body.dark-mode .service-icon,
-[data-theme="dark"] .service-icon {
-    color: var(--secondary-color) !important;
-}
 
 /* Text White (for CTA sections) */
 body.dark-mode .text-white,
@@ -3107,16 +3059,6 @@ body.dark-mode .team-title,
     color: var(--accent-color) !important;
 }
 
-/* Service Title */
-body.dark-mode .service-title h2,
-[data-theme="dark"] .service-title h2 {
-    color: var(--dark-text) !important;
-}
-
-body.dark-mode .service-title p,
-[data-theme="dark"] .service-title p {
-    color: var(--gray-text) !important;
-}
 
 /* Service Content */
 body.dark-mode .service-content h3,
@@ -3340,16 +3282,6 @@ body.dark-mode .service-card,
     box-shadow: var(--shadow-md);
 }
 
-body.dark-mode .service-header,
-[data-theme="dark"] .service-header {
-    background: var(--light-bg) !important;
-    border-bottom-color: var(--border-color) !important;
-}
-
-body.dark-mode .service-title h3,
-[data-theme="dark"] .service-title h3 {
-    color: var(--dark-text) !important;
-}
 
 body.dark-mode .service-type,
 [data-theme="dark"] .service-type {

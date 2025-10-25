@@ -77,6 +77,10 @@
     .service-card-content h3 {
         font-size: 1.25rem;
     }
+    
+    .service-card-image {
+        height: 180px;
+    }
 }
 
 /* ===================================
@@ -125,6 +129,10 @@
     .service-card-content {
         padding: 2rem;
     }
+    
+    .service-card-image {
+        height: 190px;
+    }
 }
 
 /* ===================================
@@ -169,6 +177,11 @@
     h1 { font-size: 1.5rem; }
     h2 { font-size: 1.25rem; }
     h3 { font-size: 1.125rem; }
+    
+    /* Service Cards */
+    .service-card-image {
+        height: 140px;
+    }
     
     /* Buttons */
     .btn {
@@ -246,6 +259,10 @@
     
     .service-card-content p {
         font-size: 0.9rem;
+    }
+    
+    .service-card-image {
+        height: 160px;
     }
     
     

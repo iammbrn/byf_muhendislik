@@ -948,13 +948,14 @@ textarea.form-control {
     box-shadow: 0 12px 24px rgba(30, 58, 138, 0.15);
 }
 
-/* Image Container - 16:9 Aspect Ratio */
+/* Image Container - Fixed Height for Consistent Cards */
 .service-card-image {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 200px;
     overflow: hidden;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    border-radius: 12px 12px 0 0;
 }
 
 .service-card-image img {

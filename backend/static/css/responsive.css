@@ -63,6 +63,20 @@
     .footer-container {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    /* Services Grid - 2 columns on tablet */
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .service-card-content {
+        padding: 1.5rem;
+    }
+    
+    .service-card-content h3 {
+        font-size: 1.25rem;
+    }
 }
 
 /* ===================================
@@ -102,9 +116,14 @@
         grid-template-columns: repeat(4, 1fr);
     }
     
-    /* Services Grid */
+    /* Services Grid - 3 columns on desktop */
     .services-grid {
         grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    
+    .service-card-content {
+        padding: 2rem;
     }
 }
 
@@ -121,9 +140,10 @@
         grid-template-columns: repeat(4, 1fr);
     }
     
-    /* Services Grid */
+    /* Services Grid - Max 3 columns even on large screens */
     .services-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
     }
     
     /* Increased Spacing */
@@ -208,6 +228,29 @@
     /* Reduce main content padding */
     .main-content {
         padding-top: 90px;
+    }
+    
+    /* Services Grid - Single column on mobile */
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .service-card-content {
+        padding: 1.25rem;
+    }
+    
+    .service-card-content h3 {
+        font-size: 1.15rem;
+    }
+    
+    .service-card-content p {
+        font-size: 0.9rem;
+    }
+    
+    .service-card-btn {
+        width: 100%;
+        justify-content: center;
     }
     
     /* Section padding reduction */

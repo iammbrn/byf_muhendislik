@@ -71,15 +71,23 @@
         <div class="services-grid">
             {% for service in service_categories %}
             <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas {{ service.icon }}"></i>
+                <div class="service-card-image">
+                    {% if service.image %}
+                        <img src="{{ service.image.url }}" alt="{{ service.title }}" loading="lazy">
+                    {% else %}
+                        <div class="service-card-icon-fallback">
+                            <i class="fas {{ service.icon }}"></i>
+                        </div>
+                    {% endif %}
                 </div>
-                <h3>{{ service.title }}</h3>
-                <p>{{ service.subtitle }}</p>
-                <a href="{% url 'services_list' %}#{{ service.slug }}" class="btn btn-link">
-                    Detaylı Bilgi
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+                <div class="service-card-content">
+                    <h3>{{ service.title }}</h3>
+                    <p>{{ service.subtitle }}</p>
+                    <a href="{% url 'services_list' %}#{{ service.slug }}" class="service-card-btn">
+                        Detaylı Bilgi
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>

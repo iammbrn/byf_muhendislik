@@ -151,6 +151,13 @@ class ServiceCategory(models.Model):
     icon = models.CharField(max_length=50, choices=ICON_CHOICES, default='fa-cogs', verbose_name='İkon')
     subtitle = models.CharField(max_length=300, verbose_name='Alt Başlık')
     description = models.TextField(verbose_name='Açıklama')
+    image = models.ImageField(
+        upload_to='services/',
+        blank=True,
+        null=True,
+        verbose_name='Hizmet Görseli',
+        help_text='Önerilen boyut: 800x450px (16:9 oran) - Kartlarda gösterilir'
+    )
     
     # Hizmet Kapsamı
     scope_items = models.TextField(

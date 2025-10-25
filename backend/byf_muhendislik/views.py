@@ -14,7 +14,7 @@ def home(request):
     )[:3]
     
     service_categories = ServiceCategory.objects.filter(is_active=True).only(
-        'title', 'slug', 'icon', 'subtitle'
+        'title', 'slug', 'icon', 'subtitle', 'image'
     ).order_by('order', 'title')
     
     return render(request, 'home.html', {

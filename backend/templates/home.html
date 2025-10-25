@@ -72,7 +72,7 @@
             {% for service in service_categories %}
             <div class="service-card">
                 <div class="service-card-image">
-                    {% if service.image %}
+                    {% if service.image and service.image.url %}
                         <img src="{{ service.image.url }}" alt="{{ service.title }}" loading="lazy">
                     {% else %}
                         <div class="service-card-icon-fallback">

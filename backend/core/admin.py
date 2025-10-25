@@ -159,7 +159,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     list_editable = ('order', 'is_active')
     fieldsets = (
         ('Temel Bilgiler', {
-            'fields': ('title', 'slug', 'icon', 'subtitle', 'is_active', 'order')
+            'fields': ('title', 'slug', 'icon', 'subtitle', 'image', 'is_active', 'order')
         }),
         ('İçerik', {
             'fields': ('description', 'scope_items', 'features')

@@ -933,63 +933,134 @@
     
     /* Footer styles - footer.html inline CSS kullanılır, override YOK */
     
-    /* FOOTER-LINKS FIX - Ensure transparent background in admin pages (Light & Dark Mode) */
+    /* FOOTER-LINKS FIX - Match exactly with normal pages (Light & Dark Mode) */
     body.delete-confirmation .main-footer .footer-section,
-    body.delete-confirmation .main-footer .footer-content,
-    body.delete-confirmation .main-footer .footer-links,
-    body.delete-confirmation .main-footer .footer-links li,
-    body.delete-confirmation .main-footer .footer-links a,
-    body.delete-confirmation .main-footer .footer-bottom,
-    body.delete-confirmation .main-footer .footer-bottom-content,
-    body.delete-confirmation .main-footer .footer-bottom-links,
-    body.delete-confirmation .main-footer .footer-bottom-links a,
     body.delete-selected .main-footer .footer-section,
-    body.delete-selected .main-footer .footer-content,
-    body.delete-selected .main-footer .footer-links,
-    body.delete-selected .main-footer .footer-links li,
-    body.delete-selected .main-footer .footer-links a,
-    body.delete-selected .main-footer .footer-bottom,
-    body.delete-selected .main-footer .footer-bottom-content,
-    body.delete-selected .main-footer .footer-bottom-links,
-    body.delete-selected .main-footer .footer-bottom-links a,
     body.change-history .main-footer .footer-section,
-    body.change-history .main-footer .footer-content,
-    body.change-history .main-footer .footer-links,
-    body.change-history .main-footer .footer-links li,
-    body.change-history .main-footer .footer-links a,
-    body.change-history .main-footer .footer-bottom,
-    body.change-history .main-footer .footer-bottom-content,
-    body.change-history .main-footer .footer-bottom-links,
-    body.change-history .main-footer .footer-bottom-links a,
     [data-theme="dark"] body.delete-confirmation .main-footer .footer-section,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-content,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links li,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links a,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-content,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-links,
-    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-links a,
     [data-theme="dark"] body.delete-selected .main-footer .footer-section,
+    [data-theme="dark"] body.change-history .main-footer .footer-section {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-content,
+    body.delete-selected .main-footer .footer-content,
+    body.change-history .main-footer .footer-content,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-content,
     [data-theme="dark"] body.delete-selected .main-footer .footer-content,
+    [data-theme="dark"] body.change-history .main-footer .footer-content {
+        background: transparent !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-links,
+    body.delete-selected .main-footer .footer-links,
+    body.change-history .main-footer .footer-links,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links,
     [data-theme="dark"] body.delete-selected .main-footer .footer-links,
+    [data-theme="dark"] body.change-history .main-footer .footer-links {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        border: none !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-links li,
+    body.delete-selected .main-footer .footer-links li,
+    body.change-history .main-footer .footer-links li,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links li,
     [data-theme="dark"] body.delete-selected .main-footer .footer-links li,
+    [data-theme="dark"] body.change-history .main-footer .footer-links li {
+        margin-bottom: 0.75rem !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        list-style: none !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-links a,
+    body.delete-selected .main-footer .footer-links a,
+    body.change-history .main-footer .footer-links a,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links a,
     [data-theme="dark"] body.delete-selected .main-footer .footer-links a,
+    [data-theme="dark"] body.change-history .main-footer .footer-links a {
+        color: #bdc3c7 !important;
+        text-decoration: none !important;
+        transition: color 0.3s ease !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        display: inline !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-links a:hover,
+    body.delete-selected .main-footer .footer-links a:hover,
+    body.change-history .main-footer .footer-links a:hover,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-links a:hover,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-links a:hover,
+    [data-theme="dark"] body.change-history .main-footer .footer-links a:hover {
+        color: var(--secondary-color) !important;
+        padding-left: 0.5rem !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-bottom,
+    body.delete-selected .main-footer .footer-bottom,
+    body.change-history .main-footer .footer-bottom,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom,
     [data-theme="dark"] body.delete-selected .main-footer .footer-bottom,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom {
+        background: transparent !important;
+        border-top: 1px solid #34495e !important;
+        padding: 1.5rem 0 !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-bottom-content,
+    body.delete-selected .main-footer .footer-bottom-content,
+    body.change-history .main-footer .footer-bottom-content,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-content,
     [data-theme="dark"] body.delete-selected .main-footer .footer-bottom-content,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom-content {
+        background: transparent !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-bottom-links,
+    body.delete-selected .main-footer .footer-bottom-links,
+    body.change-history .main-footer .footer-bottom-links,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-links,
     [data-theme="dark"] body.delete-selected .main-footer .footer-bottom-links,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom-links {
+        display: flex !important;
+        gap: 2rem !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-bottom-links a,
+    body.delete-selected .main-footer .footer-bottom-links a,
+    body.change-history .main-footer .footer-bottom-links a,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-links a,
     [data-theme="dark"] body.delete-selected .main-footer .footer-bottom-links a,
-    [data-theme="dark"] body.change-history .main-footer .footer-section,
-    [data-theme="dark"] body.change-history .main-footer .footer-content,
-    [data-theme="dark"] body.change-history .main-footer .footer-links,
-    [data-theme="dark"] body.change-history .main-footer .footer-links li,
-    [data-theme="dark"] body.change-history .main-footer .footer-links a,
-    [data-theme="dark"] body.change-history .main-footer .footer-bottom,
-    [data-theme="dark"] body.change-history .main-footer .footer-bottom-content,
-    [data-theme="dark"] body.change-history .main-footer .footer-bottom-links,
     [data-theme="dark"] body.change-history .main-footer .footer-bottom-links a {
-        background: none !important;
-        background-color: transparent !important;
+        color: #bdc3c7 !important;
+        text-decoration: none !important;
+        font-size: 0.9rem !important;
+        transition: color 0.3s ease !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+    
+    body.delete-confirmation .main-footer .footer-bottom-links a:hover,
+    body.delete-selected .main-footer .footer-bottom-links a:hover,
+    body.change-history .main-footer .footer-bottom-links a:hover,
+    [data-theme="dark"] body.delete-confirmation .main-footer .footer-bottom-links a:hover,
+    [data-theme="dark"] body.delete-selected .main-footer .footer-bottom-links a:hover,
+    [data-theme="dark"] body.change-history .main-footer .footer-bottom-links a:hover {
+        color: #3498db !important;
     }
     
     /* Admin content - Footer için boşluk bırak */

@@ -360,17 +360,17 @@
     font-weight: 500;
 }
 
-/* Service Content - Modern Spacing */
+/* Service Content - Compact Modern Design */
 .service-content-modern {
-    padding: 3rem;
+    padding: 2rem;
 }
 
 .service-content-modern h3 {
     color: var(--dark-text);
-    margin-bottom: 1.5rem;
-    border-bottom: 3px solid var(--primary-light);
-    padding-bottom: 0.75rem;
-    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     position: relative;
 }
@@ -378,59 +378,59 @@
 .service-content-modern h3:after {
     content: '';
     position: absolute;
-    bottom: -3px;
+    bottom: -2px;
     left: 0;
-    width: 60px;
-    height: 3px;
+    width: 40px;
+    height: 2px;
     background: var(--primary-color);
 }
 
 .service-description p {
     color: var(--gray-text);
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
     font-weight: 400;
 }
 
-/* Service Features Grid - Modern Cards */
+/* Service Features Grid - Compact Cards */
 .service-features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    margin: 2rem 0;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
 }
 
 .feature-list {
     background: var(--light-bg);
-    border-radius: 16px;
-    padding: 2rem;
+    border-radius: 12px;
+    padding: 1.5rem;
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease;
 }
 
 .feature-list:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .feature-list h4 {
     color: var(--primary-light);
-    margin-bottom: 1.5rem;
-    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .feature-list h4:before {
     content: '▶';
     color: var(--primary-color);
-    font-size: 1rem;
+    font-size: 0.8rem;
     background: rgba(59, 130, 246, 0.1);
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -444,13 +444,13 @@
 }
 
 .feature-list li {
-    padding: 0.75rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid var(--border-color);
     position: relative;
-    padding-left: 2rem;
+    padding-left: 1.5rem;
     color: var(--dark-text);
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.9rem;
     transition: color 0.2s ease;
 }
 
@@ -468,46 +468,46 @@
     left: 0;
     color: var(--success-color);
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1rem;
     background: rgba(34, 197, 94, 0.1);
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Process Steps - Modern Timeline */
+/* Process Steps - Compact Timeline */
 .process-steps {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .process-step {
     display: flex;
     align-items: flex-start;
-    gap: 1.5rem;
-    padding: 2rem;
+    gap: 1rem;
+    padding: 1.5rem;
     background: var(--white);
-    border-radius: 16px;
-    border-left: 5px solid var(--primary-light);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-light);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     position: relative;
 }
 
 .process-step:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
     border-left-color: var(--primary-color);
 }
 
 .step-number {
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
     color: white;
     border-radius: 50%;
@@ -515,9 +515,9 @@
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     flex-shrink: 0;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
     position: relative;
 }
 
@@ -527,32 +527,32 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
 }
 
 .step-content h4 {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     color: var(--dark-text);
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
 .step-content p {
     color: var(--gray-text);
     margin: 0;
-    line-height: 1.6;
-    font-size: 1rem;
+    line-height: 1.5;
+    font-size: 0.9rem;
 }
 
-/* Service Standards - Modern Grid */
+/* Service Standards - Compact Grid */
 .service-standards {
-    margin-top: 2rem;
-    padding: 2.5rem;
-    background: linear-gradient(135deg, var(--light-bg) 0%, rgba(59, 130, 246, 0.05) 100%);
-    border-radius: 20px;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--light-bg) 0%, rgba(59, 130, 246, 0.03) 100%);
+    border-radius: 16px;
     border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
@@ -564,48 +564,48 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 3px;
     background: linear-gradient(90deg, var(--primary-color), var(--primary-light), var(--success-color));
 }
 
 .service-standards h3 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: var(--dark-text);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
     position: relative;
 }
 
 .standards-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
 }
 
 .standard-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.25rem;
+    gap: 0.75rem;
+    padding: 1rem;
     background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     border: 1px solid var(--border-color);
 }
 
 .standard-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
     border-color: var(--success-color);
 }
 
 .standard-item i {
     color: var(--success-color);
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     background: rgba(34, 197, 94, 0.1);
-    width: 35px;
-    height: 35px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -615,23 +615,23 @@
 .standard-item span {
     color: var(--dark-text);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
-/* CTA Section */
+/* CTA Section - Compact */
 .cta-section.bg-primary {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%) !important;
 }
 
 .cta-content h2 {
     margin-bottom: 1rem;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 800;
 }
 
 .cta-description {
-    font-size: 1.3rem;
-    margin-bottom: 2.5rem;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
     opacity: 0.95;
     line-height: 1.6;
     font-weight: 500;
@@ -639,12 +639,12 @@
 
 .cta-buttons {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-/* Responsive Design */
+/* Responsive Design - Compact */
 @media (max-width: 1200px) {
     .service-card-title-modern h2 {
         font-size: 2.2rem;
@@ -669,7 +669,7 @@
     }
     
     .service-content-modern {
-        padding: 2.5rem;
+        padding: 1.75rem;
     }
     
     .service-icon-modern {
@@ -704,12 +704,12 @@
     }
     
     .service-content-modern {
-        padding: 2rem;
+        padding: 1.5rem;
     }
     
     .service-features {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1rem;
     }
     
     .process-steps {
@@ -749,25 +749,33 @@
     }
     
     .service-content-modern {
-        padding: 1.5rem;
+        padding: 1rem;
     }
     
     .process-step {
         flex-direction: column;
         text-align: center;
-        padding: 1.5rem;
+        padding: 1rem;
     }
     
     .step-number {
         align-self: center;
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
     
     .step-number:after {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 25px;
+    }
+    
+    .feature-list {
+        padding: 1rem;
+    }
+    
+    .service-standards {
+        padding: 1rem;
     }
 }
 

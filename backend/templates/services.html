@@ -108,13 +108,10 @@
                         <h2>{{ service.title }}</h2>
                         <p>{{ service.subtitle }}</p>
                     </div>
-                    <div class="service-toggle-btn" onclick="toggleService('{{ service.slug }}')">
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
                 </div>
 
-                <!-- Service Content - Collapsible -->
-                <div class="service-content-modern" id="content-{{ service.slug }}">
+                <!-- Service Content -->
+                <div class="service-content-modern">
                     <div class="service-description">
                         <h3>Hizmet Kapsamımız</h3>
                         <p>{{ service.description }}</p>
@@ -146,31 +143,41 @@
 
                     {% if service.get_process_steps_safe %}
                     <div class="service-process">
-                        <h3>Hizmet Sürecimiz</h3>
-                        <div class="process-steps">
-                            {% for step in service.get_process_steps_safe %}
-                            <div class="process-step">
-                                <div class="step-number">{{ forloop.counter }}</div>
-                                <div class="step-content">
-                                    <h4>{{ step.title }}</h4>
-                                    <p>{{ step.description }}</p>
+                        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                            <h3>Hizmet Sürecimiz</h3>
+                            <i class="fas fa-chevron-down collapsible-icon"></i>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="process-steps">
+                                {% for step in service.get_process_steps_safe %}
+                                <div class="process-step">
+                                    <div class="step-number">{{ forloop.counter }}</div>
+                                    <div class="step-content">
+                                        <h4>{{ step.title }}</h4>
+                                        <p>{{ step.description }}</p>
+                                    </div>
                                 </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
                     {% endif %}
 
                     {% if service.get_standards_list %}
                     <div class="service-standards">
-                        <h3>Uyduğumuz Standartlar</h3>
-                        <div class="standards-list">
-                            {% for standard in service.get_standards_list %}
-                            <div class="standard-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>{{ standard }}</span>
+                        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                            <h3>Uyduğumuz Standartlar</h3>
+                            <i class="fas fa-chevron-down collapsible-icon"></i>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="standards-list">
+                                {% for standard in service.get_standards_list %}
+                                <div class="standard-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>{{ standard }}</span>
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
                     {% endif %}
@@ -363,67 +370,9 @@
     font-weight: 500;
 }
 
-/* Service Card Header - Modern Hero Layout with Toggle */
-.service-card-header-modern {
-    position: relative;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.service-card-header-modern:hover {
-    transform: translateY(-2px);
-}
-
-/* Service Toggle Button */
-.service-toggle-btn {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-    z-index: 3;
-}
-
-.service-toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-}
-
-.service-toggle-btn i {
-    font-size: 1.2rem;
-    color: white;
-    transition: transform 0.3s ease;
-}
-
-.service-toggle-btn.active i {
-    transform: rotate(180deg);
-}
-
-/* Service Content - Collapsible */
+/* Service Content - Compact Modern Design */
 .service-content-modern {
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    opacity: 0;
-}
-
-.service-content-modern.active {
     padding: 2rem;
-    max-height: 2000px;
-    opacity: 1;
 }
 
 .service-content-modern h3 {
@@ -539,12 +488,62 @@
     justify-content: center;
 }
 
-/* Process Steps - Compact Timeline */
+/* Process Steps - Collapsible Timeline */
+.service-process {
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--white);
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background: var(--light-bg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.collapsible-header:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.collapsible-header h3 {
+    margin: 0;
+    color: var(--dark-text);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.collapsible-icon {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-header.active .collapsible-icon {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.collapsible-content.active {
+    max-height: 1000px;
+    padding: 1.5rem;
+}
+
 .process-steps {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
-    margin-top: 1.5rem;
 }
 
 .process-step {
@@ -608,15 +607,14 @@
     font-size: 0.9rem;
 }
 
-/* Service Standards - Compact Grid */
+/* Service Standards - Collapsible Grid */
 .service-standards {
     margin-top: 1.5rem;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, var(--light-bg) 0%, rgba(59, 130, 246, 0.03) 100%);
-    border-radius: 16px;
     border: 1px solid var(--border-color);
-    position: relative;
+    border-radius: 12px;
     overflow: hidden;
+    background: var(--white);
+    position: relative;
 }
 
 .service-standards:before {
@@ -629,12 +627,8 @@
     background: linear-gradient(90deg, var(--primary-color), var(--primary-light), var(--success-color));
 }
 
-.service-standards h3 {
-    margin-bottom: 1rem;
-    color: var(--dark-text);
-    font-size: 1.2rem;
-    font-weight: 700;
-    position: relative;
+.collapsible-content.active .standards-list {
+    padding: 1.5rem;
 }
 
 .standards-list {
@@ -648,7 +642,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 1rem;
-    background: var(--white);
+    background: var(--light-bg);
     border-radius: 8px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
@@ -729,7 +723,7 @@
         font-size: 2rem;
     }
     
-    .service-content-modern.active {
+    .service-content-modern {
         padding: 1.75rem;
     }
     
@@ -740,13 +734,6 @@
     
     .service-icon-modern i {
         font-size: 2rem;
-    }
-    
-    .service-toggle-btn {
-        width: 45px;
-        height: 45px;
-        top: 1.25rem;
-        right: 1.25rem;
     }
 }
 
@@ -771,7 +758,7 @@
         font-size: 1rem;
     }
     
-    .service-content-modern.active {
+    .service-content-modern {
         padding: 1.5rem;
     }
     
@@ -786,17 +773,6 @@
     
     .standards-list {
         grid-template-columns: 1fr;
-    }
-    
-    .service-toggle-btn {
-        width: 40px;
-        height: 40px;
-        top: 1rem;
-        right: 1rem;
-    }
-    
-    .service-toggle-btn i {
-        font-size: 1rem;
     }
     
     .cta-content h2 {
@@ -827,7 +803,7 @@
         font-size: 1.6rem;
     }
     
-    .service-content-modern.active {
+    .service-content-modern {
         padding: 1rem;
     }
     
@@ -857,15 +833,20 @@
         padding: 1rem;
     }
     
-    .service-toggle-btn {
-        width: 35px;
-        height: 35px;
-        top: 0.75rem;
-        right: 0.75rem;
+    .collapsible-header {
+        padding: 1rem;
     }
     
-    .service-toggle-btn i {
-        font-size: 0.9rem;
+    .collapsible-content.active {
+        padding: 1rem;
+    }
+    
+    .process-step {
+        padding: 1rem;
+    }
+    
+    .standard-item {
+        padding: 0.75rem;
     }
 }
 
@@ -925,39 +906,28 @@
     border-color: #334155;
 }
 
-[data-theme="dark"] .standard-item span {
-    color: var(--white);
-}
+[data-theme="dark"]     .standard-item span {
+        color: var(--white);
+    }
 </style>
 
 <script>
-function toggleService(serviceSlug) {
-    const content = document.getElementById('content-' + serviceSlug);
-    const toggleBtn = content.previousElementSibling.querySelector('.service-toggle-btn');
+function toggleCollapsible(header) {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('.collapsible-icon');
     
     if (content.classList.contains('active')) {
         // Close
         content.classList.remove('active');
-        toggleBtn.classList.remove('active');
+        header.classList.remove('active');
+        icon.style.transform = 'rotate(0deg)';
     } else {
         // Open
         content.classList.add('active');
-        toggleBtn.classList.add('active');
+        header.classList.add('active');
+        icon.style.transform = 'rotate(180deg)';
     }
 }
-
-// Close all services on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const allContents = document.querySelectorAll('.service-content-modern');
-    allContents.forEach(content => {
-        content.classList.remove('active');
-    });
-    
-    const allToggleBtns = document.querySelectorAll('.service-toggle-btn');
-    allToggleBtns.forEach(btn => {
-        btn.classList.remove('active');
-    });
-});
 </script>
 {% endblock %}
 
